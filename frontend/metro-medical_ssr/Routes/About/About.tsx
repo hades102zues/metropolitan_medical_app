@@ -10,9 +10,9 @@ import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 const About = () => {
   return (
     <div className={styles.About}>
-      <MiniHero>
+      {/* <MiniHero>
         <Header />
-      </MiniHero>
+      </MiniHero> */}
     </div>
   );
 };

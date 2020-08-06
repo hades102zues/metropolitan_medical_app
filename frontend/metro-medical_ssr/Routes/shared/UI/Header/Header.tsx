@@ -2,7 +2,10 @@ import styles from "./Header.module.css";
 import Link from "next/link";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 
-const Header = () => {
+interface Props {
+  drawerHandler: () => void;
+}
+const Header: React.FC<Props> = (props) => {
   return (
     <header className={styles.hero_header}>
       <div className={"wrapper"}>
@@ -27,14 +30,19 @@ const Header = () => {
                     ? `/${text.toLowerCase()}`
                     : "/";
                 return (
-                  <Link href={path}>
+                  <Link href={path} key={text}>
                     <a>{text}</a>
                   </Link>
                 );
               })}
             </nav>
             <nav className={styles.navbarMobile}>
-              <MenuRoundedIcon fontSize="large" />
+              <MenuRoundedIcon
+                fontSize="large"
+                onClick={(): void => {
+                  props.drawerHandler();
+                }}
+              />
             </nav>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Home.module.css";
 
 import Header from "../shared/UI/Header/Header";
@@ -11,6 +11,13 @@ const instagram_icon = "/icon_instagram-min.png";
 const fb_icon = "/icon_facebook-min.png";
 
 const Home = () => {
+  const [drawerState, setDrawerState] = useState(false);
+  const drawerOpener = (): void => {
+    setDrawerState((prevDrawerState): any => !prevDrawerState);
+  };
+
+  console.log("drawer: ", drawerState);
+
   return (
     <div className={styles.Home}>
       <div className={styles.hero}>
@@ -22,7 +29,7 @@ const Home = () => {
         </div>
         <div className={styles.hero_tint}></div>
 
-        <Header />
+        <Header drawerHandler={drawerOpener} />
 
         <div className={styles.showcase}>
           <div className={styles.wrapper}>
@@ -59,7 +66,7 @@ const Home = () => {
       </div>
 
       <Footer />
-      <Drawer />
+      <Drawer shouldOpen={drawerState} drawerStateHandler={drawerOpener} />
     </div>
   );
 };

@@ -12,8 +12,13 @@ import { withStyles } from "@material-ui/core";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 
-const SideDrawer = () => {
-  const open: boolean = false;
+interface Props {
+  shouldOpen: boolean;
+  drawerStateHandler: () => void;
+}
+const SideDrawer: React.FC<Props> = (props) => {
+  const open: boolean = props.shouldOpen;
+  const closeDrawer: () => void = props.drawerStateHandler;
 
   const SpecialListItemText = withStyles({
     root: {
@@ -22,7 +27,7 @@ const SideDrawer = () => {
   })(ListItemText);
 
   return (
-    <Drawer open={open}>
+    <Drawer open={open} onClose={closeDrawer}>
       <div className={styles.sideMenu_topAccent}></div>
       <div className={styles.sideMenu_companyLogo}>
         <div className={styles.logo}>
