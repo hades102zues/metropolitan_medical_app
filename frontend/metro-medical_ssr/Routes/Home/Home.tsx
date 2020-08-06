@@ -81,7 +81,7 @@ const Home = () => {
                             <a>
                                 <p className={styles.announcement}>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. <br/><br/> 
-                                     Find out more 
+                                     Find out more.  
                                 </p>
                             </a> 
                             </Link>
