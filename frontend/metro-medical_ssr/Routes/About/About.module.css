@@ -1,0 +1,97 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  height: 385px;
+  border: 5px solid salmon;
+  position: relative;
+}
+.hero_bgImage {
+  position: absolute;
+  height: 385px;
+  width: 100vw;
+
+  z-index: 0;
+}
+.hero_tint {
+  position: absolute;
+  height: 385px;
+  width: 100vw;
+  background-color: black;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.hero_bgImage img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/*header stuff t be removed*/
+.hero_header {
+  padding: 10px 0 10px;
+  z-index: 2;
+}
+.header1 {
+  display: flex;
+}
+.divider1 {
+  height: 65px;
+  width: 25%;
+}
+.divider2 {
+  height: 65px;
+  width: 75%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.logoArea_logo {
+  height: 6.5rem;
+  width: 6.5rem;
+}
+
+.logoArea_logo img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.navbarDesktop {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid red;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbarDesktop a {
+  width: 100px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a.active {
+  background-color: black;
+  opacity: 0.5;
+  color: pink;
+}
+
+.navbarMobile {
+  display: none;
+}
+
+/*header end*/
+
+.showcase {
+  z-index: 2;
+  border: 2px solid blue;
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

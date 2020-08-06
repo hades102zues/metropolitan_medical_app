@@ -90,6 +90,7 @@ a.active {
   padding-top: 100px;
   border: 2px solid yellow;
   z-index: 2;
+  position: relative;
 }
 
 .wrapper {
