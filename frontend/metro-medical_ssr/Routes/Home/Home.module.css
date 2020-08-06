@@ -87,7 +87,7 @@ a.active {
 
 .showcase {
   flex: 1;
-  display: flex;
+  padding-top: 100px;
   border: 2px solid yellow;
   z-index: 2;
 }
@@ -97,13 +97,13 @@ a.active {
   margin: 0 auto;
   overflow: hidden;
   max-width: 140rem;
-  display: flex;
+  position: relative;
 
   border: 5px solid black;
 }
 
 .showcase1 {
-  width: 65%;
+  /* width: 65%; */
   /* border:1px solid blue; */
   padding-top: 80px;
 }
@@ -127,10 +127,11 @@ a.active {
 }
 
 .showcase2 {
-  width: 35%;
+  /* width: 35%; */
   /* border:1px solid purple; */
   position: relative;
   padding-top: 80px;
+  border: 2px solid pink;
 }
 
 .tint {
@@ -154,14 +155,56 @@ a.active {
 }
 
 .announcement {
-  width: 170px;
-  height: 200px;
-  margin-left: 50px;
-  margin-top: 50px;
-  position: relative;
-  z-index: 3;
+  height: 250px;
+  background-color: red;
+  opacity: 0.3;
+  /* padding-top: 50px; */
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  transform: translateY(50%);
+  width: 85%;
+  max-width: 1400px;
 }
 
+.announcementwrap {
+  width: 85%;
+  margin: 0 auto;
+  overflow: hidden;
+  max-width: 140rem;
+  display: flex;
+  height: 100%;
+}
+
+.announcement1 {
+  background-color: teal;
+  width: 105px;
+  height: 100%;
+}
+
+.announcementIcon {
+  height: 75px;
+  width: 75px;
+  background-color: blueviolet;
+  margin-left: 10px;
+}
+.announcement2 {
+  background-color: purple;
+  width: 100%;
+  height: 100%;
+  border: 10px solid blue;
+}
+
+.accouncementTitle {
+  color: white;
+  margin-bottom: 35px;
+}
+
+.accouncementLink {
+  width: 152px;
+  height: 50px;
+}
 /*showcase end*/
 
 /*footer*/
@@ -180,7 +223,11 @@ a.active {
 }
 
 /*footer end*/
-
+@media all and (max-width: 720px) {
+  .showcase {
+    padding-top: 0;
+  }
+}
 @media all and (max-width: 1024px) {
   /*header*/
   .navbarDesktop {
@@ -195,11 +242,20 @@ a.active {
   /*header end*/
 
   /*showcase*/
+
   .wrapper {
     width: 95%;
 
     /*liable to move to a different breack point;*/
     flex-direction: column;
+  }
+
+  .announcement {
+    transform: translateY(0);
+    width: 100%;
+  }
+  .announcementwrap {
+    width: 95%;
   }
   .showcase1,
   .showcase2 {
@@ -208,14 +264,6 @@ a.active {
 
   .tint {
     margin-left: 50px;
-  }
-
-  .announcement_tint {
-    margin-left: 80px;
-  }
-
-  .announcement {
-    margin-left: 100px;
   }
 
   /*showcase end*/

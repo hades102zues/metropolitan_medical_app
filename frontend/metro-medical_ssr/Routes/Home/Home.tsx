@@ -70,7 +70,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className={styles.showcase2}>
+            {/* <div className={styles.showcase2}>
               <div className={styles.tint}></div>
 
               <div className={styles.announcement_tint}></div>
@@ -84,6 +84,22 @@ const Home = () => {
                   </p>
                 </a>
               </Link>
+            </div> */}
+          </div>
+
+          <div className={styles.announcement}>
+            <div className={styles.announcementwrap}>
+              <div className={styles.announcement1}>
+                <div className={styles.announcementIcon}></div>
+              </div>
+              <div className={styles.announcement2}>
+                <p className={styles.accouncementTitle}>
+                  when an unknown printer took a galley of type and scrambled it
+                  to make a type specimen book. It has survived not only five
+                  centuries,{" "}
+                </p>
+                <div className={styles.accouncementLink}></div>
+              </div>
             </div>
           </div>
         </div>
