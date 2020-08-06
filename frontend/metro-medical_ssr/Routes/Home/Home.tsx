@@ -73,15 +73,20 @@ const Home = () => {
                         <div className={styles.tint}>
                             
                         </div>
-                        <Link href="blog">
-                            <a>
+                        
                             <div className={styles.announcement_tint}>
                             
                             </div>
-                            <p className={styles.announcement}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. <br/><br/> Find out more -> </p>
+                            <Link href="blog">
+                            <a>
+                                <p className={styles.announcement}>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. <br/><br/> 
+                                     Find out more 
+                                </p>
+                            </a> 
+                            </Link>
     
-                            </a>
-                        </Link>
+                        
                        
                     </div>
                 </div>

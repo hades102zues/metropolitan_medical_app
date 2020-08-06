@@ -165,6 +165,7 @@ a.active{
     margin-right:25px;
 }
 
+
 .footer2 p {
     text-align: center;
 }
@@ -195,6 +196,18 @@ a.active{
     }
     .showcase1,.showcase2{
         width:100%;
+    }
+
+    .tint {
+        margin-left: 50px;
+    }
+
+    .announcement_tint{
+        margin-left:80px;
+    }
+
+    .announcement{
+        margin-left:100px;
     }
 
     /*showcase end*/
