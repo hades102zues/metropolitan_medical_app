@@ -1,0 +1,324 @@
+ <aside className={styles.sideMenu}>
+        <div className={styles.sideMenu_topAccent}></div>
+        <div className={styles.sideMenu_companyLogo}>
+          <div className={styles.logo}>
+            <img src="" alt="The company logo of Metropolitan Medical" />
+          </div>
+        </div>
+        <nav className={styles.sideMenu_nav}>
+          <Link href="/">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>JHome</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/about">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>About</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/services">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Services</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/blog">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Blog</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/appointment">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Book Now</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/contact">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Contact</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>JHome</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/about">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>About</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/services">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Services</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/blog">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Blog</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/appointment">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Book Now</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/contact">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Contact</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>JHome</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/about">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>About</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/services">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Services</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/blog">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Blog</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/appointment">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Book Now</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+          <Link href="/contact">
+            <a>
+              <div className={styles.navItem}>
+                <div className={styles.navItem_box}>
+                  <div className={styles.navIcon}></div>
+                </div>
+                <div className={styles.navItem_name}>
+                  <p>Contact</p>
+                </div>
+              </div>
+            </a>
+          </Link>
+        </nav>
+        <div className={styles.sideMenu_social}>
+          <FacebookIcon fontSize="large" />
+          <InstagramIcon fontSize="large" />
+        </div>
+      </aside>
+      <div className={styles.backdrop}>hi</div>
+
+
+
+
+      ==========================css
+
+      
+/*side drawer*/
+.sideMenu {
+  border: 3px solid green;
+  background-color: #fff;
+  position: fixed;
+  height: 100vh;
+  width: 300px;
+  z-index: 10;
+  padding: 25px 20px;
+  position: relative;
+}
+
+.sideMenu_topAccent {
+  background-color: blueviolet;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  z-index: -1;
+}
+.sideMenu_companyLogo {
+  height: 90px;
+  display: flex;
+  justify-content: center;
+}
+.logo {
+  height: 100%;
+  width: 90px;
+  border: 1px solid black;
+}
+
+.sideMenu_nav {
+  border: 1px solid red;
+
+  margin-top: 20px;
+}
+
+.navItem {
+  display: flex;
+  height: 50px;
+  border-radius: 3px;
+}
+.navItem_box {
+  width: 80px;
+  height: 100%;
+  border: 2px solid blue;
+}
+.navIcon {
+  width: 45px;
+  height: 100%;
+  border: 2px solid yellow;
+}
+.navItem_name {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.sideMenu_social {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/* .sideMenu_nav a {
+  height: 50px;
+} */
+.backdrop {
+  position: fixed;
+
+  pointer-events: none;
+  overflow: hidden;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 9;
+  background-color: blueviolet;
+}
+/*side drawer end*/
+
+
+
+

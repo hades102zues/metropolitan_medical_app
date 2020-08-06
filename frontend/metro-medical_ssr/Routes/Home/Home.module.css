@@ -209,7 +209,7 @@ a.active {
 
 /*footer*/
 
-.footerSocial {
+/* .footerSocial {
   display: flex;
   justify-content: center;
 }
@@ -220,9 +220,41 @@ a.active {
 
 .footer2 p {
   text-align: center;
+} */
+
+.footer {
+  text-align: center;
 }
 
+.footerInfo {
+  margin-bottom: 20px;
+}
 /*footer end*/
+
+/*drawer*/
+.sideMenu_topAccent {
+  background-color: blueviolet;
+  height: 55px;
+  width: 300px;
+  margin-bottom: 40px;
+}
+
+.sideMenu_companyLogo {
+  position: absolute;
+  height: 90px;
+  width: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.sideMenu_social {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/*drawer end*/
+
 @media all and (max-width: 720px) {
   .showcase {
     padding-top: 0;

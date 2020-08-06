@@ -1,6 +1,6 @@
 * {
-	padding: 0;
-	margin: 0;
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
   color: #333;
   font-family: Arial, sans-serif;
@@ -8,17 +8,13 @@
 }
 
 html {
-	font-size: 62.5%;
+  font-size: 62.5%;
 }
 
 html,
 body {
-
   background-color: #fff;
 }
-
-
-
 
 a {
   color: inherit;
@@ -26,15 +22,17 @@ a {
 }
 
 a:hover {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 input[type="text"] {
   -webkit-appearance: none;
+  appearance: none;
 }
 
 textarea {
   -webkit-appearance: none;
+  appearance: none;
 }
 
 ul {
@@ -48,23 +46,22 @@ ul {
   max-width: 140rem;
 }
 
-
-@media all and (max-width:1024px) {
-  .wrapper{
-    width:95%;
+@media all and (max-width: 1024px) {
+  .wrapper {
+    width: 95%;
   }
 }
 
-
-p{
-  border: 1px solid blue
+p {
+  border: 1px solid blue;
 }
 
-
-div{
+div {
   border: 1px solid orange;
 }
 
-h1,h2,h3{
+h1,
+h2,
+h3 {
   border: 1px solid red;
 }

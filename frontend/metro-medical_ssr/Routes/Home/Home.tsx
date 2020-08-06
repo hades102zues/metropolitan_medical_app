@@ -4,11 +4,28 @@ import styles from "./Home.module.css";
 import Link from "next/link";
 
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import { withStyles } from "@material-ui/core";
+
+import FacebookIcon from "@material-ui/icons/Facebook";
+import InstagramIcon from "@material-ui/icons/Instagram";
 
 const instagram_icon = "/icon_instagram-min.png";
 const fb_icon = "/icon_facebook-min.png";
 
 const Home = () => {
+  const open: boolean = false;
+
+  const SpecialListItemText = withStyles({
+    root: {
+      fontSize: 16,
+    },
+  })(ListItemText);
+
   return (
     <div className={styles.Home}>
       <div className={styles.hero}>
@@ -69,22 +86,6 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-
-            {/* <div className={styles.showcase2}>
-              <div className={styles.tint}></div>
-
-              <div className={styles.announcement_tint}></div>
-              <Link href="blog">
-                <a>
-                  <p className={styles.announcement}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor. <br />
-                    <br />
-                    Find out more.
-                  </p>
-                </a>
-              </Link>
-            </div> */}
           </div>
 
           <div className={styles.announcement}>
@@ -105,42 +106,49 @@ const Home = () => {
         </div>
       </div>
 
-      <footer>
-        <div className={styles.footer1}>
-          <div className={styles.footerSocial}>
-            <div className={styles.footerSocial_icon}>
-              <img src={fb_icon} alt="This a facebook icon." />
-            </div>
-            <div className={styles.footerSocial_icon}>
-              <img src={instagram_icon} alt="This an instagram icon." />
-            </div>
+      <footer className={styles.footer}>
+        <p className={styles.footerInfo}>
+          New Market Business Centre, Cheapside (Opposite Cheapside Market),
+          Bridgetown. <br />
+          Tel: (246) 823-9559. <br />
+          Email : metropolitanmedicalbb@gmail.com{" "}
+        </p>
+        <FacebookIcon fontSize="large" />
+        <InstagramIcon fontSize="large" />
+      </footer>
+      <Drawer open={open}>
+        <div className={styles.sideMenu_topAccent}></div>
+        <div className={styles.sideMenu_companyLogo}>
+          <div className={styles.logo}>
+            <img src="" alt="The company logo of Metropolitan Medical" />
           </div>
         </div>
-        <div className={styles.footer2}>
-          <p>
-            New Market Business Centre, Cheapside (Opposite Cheapside Market),
-            Bridgetown. <br />
-            Tel: (246) 823-9559. <br />
-            Email : metropolitanmedicalbb@gmail.com{" "}
-          </p>
+
+        <List>
+          {["Home", "About", "Services", "Blog", "Appointment", "Contact"].map(
+            (text, index) => {
+              const path =
+                text.toLowerCase() !== "home" ? `/${text.toLowerCase()}` : "/";
+              return (
+                <Link href={path} key={text}>
+                  <a>
+                    <ListItem button>
+                      <ListItemIcon>
+                        <FacebookIcon fontSize="large" />
+                      </ListItemIcon>
+                      <SpecialListItemText disableTypography primary={text} />
+                    </ListItem>
+                  </a>
+                </Link>
+              );
+            }
+          )}
+        </List>
+        <div className={styles.sideMenu_social}>
+          <FacebookIcon fontSize="large" />
+          <InstagramIcon fontSize="large" />
         </div>
-      </footer>
-
-      {/* <aside className={styles.sideDrawer}>
-                <div className={styles.companyLogo}>
-                    <img src ="" alt="This is the logo of metropolitan medical"/>
-                </div>
-                <ul>
-                        <li>Home</li>
-                        <li>About</li>
-                        <li>Services</li>
-                        <li>Blog</li>
-                        <li>Book Now</li>
-                        <li>Contact</li>
-                    </ul>
-
-            </aside>
-            <div className={styles.backdrop}></div> */}
+      </Drawer>
     </div>
   );
 };
