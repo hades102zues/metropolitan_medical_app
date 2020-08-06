@@ -153,9 +153,6 @@
 /*showcase end*/
 
 @media all and (max-width: 720px) {
-  .showcase {
-    padding-top: 0;
-  }
 }
 @media all and (max-width: 1024px) {
   /*header*/
@@ -171,7 +168,9 @@
   /*header end*/
 
   /*showcase*/
-
+  .showcase {
+    padding-top: 0;
+  }
   .wrapper {
     width: 95%;
 

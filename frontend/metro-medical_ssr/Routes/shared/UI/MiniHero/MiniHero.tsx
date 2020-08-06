@@ -3,8 +3,10 @@ import styles from "./MiniHero.module.css";
 
 interface Props {
   children: JSX.Element;
+  headline: string;
+  // drawerHandler: () => void;
 }
-const MiniHero: React.FC<Props> = ({ children }) => {
+const MiniHero: React.FC<Props> = ({ children, headline }) => {
   return (
     <div className={styles.hero}>
       <div className={styles.hero_bgImage}>
@@ -16,7 +18,7 @@ const MiniHero: React.FC<Props> = ({ children }) => {
       <div className={styles.hero_tint}></div>
       {children}
       <section className={styles.showcase}>
-        <h1>Showcase header</h1>
+        <h1>{headline}</h1>
       </section>
     </div>
   );

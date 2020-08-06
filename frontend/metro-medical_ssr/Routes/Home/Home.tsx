@@ -31,7 +31,7 @@ const Home = () => {
 
         <Header drawerHandler={drawerOpener} />
 
-        <div className={styles.showcase}>
+        <section className={styles.showcase}>
           <div className={styles.wrapper}>
             <div className={styles.showcase1}>
               <h1>Out Reach Text. Super super super super nifty.</h1>
@@ -62,7 +62,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
 
       <Footer />
