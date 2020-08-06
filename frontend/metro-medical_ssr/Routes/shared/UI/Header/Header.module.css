@@ -1,0 +1,69 @@
+.hero_header {
+  padding: 10px 0 10px;
+  z-index: 2;
+}
+.header1 {
+  display: flex;
+}
+.divider1 {
+  height: 65px;
+  width: 25%;
+}
+.divider2 {
+  height: 65px;
+  width: 75%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.logoArea_logo {
+  height: 6.5rem;
+  width: 6.5rem;
+}
+
+.logoArea_logo img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.navbarDesktop {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid red;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbarDesktop a {
+  width: 100px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a.active {
+  background-color: black;
+  opacity: 0.5;
+  color: pink;
+}
+
+.navbarMobile {
+  display: none;
+}
+
+@media all and (max-width: 1024px) {
+  /*header*/
+  .navbarDesktop {
+    display: none;
+  }
+  .navbarMobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /*header end*/
+}

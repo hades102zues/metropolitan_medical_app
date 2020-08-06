@@ -1,0 +1,23 @@
+/*drawer*/
+.sideMenu_topAccent {
+  background-color: blueviolet;
+  height: 55px;
+  width: 300px;
+  margin-bottom: 40px;
+}
+
+.sideMenu_companyLogo {
+  position: absolute;
+  height: 90px;
+  width: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.sideMenu_social {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/*drawer end*/

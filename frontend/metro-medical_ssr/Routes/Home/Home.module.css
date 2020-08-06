@@ -27,62 +27,6 @@
   object-fit: cover;
 }
 
-.hero_header {
-  padding: 10px 0 10px;
-  z-index: 2;
-}
-.header1 {
-  display: flex;
-}
-.divider1 {
-  height: 65px;
-  width: 25%;
-}
-.divider2 {
-  height: 65px;
-  width: 75%;
-  display: flex;
-  flex-direction: row-reverse;
-}
-
-.logoArea_logo {
-  height: 6.5rem;
-  width: 6.5rem;
-}
-
-.logoArea_logo img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
-
-.navbarDesktop {
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  border: 1px solid red;
-  justify-content: center;
-  align-items: center;
-}
-
-.navbarDesktop a {
-  width: 100px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-a.active {
-  background-color: black;
-  opacity: 0.5;
-  color: pink;
-}
-
-.navbarMobile {
-  display: none;
-}
-
 /*showcase */
 
 .showcase {
@@ -207,54 +151,6 @@ a.active {
   height: 50px;
 }
 /*showcase end*/
-
-/*footer*/
-
-/* .footerSocial {
-  display: flex;
-  justify-content: center;
-}
-
-.footerSocial_icon {
-  margin-right: 25px;
-}
-
-.footer2 p {
-  text-align: center;
-} */
-
-.footer {
-  text-align: center;
-}
-
-.footerInfo {
-  margin-bottom: 20px;
-}
-/*footer end*/
-
-/*drawer*/
-.sideMenu_topAccent {
-  background-color: blueviolet;
-  height: 55px;
-  width: 300px;
-  margin-bottom: 40px;
-}
-
-.sideMenu_companyLogo {
-  position: absolute;
-  height: 90px;
-  width: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.sideMenu_social {
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
-}
-
-/*drawer end*/
 
 @media all and (max-width: 720px) {
   .showcase {
