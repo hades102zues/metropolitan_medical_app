@@ -64,6 +64,11 @@ a.active{
     display:none;
 }
 
+
+
+
+/*showcase */
+
 .showcase {
     flex:1;
     display: flex; 
@@ -80,7 +85,6 @@ a.active{
     
     border:5px solid black;
 } 
-
 
 
 
@@ -147,7 +151,29 @@ a.active{
     z-index: 3;
 }
 
+/*showcase end*/
+
+
+/*footer*/
+
+.footerSocial{
+    display:flex;
+    justify-content: center;
+}
+
+.footerSocial_icon {
+    margin-right:25px;
+}
+
+.footer2 p {
+    text-align: center;
+}
+
+/*footer end*/
+
 @media all and (max-width:1024px) {
+
+    /*header*/
     .navbarDesktop{
         display:none;
     }
@@ -157,6 +183,10 @@ a.active{
         align-items: center;
 
     }
+
+    /*header end*/
+
+    /*showcase*/
     .wrapper{
         width:95%;
 
@@ -166,5 +196,7 @@ a.active{
     .showcase1,.showcase2{
         width:100%;
     }
+
+    /*showcase end*/
 }
 

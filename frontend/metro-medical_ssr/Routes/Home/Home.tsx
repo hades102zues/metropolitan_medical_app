@@ -89,7 +89,7 @@ const Home = () => {
                 </div>
             </div>
             
-            {/* <footer>
+            <footer>
                 <div className={styles.footer1}>
                     <div className={styles.footerSocial}>
                         <div className={styles.footerSocial_icon}>
@@ -103,7 +103,7 @@ const Home = () => {
                 <div className={styles.footer2}>
                     <p>New Market Business Centre, Cheapside (Opposite Cheapside Market), Bridgetown. <br/>Tel: (246) 823-9559. <br/>Email : metropolitanmedicalbb@gmail.com </p>
                 </div>
-            </footer> */}
+            </footer>
 
             {/* <aside className={styles.sideDrawer}>
                 <div className={styles.companyLogo}>
