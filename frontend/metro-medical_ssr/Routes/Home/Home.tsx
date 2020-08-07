@@ -65,6 +65,65 @@ const Home = () => {
         </section>
       </div>
 
+      <section className={styles.about}>
+        <div className="wrapper">
+          <h2 className={styles.aboutHeadline}>Who we are</h2>
+          <div className={styles.aboutStory}>
+            <p className={styles.aboutStory_item}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate
+            </p>
+            <p className={styles.aboutStory_item}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.services}>
+        <div className="wrapper">
+          <div className={styles.servicesBox}>
+            <div className={styles.servicesHeadline}>
+              <h2 className={styles.servicesHeadline_title}>
+                quis nostrud exercitation ullamco
+              </h2>
+            </div>
+            <div className={styles.servicesCards}>
+              {[
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+              ].map((card, i) => (
+                <article
+                  className={styles.serviceCard}
+                  style={{ background: "purple" }}
+                >
+                  <div className={styles.cardIcon}>
+                    <img src="" alt="" />
+                  </div>
+                  <h3 className={styles.cardTitle}>Card Title</h3>
+                  <p className={styles.cardInfo}>
+                    Predatory lending is a form of abuse in the granting of
+                    loan.
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
       <Drawer shouldOpen={drawerState} drawerStateHandler={drawerOpener} />
     </div>

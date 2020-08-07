@@ -51,3 +51,11 @@ ul {
     width: 95%;
   }
 }
+
+p {
+  border: 1px solid blue;
+}
+
+div {
+  border: 1px solid orange;
+}

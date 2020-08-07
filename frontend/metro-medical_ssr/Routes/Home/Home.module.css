@@ -4,6 +4,9 @@
   height: 100vh;
   border: 5px solid salmon;
   position: relative;
+
+  /*creates space below the announcement*/
+  margin-bottom: 170px;
 }
 .hero_bgImage {
   position: absolute;
@@ -152,9 +155,106 @@
 }
 /*showcase end*/
 
-@media all and (max-width: 720px) {
+/*about*/
+.about {
+}
+
+.aboutHeadline {
+  margin-bottom: 50px;
+}
+.aboutStory {
+  background-color: blueviolet;
+  width: 65%;
+}
+
+.aboutStory_item {
+  margin-bottom: 30px;
+}
+/*about end*/
+
+/*services*/
+.services {
+}
+
+.servicesBox {
+  height: 950px;
+  border: 2px solid blue;
+  position: relative;
+}
+.servicesHeadline {
+  background-color: red;
+  width: 30%;
+  padding: 45px 30px 30px;
+  height: 300px;
+}
+
+.servicesHeadline_title {
+  font-size: 32px;
+  width: 65%;
+  display: inline-block;
+  border: 2px solid blue;
+}
+.servicesCards {
+  width: 70%;
+  border: 2px solid purple;
+  position: absolute;
+  top: 110px;
+  left: 250px;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.serviceCard {
+  border: 2px solid green;
+  height: 264px;
+  width: 264px;
+  padding: 40px;
+}
+
+.cardIcon {
+  height: 65px;
+  width: 65px;
+  margin-bottom: 20px;
+}
+
+.cardTitle {
+  margin-bottom: 20px;
+}
+/*servicesE*/
+
+@media all and (max-width: 719px) {
+  /*services*/
+  /*services*/
+  .servicesBox {
+    height: auto;
+  }
+
+  .servicesHeadline {
+    width: 100%;
+    height: 210px;
+  }
+  .servicesCards {
+    border: 2px solid purple;
+    position: static;
+    top: auto;
+    left: auto;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .serviceCard {
+    height: 165px;
+    width: 210px;
+  }
+  .cardInfo {
+    display: none;
+  }
+  /*services end*/
 }
 @media all and (max-width: 1024px) {
+  .hero {
+    margin-bottom: 0;
+  }
   /*header*/
   .navbarDesktop {
     display: none;
@@ -195,4 +295,41 @@
   }
 
   /*showcase end*/
+
+  /*about*/
+  .about {
+    padding-top: 50px;
+  }
+  .aboutStory {
+    width: 100%;
+  }
+  /*aboutend*/
+}
+
+@media all and (min-width: 720px) and (max-width: 1365px) {
+  /*services*/
+  .servicesBox {
+    height: auto;
+  }
+
+  .servicesHeadline {
+    width: 50%;
+    height: 210px;
+  }
+  .servicesCards {
+    border: 2px solid purple;
+    position: static;
+    top: auto;
+    left: auto;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .serviceCard {
+    height: 165px;
+  }
+  .cardInfo {
+    display: none;
+  }
+  /*services end*/
 }
