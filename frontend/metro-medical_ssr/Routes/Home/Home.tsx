@@ -7,8 +7,9 @@ import Drawer from "../shared/UI/Drawer/Drawer";
 
 import Link from "next/link";
 
-const instagram_icon = "/icon_instagram-min.png";
-const fb_icon = "/icon_facebook-min.png";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import InstagramIcon from "@material-ui/icons/Instagram";
+import { Map, GoogleApiWrapper } from "google-maps-react";
 
 const Home = () => {
   const [drawerState, setDrawerState] = useState(false);
@@ -16,8 +17,34 @@ const Home = () => {
     setDrawerState((prevDrawerState): any => !prevDrawerState);
   };
 
-  console.log("drawer: ", drawerState);
+  const mapStyles = {
+    width: "100%",
+    height: "100%",
+  };
 
+  const MapContainer = (props): any => (
+    <Map
+      google={props.google}
+      // zoom={14}
+      style={mapStyles}
+      initialCenter={{
+        lat: -1.2884,
+        lng: 36.8233,
+      }}
+    />
+  );
+
+  const GoogleMapAPi = (): any => {
+    return GoogleApiWrapper({
+      apiKey: "AIzaSyB_80ZZtsg2FQcTnGIWitBUYSacwKUZPmw",
+    })(MapContainer);
+  };
+
+  const GoogleMap = GoogleMapAPi();
+
+  //Remember to activate the google map javascript api on your account
+
+  console.log(GoogleMap);
   return (
     <div className={styles.Home}>
       <div className={styles.hero}>
@@ -124,7 +151,71 @@ const Home = () => {
         </div>
       </section>
 
-      <Footer />
+      <section className={styles.contact}>
+        <div className={styles.info}>
+          <div className="wrapper">
+            <div className={styles.infoLayout}>
+              <div className={styles.details}>
+                <article className={styles.contacts}>
+                  <div className={styles.contacts_icon}>
+                    <img />
+                  </div>
+                  <h3 className={styles.contacts_title}>Address</h3>
+                  <p className={styles.contact_info}>
+                    New Market Business Centre <br /> Cheapside <br />{" "}
+                    Bridgetown <br /> Barbados (Opposite Cheapside Market)
+                  </p>
+                </article>
+                <article className={styles.contacts}>
+                  <div className={styles.contacts_icon}>
+                    <img />
+                  </div>
+                  <h3 className={styles.contacts_title}>Email</h3>
+                  <p className={styles.contact_info}>
+                    metropolitanmedicalbb@gmail.co
+                  </p>
+                </article>
+                <article className={styles.contacts}>
+                  <div className={styles.contacts_icon}>
+                    <img />
+                  </div>
+                  <h3 className={styles.contacts_title}>Phone</h3>
+                  <p className={styles.contact_info}>(246) 823-9559</p>
+                </article>
+                <article className={styles.contacts}>
+                  <div className={styles.contacts_icon}>
+                    <img />
+                  </div>
+                  <h3 className={styles.contacts_title}>Working Hours</h3>
+                  <p className={styles.contact_info}>
+                    Monday: 7AM-3PM
+                    <br />
+                    Tuesday: 8AM-4PM
+                    <br />
+                    Wednesday: 7AM-3PM
+                    <br />
+                    Thursday: 8AM-4PM
+                    <br />
+                    Friday: 9AM-5PM
+                    <br />
+                    Saturday: 9AM-1PM
+                  </p>
+                </article>
+              </div>
+              <div className={styles.gmap}>{/* <GoogleMap /> */}</div>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.socialSpace}>
+          <div className={styles.contactWrapper}>
+            <FacebookIcon fontSize="large" />
+            <InstagramIcon fontSize="large" />
+          </div>
+        </div>
+        {/* <div className={styles.contactForm}></div> */}
+      </section>
+      {/* <Footer /> */}
       <Drawer shouldOpen={drawerState} drawerStateHandler={drawerOpener} />
     </div>
   );
