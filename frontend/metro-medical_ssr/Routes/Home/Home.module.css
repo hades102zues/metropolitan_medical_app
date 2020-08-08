@@ -157,9 +157,87 @@
 
 /*about*/
 .about {
+  display: flex;
+  max-width: 2780px;
+}
+.about1 {
+  width: 25%;
+  background-color: blueviolet;
+  position: relative;
+  height: 450px;
+}
+.aboutImage {
+  position: absolute;
+  height: 110%;
+  transform: translateY(-8.75%);
+}
+.aboutImage img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.about2 {
+  width: 65%;
+  padding: 60px;
+  position: relative;
+}
+.adjust {
+  position: absolute;
+  transform: translateX(-60%);
+  padding-left: 40px;
+
+  background-color: #fff;
+}
+.aboutTitle {
+  font-size: 64px;
+}
+.aboutTalk {
+  margin-top: 200px;
 }
 
-.aboutHeadline {
+.talk {
+  margin-bottom: 20px;
+}
+
+@media all and (max-width: 720px) {
+  .about {
+    display: block;
+  }
+  .about1 {
+    width: 100%;
+  }
+  .aboutImage {
+    position: static;
+    height: 100%;
+    transform: translateY(0);
+  }
+  .about2 {
+    width: 100%;
+    padding: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .adjust {
+    position: static;
+    transform: translateX(0);
+    padding-left: 0px;
+    width: 75%;
+  }
+  .aboutTitle {
+    text-align: center;
+  }
+  .aboutTalk {
+    width: 75%;
+    margin-top: 30px;
+  }
+  .talk {
+    text-align: center;
+  }
+}
+
+/* .aboutHeadline {
   margin-bottom: 50px;
 }
 .aboutStory {
@@ -169,7 +247,8 @@
 
 .aboutStory_item {
   margin-bottom: 30px;
-}
+} */
+
 /*about end*/
 
 /*services*/
