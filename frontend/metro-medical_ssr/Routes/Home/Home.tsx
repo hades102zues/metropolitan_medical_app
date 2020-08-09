@@ -373,6 +373,11 @@ const Home = () => {
                   className={styles.form_item + " " + styles.itemAdjust}
                 />
 
+                <input
+                  type="text"
+                  placeholder="Phone Number*"
+                  className={styles.form_item}
+                />
                 <textarea
                   rows={4}
                   placeholder="Message (optional)"
