@@ -7,6 +7,10 @@
 
   /*creates space below the announcement*/
   margin-bottom: 170px;
+
+  /*makes the hero always look good*/
+  max-height: 1200px;
+  /* a min-height will need to be set at some breakpoint after content is filled in*/
 }
 .hero_bgImage {
   position: absolute;
@@ -14,6 +18,10 @@
   width: 100vw;
 
   z-index: 0;
+
+  /*makes the hero's image always look good*/
+  max-height: 1200px;
+  /* a min-height will need to be set at some breakpoint after content is filled in*/
 }
 .hero_tint {
   position: absolute;
@@ -22,6 +30,10 @@
   background-color: black;
   opacity: 0.5;
   z-index: 1;
+
+  /*makes the hero's tint always look good*/
+  max-height: 1200px;
+  /* a min-height will need to be set at some breakpoint after content is filled in*/
 }
 
 .hero_bgImage img {
@@ -347,6 +359,55 @@
   justify-content: space-around;
 }
 
+.formHeading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mainFormHead {
+  margin-bottom: 10px;
+}
+
+.secondFormHead {
+}
+
+.contactFormArea {
+  display: flex;
+  justify-content: center;
+}
+
+.contactForm {
+  width: 720px;
+  background-color: blue;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.form_item {
+  height: 47px;
+  width: 100%;
+  padding: 10px;
+}
+.itemAdjust {
+  width: 350px;
+}
+
+.form_textarea {
+  width: 100%;
+  padding: 10px;
+}
+
+.form_button {
+  padding: 10px;
+  min-width: 200px;
+}
+
 @media all and (max-width: 1024px) {
   .contactWrapper {
     width: 95%;
@@ -369,6 +430,14 @@
   }
 }
 
+@media all and (max-width: 800px) {
+  .contactForm {
+    width: 100%;
+  }
+  .itemAdjust {
+    width: 100%;
+  }
+}
 /*contact end*/
 
 @media all and (max-width: 719px) {

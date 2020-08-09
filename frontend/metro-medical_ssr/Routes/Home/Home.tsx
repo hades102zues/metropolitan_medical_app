@@ -243,7 +243,46 @@ const Home = () => {
             <InstagramIcon fontSize="large" />
           </div>
         </div>
-        {/* <div className={styles.contactForm}></div> */}
+
+        <div>
+          <div className="wrapper">
+            <div className={styles.formHeading}>
+              <h2 className={styles.mainFormHead}>LEAVE US YOUR INFO</h2>
+              <p className={styles.secondFormHead}>
+                and we will get back to you.
+              </p>
+            </div>
+            <div className={styles.contactFormArea}>
+              <div className={styles.contactForm}>
+                <form className={styles.form}>
+                  <input
+                    type="text"
+                    placeholder="Full Name*"
+                    className={styles.form_item + " " + styles.itemAdjust}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Email*"
+                    className={styles.form_item + " " + styles.itemAdjust}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Subject*"
+                    className={styles.form_item}
+                  />
+                  <textarea
+                    rows={7}
+                    placeholder="Message*"
+                    className={styles.form_textarea}
+                  ></textarea>
+                  <button type="submit" className={styles.form_button}>
+                    Submit Now
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
       {/* <Footer /> */}
       <Drawer shouldOpen={drawerState} drawerStateHandler={drawerOpener} />
