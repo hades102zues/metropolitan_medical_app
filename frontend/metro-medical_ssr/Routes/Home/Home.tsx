@@ -66,7 +66,7 @@ const Home = () => {
 
   // picker
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date("2014-08-18T21:11:54")
+    new Date()
   );
 
   const handleDateChange = (date: Date | null) => {
@@ -80,7 +80,8 @@ const Home = () => {
     createStyles({
       formControl: {
         margin: theme.spacing(1),
-        minWidth: 120,
+        width: 120,
+        border: "2px solid red",
       },
       selectEmpty: {
         marginTop: theme.spacing(2),
@@ -216,6 +217,7 @@ const Home = () => {
                 <article
                   className={styles.serviceCard}
                   style={{ background: "purple" }}
+                  key={card.title}
                 >
                   <div className={styles.cardIcon}>
                     <img src="" alt="" />
@@ -283,7 +285,18 @@ const Home = () => {
                   </p>
                 </article>
               </div>
-              <div className={styles.gmap}>{/* <GoogleMap /> */}</div>
+              <div className={styles.gmap}>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.0073560444303!2d-59.62304108522802!3d13.098720190772546!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c43f7c9ff1ee379%3A0xfda53f6ab45f1a88!2sDr.%20C%20Bowen%20(Metropolitan%20Medical)!5e0!3m2!1sen!2s!4v1597007801993!5m2!1sen!2s"
+                  // width="600"
+                  // height="450"
+                  frameBorder={0}
+                  style={{ border: 0, width: "100%", height: "100%" }}
+                  allow-full-screen=""
+                  aria-hidden="false"
+                  tabIndex={0}
+                ></iframe>
+              </div>
             </div>
           </div>
         </div>
@@ -322,7 +335,7 @@ const Home = () => {
                     className={styles.form_item}
                   />
                   <textarea
-                    rows={7}
+                    rows={4}
                     placeholder="Message*"
                     className={styles.form_textarea}
                   ></textarea>
@@ -330,9 +343,11 @@ const Home = () => {
                     Submit Now
                   </button>
                 </form>
-                <div className={styles.form_submit}>
-                  <p>Your form has been submitted.</p>
-                </div>
+
+                <p className={styles.form_submit}>
+                  Your form has been submitted.
+                </p>
+
                 <p className={styles.form_error}>
                   An error has occured. Please, try a gain Later.
                 </p>
@@ -354,19 +369,16 @@ const Home = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Email*"
+                  placeholder="Email (optional)"
                   className={styles.form_item + " " + styles.itemAdjust}
                 />
-                <input
-                  type="text"
-                  placeholder="Subject*"
-                  className={styles.form_item}
-                />
+
                 <textarea
-                  rows={7}
-                  placeholder="Message*"
+                  rows={4}
+                  placeholder="Message (optional)"
                   className={styles.form_textarea}
                 ></textarea>
+
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     margin="normal"
@@ -380,56 +392,60 @@ const Home = () => {
                     }}
                   />
                 </MuiPickersUtilsProvider>
+                <div style={{ width: "100%" }}></div>
+                <div className={styles.materiAdj}>
+                  <FormControl required className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-required-label">
+                      Services
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-required-label"
+                      id="demo-simple-select-required"
+                      value={age}
+                      onChange={handleChange}
+                      className={classes.selectEmpty}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Ten</MenuItem>
+                      <MenuItem value={20}>Twenty</MenuItem>
+                      <MenuItem value={30}>Thirty</MenuItem>
+                    </Select>
+                    {/* <FormHelperText>Required</FormHelperText> */}
+                  </FormControl>
 
-                <FormControl required className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-required-label">
-                    Services
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-required-label"
-                    id="demo-simple-select-required"
-                    value={age}
-                    onChange={handleChange}
-                    className={classes.selectEmpty}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                  <FormHelperText>Required</FormHelperText>
-                </FormControl>
-
-                <FormControl required className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-required-label">
-                    Time
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-required-label"
-                    id="demo-simple-select-required"
-                    value={age}
-                    onChange={handleChange}
-                    className={classes.selectEmpty}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                  <FormHelperText>Required</FormHelperText>
-                </FormControl>
+                  <FormControl required className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-required-label">
+                      Time
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-required-label"
+                      id="demo-simple-select-required"
+                      value={age}
+                      onChange={handleChange}
+                      className={classes.selectEmpty}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Ten</MenuItem>
+                      <MenuItem value={20}>Twenty</MenuItem>
+                      <MenuItem value={30}>Thirty</MenuItem>
+                    </Select>
+                    {/* <FormHelperText>Required</FormHelperText> */}
+                  </FormControl>
+                </div>
 
                 <button type="submit" className={styles.form_button}>
                   Submit Now
                 </button>
               </form>
-              <div className={styles.form_submit}>
-                <p>Your form has been submitted.</p>
-              </div>
+
+              <p className={styles.form_submit}>
+                Your form has been submitted.
+              </p>
+
               <p className={styles.form_error}>
                 An error has occured. Please, try a gain Later.
               </p>
@@ -437,7 +453,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      {/* <Footer /> */}
+      <Footer />
       <Drawer shouldOpen={drawerState} drawerStateHandler={drawerOpener} />
     </div>
   );
