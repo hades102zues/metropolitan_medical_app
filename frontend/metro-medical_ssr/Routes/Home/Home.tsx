@@ -9,7 +9,16 @@ import Link from "next/link";
 
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
+
 import { Map, GoogleApiWrapper } from "google-maps-react";
+
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+
+import DateFnsUtils from "@date-io/date-fns";
+import "date-fns";
 
 const Home = () => {
   const [drawerState, setDrawerState] = useState(false);
@@ -45,6 +54,17 @@ const Home = () => {
   //Remember to activate the google map javascript api on your account
 
   console.log(GoogleMap);
+
+  // picker
+  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
+    new Date("2014-08-18T21:11:54")
+  );
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+  };
+
+  //picker end
   return (
     <div className={styles.Home}>
       <div className={styles.hero}>
@@ -279,7 +299,67 @@ const Home = () => {
                     Submit Now
                   </button>
                 </form>
+                <div className={styles.form_submit}>
+                  <p>Your form has been submitted.</p>
+                </div>
+                <p className={styles.form_error}>
+                  An error has occured. Please, try a gain Later.
+                </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.appointment}>
+        <div className="wrapper">
+          <div className={styles.appFormArea}>
+            <div className={styles.appForm}>
+              <form className={styles.form}>
+                <input
+                  type="text"
+                  placeholder="Full Name*"
+                  className={styles.form_item + " " + styles.itemAdjust}
+                />
+                <input
+                  type="text"
+                  placeholder="Email*"
+                  className={styles.form_item + " " + styles.itemAdjust}
+                />
+                <input
+                  type="text"
+                  placeholder="Subject*"
+                  className={styles.form_item}
+                />
+                <textarea
+                  rows={7}
+                  placeholder="Message*"
+                  className={styles.form_textarea}
+                ></textarea>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    label=""
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+
+                <button type="submit" className={styles.form_button}>
+                  Submit Now
+                </button>
+              </form>
+              <div className={styles.form_submit}>
+                <p>Your form has been submitted.</p>
+              </div>
+              <p className={styles.form_error}>
+                An error has occured. Please, try a gain Later.
+              </p>
             </div>
           </div>
         </div>

@@ -406,6 +406,26 @@
 .form_button {
   padding: 10px;
   min-width: 200px;
+  width: 100%;
+}
+
+.form_submit p {
+  line-height: 4rem;
+  height: 4rem;
+
+  margin-top: 1.2rem;
+  padding-left: 3rem;
+  background-color: #4caf50;
+  border-left: 4px solid #388e3c;
+  color: white;
+}
+.form_error {
+  border-left: 4px solid red;
+  background-color: #f9524d;
+  padding: 0.73rem 3rem;
+
+  margin-top: 1.2rem;
+  color: white;
 }
 
 @media all and (max-width: 1024px) {
@@ -439,6 +459,64 @@
   }
 }
 /*contact end*/
+
+/*appointment*/
+.appFormArea {
+  display: flex;
+  justify-content: center;
+}
+.appForm {
+  width: 720px;
+}
+
+.form_item {
+  height: 47px;
+  width: 100%;
+  padding: 10px;
+}
+.itemAdjust {
+  width: 350px;
+}
+
+.form_textarea {
+  width: 100%;
+  padding: 10px;
+}
+
+.form_button {
+  padding: 10px;
+  min-width: 200px;
+  display: block;
+  width: 100%;
+}
+
+.form_submit p {
+  line-height: 4rem;
+  height: 4rem;
+
+  margin-top: 1.2rem;
+  padding-left: 3rem;
+  background-color: #4caf50;
+  border-left: 4px solid #388e3c;
+  color: white;
+}
+.form_error {
+  border-left: 4px solid red;
+  background-color: #f9524d;
+  padding: 0.73rem 3rem;
+
+  margin-top: 1.2rem;
+  color: white;
+}
+@media all and (max-width: 800px) {
+  .contactForm {
+    width: 100%;
+  }
+  .itemAdjust {
+    width: 100%;
+  }
+}
+/*app end*/
 
 @media all and (max-width: 719px) {
   /*services*/
