@@ -20,6 +20,15 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import "date-fns";
 
+import {
+  InputLabel,
+  MenuItem,
+  FormHelperText,
+  FormControl,
+  Select,
+} from "@material-ui/core";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+
 const Home = () => {
   const [drawerState, setDrawerState] = useState(false);
   const drawerOpener = (): void => {
@@ -65,6 +74,28 @@ const Home = () => {
   };
 
   //picker end
+
+  //selector
+  const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+      formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+      },
+      selectEmpty: {
+        marginTop: theme.spacing(2),
+      },
+    })
+  );
+
+  const classes = useStyles();
+  const [age, setAge] = React.useState("");
+
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setAge(event.target.value as string);
+  };
+
+  //selector end
   return (
     <div className={styles.Home}>
       <div className={styles.hero}>
@@ -349,6 +380,48 @@ const Home = () => {
                     }}
                   />
                 </MuiPickersUtilsProvider>
+
+                <FormControl required className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-required-label">
+                    Services
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-required-label"
+                    id="demo-simple-select-required"
+                    value={age}
+                    onChange={handleChange}
+                    className={classes.selectEmpty}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                  <FormHelperText>Required</FormHelperText>
+                </FormControl>
+
+                <FormControl required className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-required-label">
+                    Time
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-required-label"
+                    id="demo-simple-select-required"
+                    value={age}
+                    onChange={handleChange}
+                    className={classes.selectEmpty}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                  <FormHelperText>Required</FormHelperText>
+                </FormControl>
 
                 <button type="submit" className={styles.form_button}>
                   Submit Now
