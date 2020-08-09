@@ -10,8 +10,6 @@ import Link from "next/link";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 
-import { Map, GoogleApiWrapper } from "google-maps-react";
-
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -34,35 +32,6 @@ const Home = () => {
   const drawerOpener = (): void => {
     setDrawerState((prevDrawerState): any => !prevDrawerState);
   };
-
-  const mapStyles = {
-    width: "100%",
-    height: "100%",
-  };
-
-  const MapContainer = (props): any => (
-    <Map
-      google={props.google}
-      // zoom={14}
-      style={mapStyles}
-      initialCenter={{
-        lat: -1.2884,
-        lng: 36.8233,
-      }}
-    />
-  );
-
-  const GoogleMapAPi = (): any => {
-    return GoogleApiWrapper({
-      apiKey: "AIzaSyB_80ZZtsg2FQcTnGIWitBUYSacwKUZPmw",
-    })(MapContainer);
-  };
-
-  const GoogleMap = GoogleMapAPi();
-
-  //Remember to activate the google map javascript api on your account
-
-  console.log(GoogleMap);
 
   // picker
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(

@@ -14,7 +14,6 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/pickers": "^3.2.10",
     "date-fns": "^2.15.0",
-    "google-maps-react": "^2.0.6",
     "next": "9.5.1",
     "react": "16.13.1",
     "react-dom": "16.13.1"
