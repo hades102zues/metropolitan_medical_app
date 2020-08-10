@@ -35,7 +35,7 @@ textarea {
   appearance: none;
 }
 
-button[type="submit"] {
+button {
   -webkit-appearance: none;
   appearance: none;
 }

@@ -21,32 +21,41 @@ const Blog = () => {
         <div className="wrapper">
           <h2 className={styles.blogHeading}>Posts</h2>
           <div className={styles.posts}>
-            <article className={styles.post}>
-              <div className={styles.post_image}>
-                <img src="/Red-Clouds-Nature-4K-Wallpapers-UHD.jpg" alt="" />
-              </div>
-              <div className={styles.post_info}>
-                <h3 className={styles.post_title}> I am a post title.</h3>
-                <p className={styles.post_date}>Date</p>
-                <p className={styles.post_preview}>
-                  At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                  blanditiis praesentium voluptatum deleniti atque corrupti quos
-                  dolores et quas molestias excepturi sint occaecati cupiditate
-                  non provident, similique sunt in culpa qui officia deserunt
-                  mollitia animi, id est laborum et dolorum fuga. At vero eos et
-                  accusamus et iusto odio dignissimos ducimus qui blanditiis
-                  praesentium voluptatum deleniti atque corrupti quos dolores et
-                  quas molestias excepturi sint occaecati cupiditate non
-                  provident, similique sunt in culpa qui officia deserunt
-                  mollitia animi, id est laborum et dolorum fuga.{" "}
-                </p>
-                {/* <Link href="/blog/post/" as="/blog/post/1">
+            <Link href="/blog/post/id" as="/blog/post/1">
+              <a>
+                <article className={styles.post}>
+                  <div className={styles.post_image}>
+                    <img
+                      src="/Red-Clouds-Nature-4K-Wallpapers-UHD.jpg"
+                      alt=""
+                    />
+                  </div>
+                  <div className={styles.post_info}>
+                    <h3 className={styles.post_title}> I am a post title.</h3>
+                    <p className={styles.post_date}>Date</p>
+                    <p className={styles.post_preview}>
+                      At vero eos et accusamus et iusto odio dignissimos ducimus
+                      qui blanditiis praesentium voluptatum deleniti atque
+                      corrupti quos dolores et quas molestias excepturi sint
+                      occaecati cupiditate non provident, similique sunt in
+                      culpa qui officia deserunt mollitia animi, id est laborum
+                      et dolorum fuga. At vero eos et accusamus et iusto odio
+                      dignissimos ducimus qui blanditiis praesentium voluptatum
+                      deleniti atque corrupti quos dolores et quas molestias
+                      excepturi sint occaecati cupiditate non provident,
+                      similique sunt in culpa qui officia deserunt mollitia
+                      animi, id est laborum et dolorum fuga.{" "}
+                    </p>
+                    {/* <Link href="/blog/post/" as="/blog/post/1">
                   <a>
                     <button>{`Read More >>`}</button>
                   </a>
                 </Link> */}
-              </div>
-            </article>
+                  </div>
+                </article>
+              </a>
+            </Link>
+
             <article className={styles.post}>
               <div className={styles.post_image}>
                 <img src="/Red-Clouds-Nature-4K-Wallpapers-UHD.jpg" alt="" />
