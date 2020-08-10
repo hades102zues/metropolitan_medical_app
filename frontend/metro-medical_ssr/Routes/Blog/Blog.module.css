@@ -5,6 +5,9 @@
   margin: 0 auto;
   overflow: auto;
   max-width: 140rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .event {
   height: 400px;
@@ -16,25 +19,29 @@
   height: 100%;
   object-fit: fill;
 }
-
-@media all and (max-width: 1024px) {
+.eventA {
+  text-align: center;
+  width: 450px;
+  padding: 20px;
+}
+@media all and (max-width: 545px) {
   .eventWrapper {
     width: 100%;
   }
   .event {
     width: 100%;
   }
+  .eventA {
+    width: 100%;
+  }
 }
 
-@media all and (max-width: 500px) {
-  /* .eventWrapper {
-    width: 100%;
-  } */
-}
 /*events end*/
 
 /*post*/
-
+.blog {
+  margin-top: 80px;
+}
 .blogHeading {
   margin-bottom: 50px;
 }
@@ -48,12 +55,14 @@
   width: 75%;
   background-color: red;
   display: flex;
+  margin-bottom: 40px;
+  height: 220px;
 }
 
 .post_image {
   background-color: blueviolet;
   width: 190px;
-  height: auto;
+  height: 100%;
 }
 
 .post_image img {
@@ -63,22 +72,34 @@
 }
 
 .post_info {
-  min-height: 175px;
+  height: 100%;
   background-color: green;
   flex: 1;
   padding: 20px;
 }
 
 .post_title {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+}
+.post_date {
+  margin-bottom: 15px;
 }
 
 .post_preview {
   margin-bottom: 20px;
-  max-height: 100px;
+  height: 100px;
   overflow: hidden;
 }
-/* 
+
+@media all and (max-width: 719px) {
+  .post {
+    height: auto;
+  }
+  .post_image {
+    height: 202px;
+  }
+}
+
 @media all and (max-width: 479px) {
   .posts {
     align-items: center;
@@ -91,12 +112,11 @@
   .post_info {
   }
 
-  
   .post_image {
     width: 100%;
   }
 }
-*/
+
 @media all and (min-width: 480px) and (max-width: 719px) {
   .posts {
     align-items: center;
@@ -123,3 +143,15 @@
 }
 
 /*post end*/
+
+/*control box*/
+.blog_controlbox {
+  margin-top: 30px;
+}
+
+.controlbox_button {
+  padding: 10px;
+  margin-right: 60px;
+  margin-bottom: 30px;
+}
+/*control box end*/
