@@ -29,11 +29,15 @@
 
 .showcase {
   z-index: 2;
-  border: 2px solid blue;
+
   flex: 1;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
+}
+
+.showcase_headline {
+  font-size: 60px;
 }

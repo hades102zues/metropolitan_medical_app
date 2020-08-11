@@ -8,6 +8,8 @@ interface Props {
   children: JSX.Element;
 }
 const Hero: React.FC<Props> = (props) => {
+  const heroImage = "/hero.jpg";
+
   const StyledLocationIcon = withStyles({
     root: {
       color: "#FF80AB",
@@ -22,10 +24,7 @@ const Hero: React.FC<Props> = (props) => {
   return (
     <section className={styles.hero}>
       <div className={styles.hero_bgImage}>
-        <img
-          src="https://images.unsplash.com/photo-1478476868527-002ae3f3e159?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80"
-          alt="The background image of the hero"
-        />
+        <img src={heroImage} alt="The background image of the hero" />
       </div>
       <div className={styles.hero_tint}></div>
 
