@@ -10,6 +10,13 @@ import Link from "next/link";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 
+// import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -32,6 +39,23 @@ const Home = () => {
   const drawerOpener = (): void => {
     setDrawerState((prevDrawerState): any => !prevDrawerState);
   };
+
+  //accordion
+
+  const useStyles1 = makeStyles((theme: Theme) =>
+    createStyles({
+      root: {
+        width: "100%",
+      },
+      heading: {
+        fontSize: theme.typography.pxToRem(15),
+        fontWeight: theme.typography.fontWeightRegular,
+      },
+    })
+  );
+
+  const classes1 = useStyles1();
+  //accordion edn
 
   // picker
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(
@@ -82,16 +106,20 @@ const Home = () => {
         <section className={styles.showcase}>
           <div className={styles.wrapper}>
             <div className={styles.showcase1}>
-              <h1>Out Reach Text. Super super super super nifty.</h1>
-              <h2>miniline supser lorem ispsum soiam era</h2>
-              <div className={styles.buttonBox}>
+              <h1>You're in Good Hands</h1>
+              <h2>
+                Welcome to Metropolitan Medical where your health, wellness and
+                comfort is our priority. We go above and beyond to ensure good
+                patient care in a comforting welcoming environment
+              </h2>
+              {/* <div className={styles.buttonBox}>
                 <Link href="/appointment">
                   <a>Book Now</a>
                 </Link>
                 <Link href="/contact">
                   <a>Contact</a>
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -102,11 +130,20 @@ const Home = () => {
               </div>
               <div className={styles.announcement2}>
                 <p className={styles.accouncementTitle}>
-                  when an unknown printer took a galley of type and scrambled it
-                  to make a type specimen book. It has survived not only five
-                  centuries,{" "}
+                  Our mission here at Metropolitan Medical is to bring you high
+                  quality healthcare at an affordable cost in a central location
+                  with a beautiful environment.
                 </p>
-                <div className={styles.accouncementLink}></div>
+                <div className={styles.accouncementLink}>
+                  <div className={styles.linkAdj}>
+                    <Link href="/blog/">
+                      <a className={styles.link}>
+                        {" "}
+                        Catch up on our publications!
+                      </a>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -167,7 +204,47 @@ const Home = () => {
 
       <section className={styles.services}>
         <div className="wrapper">
-          <div className={styles.servicesBox}>
+          <h2 className={styles.servicesSectionTitle}>
+            {" "}
+            Our Procedures and Treatments
+          </h2>
+          <div className={styles.servicesList}>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                Click to show
+              </AccordionSummary>
+              {[
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+              ].map((card, i) => (
+                <AccordionDetails>
+                  <article className={styles.item}>
+                    <div className={styles.item_img}>
+                      <img src="" />
+                    </div>
+                    <h3 className={styles.item_name}>Hi</h3>
+                  </article>
+                </AccordionDetails>
+              ))}
+            </Accordion>
+          </div>
+
+          {/* <div className={styles.servicesBox}>
             <div className={styles.servicesHeadline}>
               <h2 className={styles.servicesHeadline_title}>
                 quis nostrud exercitation ullamco
@@ -175,6 +252,12 @@ const Home = () => {
             </div>
             <div className={styles.servicesCards}>
               {[
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
+                { icon: "", title: "", info: "" },
                 { icon: "", title: "", info: "" },
                 { icon: "", title: "", info: "" },
                 { icon: "", title: "", info: "" },
@@ -192,14 +275,11 @@ const Home = () => {
                     <img src="" alt="" />
                   </div>
                   <h3 className={styles.cardTitle}>Card Title</h3>
-                  <p className={styles.cardInfo}>
-                    Predatory lending is a form of abuse in the granting of
-                    loan.
-                  </p>
+               
                 </article>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 

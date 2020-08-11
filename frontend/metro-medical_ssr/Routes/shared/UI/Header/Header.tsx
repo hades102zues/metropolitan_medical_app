@@ -4,6 +4,8 @@ import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 
+const companyLogo = "/metro_logo.png";
+
 interface Props {
   drawerHandler: () => void;
 }
@@ -18,7 +20,8 @@ const Header: React.FC<Props> = (props) => {
             <InstagramIcon />
             <div className={styles.companyLogo}>
               <div className={styles.colorBox}>
-                <h3 className={styles.company}>Metropolitan Medical</h3>
+                <img src={companyLogo} alt="The metropolitan medical's logo" />
+                {/* <h3 className={styles.company}>Metropolitan Medical</h3> */}
               </div>
             </div>
           </div>
