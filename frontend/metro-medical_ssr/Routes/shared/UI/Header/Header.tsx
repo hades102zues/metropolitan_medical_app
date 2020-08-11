@@ -12,7 +12,8 @@ interface Props {
   drawerHandler: () => void;
 }
 const Header: React.FC<Props> = (props) => {
-  const iconSize: string = "large";
+  const iconSize = "large";
+
   const StyledFaceBookIcon = withStyles({
     root: {
       marginRight: 20,
