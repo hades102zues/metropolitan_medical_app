@@ -47,7 +47,7 @@ ul {
 .wrapper {
   width: 85%;
   margin: 0 auto;
-  overflow: hidden;
+  overflow-x: hidden;
   max-width: 140rem;
 }
 
@@ -57,10 +57,10 @@ ul {
   }
 }
 
-p {
+/* p {
   border: 1px solid blue;
 }
 
 div {
   border: 1px solid orange;
-}
+} */

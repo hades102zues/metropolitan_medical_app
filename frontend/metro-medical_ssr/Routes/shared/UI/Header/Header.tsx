@@ -1,5 +1,7 @@
 import styles from "./Header.module.css";
 import Link from "next/link";
+
+import { withStyles } from "@material-ui/core";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
@@ -10,14 +12,21 @@ interface Props {
   drawerHandler: () => void;
 }
 const Header: React.FC<Props> = (props) => {
+  const iconSize: string = "large";
+  const StyledFaceBookIcon = withStyles({
+    root: {
+      marginRight: 20,
+    },
+  })(FacebookIcon);
+
   return (
     <header className={styles.hero_header}>
       <div className={styles.header0}>
         <div className="wrapper" style={{ overflow: "visible" }}>
           <div className={styles.socialAdj}>
-            <p className={styles.socialText}>Check us out on:</p>
-            <FacebookIcon />
-            <InstagramIcon />
+            <p className={styles.socialText}>Follow us on: </p>
+            <StyledFaceBookIcon fontSize={iconSize} />
+            <InstagramIcon fontSize={iconSize} />
             <div className={styles.companyLogo}>
               <div className={styles.colorBox}>
                 <img src={companyLogo} alt="The metropolitan medical's logo" />
@@ -52,7 +61,7 @@ const Header: React.FC<Props> = (props) => {
                       : "/";
                   return (
                     <Link href={path} key={text}>
-                      <a>{text}</a>
+                      <a className={styles.linkText}>{text}</a>
                     </Link>
                   );
                 })}

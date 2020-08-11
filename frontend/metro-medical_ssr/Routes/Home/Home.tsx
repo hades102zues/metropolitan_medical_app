@@ -4,11 +4,14 @@ import styles from "./Home.module.css";
 import Header from "../shared/UI/Header/Header";
 import Footer from "../shared/UI/Footer/Footer";
 import Drawer from "../shared/UI/Drawer/Drawer";
+import Hero from "./Sections/Hero/Hero";
 
 import Link from "next/link";
 
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
+
+import { withStyles } from "@material-ui/core";
 
 // import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Accordion from "@material-ui/core/Accordion";
@@ -92,63 +95,9 @@ const Home = () => {
   //selector end
   return (
     <div className={styles.Home}>
-      <div className={styles.hero}>
-        <div className={styles.hero_bgImage}>
-          <img
-            src="https://images.unsplash.com/photo-1478476868527-002ae3f3e159?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80"
-            alt="The background image of the hero"
-          />
-        </div>
-        <div className={styles.hero_tint}></div>
-
+      <Hero>
         <Header drawerHandler={drawerOpener} />
-
-        <section className={styles.showcase}>
-          <div className={styles.wrapper}>
-            <div className={styles.showcase1}>
-              <h1>You're in Good Hands</h1>
-              <h2>
-                Welcome to Metropolitan Medical where your health, wellness and
-                comfort is our priority. We go above and beyond to ensure good
-                patient care in a comforting welcoming environment
-              </h2>
-              {/* <div className={styles.buttonBox}>
-                <Link href="/appointment">
-                  <a>Book Now</a>
-                </Link>
-                <Link href="/contact">
-                  <a>Contact</a>
-                </Link>
-              </div> */}
-            </div>
-          </div>
-
-          <div className={styles.announcement}>
-            <div className={styles.announcementwrap}>
-              <div className={styles.announcement1}>
-                <div className={styles.announcementIcon}></div>
-              </div>
-              <div className={styles.announcement2}>
-                <p className={styles.accouncementTitle}>
-                  Our mission here at Metropolitan Medical is to bring you high
-                  quality healthcare at an affordable cost in a central location
-                  with a beautiful environment.
-                </p>
-                <div className={styles.accouncementLink}>
-                  <div className={styles.linkAdj}>
-                    <Link href="/blog/">
-                      <a className={styles.link}>
-                        {" "}
-                        Catch up on our publications!
-                      </a>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
+      </Hero>
 
       {/* <section className={styles.about}>
         <div className="wrapper">
