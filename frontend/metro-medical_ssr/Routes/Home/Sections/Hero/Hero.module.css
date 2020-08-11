@@ -6,6 +6,7 @@
 
   /*makes the hero always look good*/
   max-height: 1200px;
+  min-height: 600px;
   /* a min-height will need to be set at some breakpoint after content is filled in*/
 }
 .hero_bgImage {

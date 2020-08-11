@@ -9,34 +9,127 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { withStyles } from "@material-ui/core";
 
-import FacebookIcon from "@material-ui/icons/Facebook";
-import InstagramIcon from "@material-ui/icons/Instagram";
+import HomeIcon from "@material-ui/icons/Home";
+import InfoIcon from "@material-ui/icons/Info";
+import LocalOfferIcon from "@material-ui/icons/LocalOffer";
+import BookIcon from "@material-ui/icons/Book";
+import ScheduleIcon from "@material-ui/icons/Schedule";
+import ChatIcon from "@material-ui/icons/Chat";
 
 interface Props {
   shouldOpen: boolean;
   drawerStateHandler: () => void;
 }
 const SideDrawer: React.FC<Props> = (props) => {
+  const logo = "/metro_logo.png";
   const open: boolean = props.shouldOpen;
   const closeDrawer: () => void = props.drawerStateHandler;
 
+  const StylList = withStyles({
+    root: {
+      paddingTop: 0,
+      height: "100%",
+    },
+  })(List);
   const SpecialListItemText = withStyles({
     root: {
-      fontSize: 16,
+      fontSize: 14,
     },
   })(ListItemText);
 
-  return (
-    <Drawer open={open} onClose={closeDrawer}>
-      <div className={styles.sideMenu_topAccent}></div>
-      <div className={styles.sideMenu_companyLogo}>
-        <div className={styles.logo}>
-          <img src="" alt="The company logo of Metropolitan Medical" />
-        </div>
-      </div>
+  const StyListIcon = withStyles({
+    root: {
+      color: "#583b4c",
+    },
+  })(ListItemIcon);
 
-      <List>
-        {["Home", "About", "Services", "Blog", "Appointment", "Contact"].map(
+  const StyDrawer = withStyles({
+    paper: {
+      backgroundImage: 'url("/bg_compressed.jpg")',
+    },
+  })(Drawer);
+
+  /*EVERY THING SHOULD APPEAR WITHIN THE LIST, OTHERWISE SIDEDRAWE MISBEHAVES*/
+
+  return (
+    <StyDrawer open={open} onClose={closeDrawer}>
+      <StylList>
+        <div className={styles.sideMenu_topAccent}></div>
+        <div className={styles.sideMenu_companyLogo}>
+          <div className={styles.logo}>
+            <img src={logo} alt="The company logo of Metropolitan Medical" />
+          </div>
+        </div>
+
+        <div className={styles.divider}></div>
+
+        <Link href="/">
+          <a>
+            <ListItem button>
+              <StyListIcon>
+                <HomeIcon fontSize="large" />
+              </StyListIcon>
+              <SpecialListItemText disableTypography primary="Home" />
+            </ListItem>
+          </a>
+        </Link>
+
+        <Link href="/about">
+          <a>
+            <ListItem button>
+              <StyListIcon>
+                <InfoIcon fontSize="large" />
+              </StyListIcon>
+              <SpecialListItemText disableTypography primary="About" />
+            </ListItem>
+          </a>
+        </Link>
+
+        <Link href="/services">
+          <a>
+            <ListItem button>
+              <StyListIcon>
+                <LocalOfferIcon fontSize="large" />
+              </StyListIcon>
+              <SpecialListItemText disableTypography primary="Services" />
+            </ListItem>
+          </a>
+        </Link>
+
+        <Link href="/blog">
+          <a>
+            <ListItem button>
+              <StyListIcon>
+                <BookIcon fontSize="large" />
+              </StyListIcon>
+              <SpecialListItemText disableTypography primary="Blog" />
+            </ListItem>
+          </a>
+        </Link>
+
+        <Link href="/appointment">
+          <a>
+            <ListItem button>
+              <StyListIcon>
+                <ScheduleIcon fontSize="large" />
+              </StyListIcon>
+              <SpecialListItemText disableTypography primary="Appointment" />
+            </ListItem>
+          </a>
+        </Link>
+
+        <Link href="/contact">
+          <a>
+            <ListItem button>
+              <StyListIcon>
+                <ChatIcon fontSize="large" />
+              </StyListIcon>
+              <SpecialListItemText disableTypography primary="Contact" />
+            </ListItem>
+          </a>
+        </Link>
+
+        {/* {["Home", "About", "Services", "Blog", "Appointment", "Contact"].map(
           (text: string, index: number) => {
             const path =
               text.toLowerCase() !== "home" ? `/${text.toLowerCase()}` : "/";
@@ -44,22 +137,18 @@ const SideDrawer: React.FC<Props> = (props) => {
               <Link href={path} key={text}>
                 <a>
                   <ListItem button>
-                    <ListItemIcon>
+                    <StyListIcon>
                       <FacebookIcon fontSize="large" />
-                    </ListItemIcon>
-                    <SpecialListItemText disableTypography primary={text} />
+                    </StyListIcon>
+                    <'SpecialListItemText' disableTypography primary={text} />
                   </ListItem>
                 </a>
               </Link>
             );
           }
-        )}
-      </List>
-      <div className={styles.sideMenu_social}>
-        <FacebookIcon fontSize="large" />
-        <InstagramIcon fontSize="large" />
-      </div>
-    </Drawer>
+        )} */}
+      </StylList>
+    </StyDrawer>
   );
 };
 

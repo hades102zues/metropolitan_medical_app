@@ -1,20 +1,40 @@
 /*drawer*/
 .sideMenu_topAccent {
-  background-color: blueviolet;
+  background-color: #583b4c;
   height: 55px;
   width: 300px;
   margin-bottom: 40px;
+  position: relative;
 }
 
 .sideMenu_companyLogo {
   position: absolute;
-  height: 90px;
-  width: 90px;
   left: 50%;
+  top: 0;
   transform: translateX(-50%);
+
+  border-top: 4px solid #ef90a4;
+  background-color: #583b4c;
+  height: 125px;
+  width: 125px;
+  padding: 7px;
+}
+.divider {
+  height: 39px;
+}
+.logo {
+  background-color: white;
+  height: 100%;
+  width: 100%;
 }
 
-.sideMenu_social {
+.logo img {
+  height: 100%;
+  width: 100%;
+  object-fit: fill;
+}
+
+.sideMenu_companyLogo .sideMenu_social {
   margin-top: 40px;
   display: flex;
   justify-content: center;

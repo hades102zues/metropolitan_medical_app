@@ -24,14 +24,16 @@
 .companyLogo {
   position: absolute;
   background-color: white;
-  height: 125px;
-  width: 125px;
+
   z-index: 12;
   left: 50%;
+  top: 0;
   transform: translateX(-50%);
+
   border-top: 4px solid #ef90a4;
   background-color: #583b4c;
-  top: 0;
+  height: 125px;
+  width: 125px;
   padding: 7px;
 }
 
@@ -52,7 +54,7 @@
 
 .navBgColor {
   background-image: url("/bg_compressed.jpg");
-  color: white;
+  color: #583b4c;
   font-weight: 600;
 }
 
@@ -102,7 +104,7 @@
 }
 
 .linkText {
-  color: white;
+  color: #583b4c;
   text-transform: uppercase;
 }
 
