@@ -1,9 +1,46 @@
 .hero_header {
-  padding: 10px 0 10px;
+  /* padding: 10px 0 10px; */
   z-index: 2;
 }
+.header0 {
+  background-color: white;
+}
+.socialAdj {
+  height: 65px;
+  display: flex;
+  padding-top: 20px;
+  position: relative;
+}
+
+.companyLogo {
+  position: absolute;
+  background-color: white;
+  height: 102px;
+  width: 250px;
+  z-index: 12;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top: 4px solid #ef90a4;
+  top: 0;
+  padding: 7px;
+}
+
+.colorBox {
+  height: 100%;
+  background-color: #583b4c;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navBgColor {
+  background-color: pink;
+}
+
 .header1 {
   display: flex;
+  padding-top: 65px;
 }
 .divider1 {
   height: 65px;
@@ -53,6 +90,16 @@ a.active {
 
 .navbarMobile {
   display: none;
+}
+@media all and (max-width: 1023px) {
+  .socialAdj {
+    height: 90px;
+  }
+  .companyLogo {
+    top: auto;
+    bottom: 0;
+    transform: translateY(55%) translateX(-50%);
+  }
 }
 
 @media all and (max-width: 800px) {
