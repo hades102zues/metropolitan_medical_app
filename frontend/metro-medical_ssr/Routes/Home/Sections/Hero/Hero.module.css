@@ -7,7 +7,6 @@
   /*makes the hero always look good*/
   max-height: 1200px;
   min-height: 600px;
-  /* a min-height will need to be set at some breakpoint after content is filled in*/
 }
 .hero_bgImage {
   position: absolute;
@@ -82,20 +81,18 @@
   background-color: #583b4c;
   opacity: 0.75;
 
-  /* padding-top: 50px; */
+  padding: 40px 0;
   position: absolute;
   width: 100%;
   bottom: 0;
   left: 0;
+  right: 0;
+
   /* transform: translateY(50%); */
-  width: 85%;
-  max-width: 1400px;
 }
 
 .location {
-  height: 100px;
   display: flex;
-  padding: 10px;
 }
 
 .location_address {
@@ -124,10 +121,10 @@
     font-size: 16px;
   }
 
-  .announcement {
+  /* .announcement {
     transform: translateY(0);
     width: 100%;
-  }
+  } */
 
   .showcase1,
   .showcase2 {
