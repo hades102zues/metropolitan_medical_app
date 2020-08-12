@@ -1,0 +1,79 @@
+/*about*/
+.about {
+  background-color: #dd6a8f;
+  position: relative;
+
+  padding: 80px 0px;
+}
+
+.aboutImage {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 35%;
+  position: absolute;
+  z-index: 0;
+}
+.aboutImage img {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.aboutFlex {
+  display: flex;
+}
+
+.about2 {
+  position: relative;
+  z-index: 2;
+  background-color: #dd6a8f;
+
+  color: white;
+  width: 67%;
+  padding: 40px;
+}
+
+.aboutTitle {
+  font-size: 42px;
+  display: inline;
+}
+
+.aboutTalk {
+  margin-top: 20px;
+}
+
+.talk {
+  margin-bottom: 15px;
+}
+
+.about3 {
+  width: 33%;
+
+  background-color: #583b4c;
+  color: white;
+  position: relative;
+  z-index: 2;
+  padding: 40px;
+}
+
+.mission_title {
+  font-size: 42px;
+  display: inline;
+}
+
+.mission_statement {
+  margin-top: 20px;
+}
+@media all and (max-width: 1023px) {
+  .aboutFlex {
+    flex-direction: column;
+  }
+  .about2 {
+    width: 100%;
+  }
+  .about3 {
+    width: 100%;
+  }
+}
