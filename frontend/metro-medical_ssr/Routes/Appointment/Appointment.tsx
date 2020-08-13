@@ -1,12 +1,204 @@
-import React from 'react'
-import styles from './Appointment.module.css'
+import React from "react";
+import styles from "./Appointment.module.css";
+
+//date picker
+import { createMuiTheme } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/styles";
+
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+
+import DateFnsUtils from "@date-io/date-fns";
+import "date-fns";
+
+//select
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import {
+  InputLabel,
+  MenuItem,
+  FormHelperText,
+  FormControl,
+  Select,
+} from "@material-ui/core";
 
 const Appointment = () => {
-    return (
-        <div>
-            <p>Appointment Page</p>
+  // picker
+  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
+    new Date()
+  );
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+  };
+
+  const defaultMaterialTheme = createMuiTheme({
+    typography: {
+      fontSize: 20, //sweet spot. going to large will ruin the component's layout
+    },
+    overrides: {
+      MuiPickersToolbar: {
+        toolbar: {
+          backgroundColor: "#583b4c",
+        },
+      },
+      MuiPickersDay: {
+        day: {
+          color: "#583b4c", //sets the color for individual unselected days
+        },
+        daySelected: {
+          backgroundColor: "#dd6a8f", //sets the color of the selection sphere
+        },
+        current: {
+          color: "red", //sets the color for the number that matches today's date
+        },
+
+        //property that handles the color for hover has not been found yet
+      },
+    } as any,
+  });
+
+  //picker end
+
+  //selector
+  const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+      formControl: {
+        margin: theme.spacing(1),
+        width: 120,
+        border: "2px solid red",
+      },
+      selectEmpty: {
+        marginTop: theme.spacing(2),
+      },
+    })
+  );
+
+  const classes = useStyles();
+  const [age, setAge] = React.useState("");
+
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setAge(event.target.value as string);
+  };
+
+  //selector end
+
+  return (
+    <section className={styles.appointment}>
+      <div className="wrapper">
+        <div className={styles.formHeading}>
+          <h2 className={styles.mainFormHead}>Book Now</h2>
+          <p className={styles.secondFormHead}>and we will get back to you.</p>
         </div>
-    )
-}
+
+        <div className={styles.appFormArea}>
+          <div className={styles.appForm}>
+            <form className={styles.form}>
+              <input
+                type="text"
+                placeholder="Full Name*"
+                className={styles.form_item + " " + styles.itemAdjust}
+              />
+              <input
+                type="text"
+                placeholder="Email (optional)"
+                className={styles.form_item + " " + styles.itemAdjust}
+              />
+
+              <input
+                type="text"
+                placeholder="Phone Number*"
+                className={styles.form_item}
+              />
+              <textarea
+                rows={6}
+                placeholder="Message (optional)"
+                className={styles.form_textarea}
+              ></textarea>
+              <p className={styles.instruct}>
+                {" "}
+                Select a Date, Service and Time...
+              </p>
+              <br />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <ThemeProvider theme={defaultMaterialTheme}>
+                  <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    label=""
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                </ThemeProvider>
+              </MuiPickersUtilsProvider>
+              <div style={{ width: "100%" }}></div>
+              {/* <div className={styles.materiAdj}>
+                <FormControl required className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-required-label">
+                    Services
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-required-label"
+                    id="demo-simple-select-required"
+                    value={age}
+                    onChange={handleChange}
+                    className={classes.selectEmpty}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+            
+                </FormControl>
+
+                <FormControl required className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-required-label">
+                    Time
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-required-label"
+                    id="demo-simple-select-required"
+                    value={age}
+                    onChange={handleChange}
+                    className={classes.selectEmpty}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+         
+                </FormControl>
+              </div> */}
+
+              <button type="submit" className={styles.form_button}>
+                Submit Now
+              </button>
+            </form>
+
+            <p className={styles.form_submit}>
+              Your form has been submitted. If there any changes to your
+              appointment time we will be sure to reach out to you.
+            </p>
+
+            <p className={styles.form_error}>
+              An error has occured. Please, try a gain Later.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default Appointment;

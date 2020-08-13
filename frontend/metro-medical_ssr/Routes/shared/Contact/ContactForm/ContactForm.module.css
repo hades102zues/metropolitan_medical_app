@@ -1,6 +1,7 @@
-/*appointment*/
+/*contact*/
 
-.appointment {
+.contactUs {
+  background-color: #ebebeb;
   padding: 80px 0px;
 }
 
@@ -21,12 +22,13 @@
   margin-bottom: 10px;
 }
 
-.appFormArea {
+.contactFormArea {
   display: flex;
   justify-content: center;
   margin-top: 40px;
 }
-.appForm {
+
+.contactForm {
   width: 520px;
   border: none;
 }
@@ -52,22 +54,11 @@
 .form_textarea {
   width: 100%;
   padding: 10px;
-  background-color: #fafafa;
-  border: none;
-}
-
-.instruct {
-  margin-top: 20px;
-  margin-bottom: 5px;
-  width: 100%;
-
-  color: #333;
-}
-
-.materiAdj {
-  /* display: flex; */
   margin-bottom: 20px;
+  border: none;
+  background-color: #fafafa;
 }
+
 .form_button {
   padding: 10px;
   min-width: 200px;
@@ -82,7 +73,6 @@
   border: 1px solid #583b4c;
   background-color: inherit;
 }
-
 .form_submit {
   margin-top: 1.2rem;
   padding: 0.73rem 3rem;
@@ -90,7 +80,6 @@
   border-left: 4px solid #388e3c;
   color: white;
 }
-
 .form_error {
   border-left: 4px solid red;
   background-color: #f9524d;
@@ -99,12 +88,13 @@
   margin-top: 1.2rem;
   color: white;
 }
+
 @media all and (max-width: 550px) {
-  .appForm {
+  .contactForm {
     width: 100%;
   }
   .itemAdjust {
     width: 100%;
   }
 }
-/*app end*/
+/*contact end*/
