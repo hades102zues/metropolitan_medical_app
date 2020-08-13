@@ -7,6 +7,7 @@ import Drawer from "../shared/UI/Drawer/Drawer";
 import Hero from "./Sections/Hero/Hero";
 import About from "../shared/About/About";
 import Services from "../shared/Services/Services";
+import ContactInfo from "../shared/Contact/ContactInfo/ContactInfo";
 
 import Link from "next/link";
 
@@ -105,78 +106,7 @@ const Home = () => {
       <Services />
 
       <section className={styles.contact}>
-        <div className={styles.info}>
-          <div className="wrapper">
-            <div className={styles.infoLayout}>
-              <div className={styles.details}>
-                <article className={styles.contacts}>
-                  <div className={styles.contacts_icon}>
-                    <img />
-                  </div>
-                  <h3 className={styles.contacts_title}>Address</h3>
-                  <p className={styles.contact_info}>
-                    New Market Business Centre <br /> Cheapside <br />{" "}
-                    Bridgetown <br /> Barbados (Opposite Cheapside Market)
-                  </p>
-                </article>
-                <article className={styles.contacts}>
-                  <div className={styles.contacts_icon}>
-                    <img />
-                  </div>
-                  <h3 className={styles.contacts_title}>Email</h3>
-                  <p className={styles.contact_info}>
-                    metropolitanmedicalbb@gmail.co
-                  </p>
-                </article>
-                <article className={styles.contacts}>
-                  <div className={styles.contacts_icon}>
-                    <img />
-                  </div>
-                  <h3 className={styles.contacts_title}>Phone</h3>
-                  <p className={styles.contact_info}>(246) 823-9559</p>
-                </article>
-                <article className={styles.contacts}>
-                  <div className={styles.contacts_icon}>
-                    <img />
-                  </div>
-                  <h3 className={styles.contacts_title}>Working Hours</h3>
-                  <p className={styles.contact_info}>
-                    Monday: 7AM-3PM
-                    <br />
-                    Tuesday: 8AM-4PM
-                    <br />
-                    Wednesday: 7AM-3PM
-                    <br />
-                    Thursday: 8AM-4PM
-                    <br />
-                    Friday: 9AM-5PM
-                    <br />
-                    Saturday: 9AM-1PM
-                  </p>
-                </article>
-              </div>
-              <div className={styles.gmap}>
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.0073560444303!2d-59.62304108522802!3d13.098720190772546!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c43f7c9ff1ee379%3A0xfda53f6ab45f1a88!2sDr.%20C%20Bowen%20(Metropolitan%20Medical)!5e0!3m2!1sen!2s!4v1597007801993!5m2!1sen!2s"
-                  // width="600"
-                  // height="450"
-                  frameBorder={0}
-                  style={{ border: 0, width: "100%", height: "100%" }}
-                  allow-full-screen=""
-                  aria-hidden="false"
-                  tabIndex={0}
-                ></iframe>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.socialSpace}>
-          <div className={styles.contactWrapper}>
-            <FacebookIcon fontSize="large" />
-            <InstagramIcon fontSize="large" />
-          </div>
-        </div>
+        <ContactInfo />
 
         <div>
           <div className="wrapper">
