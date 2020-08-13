@@ -1,6 +1,7 @@
 .info {
   position: relative;
   background-color: #b2dfdb;
+  padding: 80px 0px;
 }
 .infoLayout {
   display: flex;
@@ -44,6 +45,9 @@
 }
 
 @media all and (max-width: 1365px) {
+  .info {
+    padding-bottom: 0px;
+  }
   .infoLayout {
     flex-direction: column;
     align-items: center;
@@ -61,6 +65,7 @@
   .details {
     width: 100%;
     max-width: 550px;
+    padding-bottom: 80px;
   }
   .gmap {
     width: 100%;

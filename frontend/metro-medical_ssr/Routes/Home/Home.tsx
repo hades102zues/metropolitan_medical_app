@@ -108,10 +108,10 @@ const Home = () => {
       <section className={styles.contact}>
         <ContactInfo />
 
-        <div>
+        <div className={styles.contactUs}>
           <div className="wrapper">
             <div className={styles.formHeading}>
-              <h2 className={styles.mainFormHead}>LEAVE US YOUR INFO</h2>
+              <h2 className={styles.mainFormHead}>Leave Us Your Info</h2>
               <p className={styles.secondFormHead}>
                 and we will get back to you.
               </p>
@@ -135,7 +135,7 @@ const Home = () => {
                     className={styles.form_item}
                   />
                   <textarea
-                    rows={4}
+                    rows={6}
                     placeholder="Message*"
                     className={styles.form_textarea}
                   ></textarea>
@@ -159,6 +159,13 @@ const Home = () => {
 
       <section className={styles.appointment}>
         <div className="wrapper">
+          <div className={styles.formHeading}>
+            <h2 className={styles.mainFormHead}>Book Now</h2>
+            <p className={styles.secondFormHead}>
+              and we will get back to you.
+            </p>
+          </div>
+
           <div className={styles.appFormArea}>
             <div className={styles.appForm}>
               <form className={styles.form}>
@@ -179,7 +186,7 @@ const Home = () => {
                   className={styles.form_item}
                 />
                 <textarea
-                  rows={4}
+                  rows={6}
                   placeholder="Message (optional)"
                   className={styles.form_textarea}
                 ></textarea>
@@ -248,7 +255,8 @@ const Home = () => {
               </form>
 
               <p className={styles.form_submit}>
-                Your form has been submitted.
+                Your form has been submitted. If there any changes to your
+                appointment time we will be sure to reach out to you.
               </p>
 
               <p className={styles.form_error}>
