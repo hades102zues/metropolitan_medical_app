@@ -22,6 +22,7 @@ import {
   FormControl,
   Select,
 } from "@material-ui/core";
+import { deserialize } from "v8";
 
 const Appointment = () => {
   // picker
@@ -65,12 +66,14 @@ const Appointment = () => {
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       formControl: {
-        margin: theme.spacing(1),
-        width: 120,
-        border: "2px solid red",
+        marginRight: theme.spacing(1),
+        width: 170,
       },
       selectEmpty: {
         marginTop: theme.spacing(2),
+      },
+      selectLabel: {
+        fontSize: 14, //this affects the placeholder and value sizes of select
       },
     })
   );
@@ -81,6 +84,54 @@ const Appointment = () => {
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setAge(event.target.value as string);
   };
+
+  interface Service {
+    name: string;
+    description: string;
+  }
+  const services: Service[] = [
+    {
+      name: "Pap Smear",
+      description: "Pap Smear - 30 minutes · Ask For Price",
+    },
+    {
+      name: "Phlebotomy",
+      description: "Phlebotomy - Duration Varies Blood drawing for testing",
+    },
+    {
+      name: "Home Visits",
+      description: "Home Visits - Duration Varies · $85BDS",
+    },
+    {
+      name: "Kid's Checkup",
+      description: "Kid's Checkup - Duration Varies · $35BDS",
+    },
+    {
+      name: "Catheterisations",
+      description: "Catheterisations - Duration Varies · Cost Varies ",
+    },
+    {
+      name: "Food Handler Certificates",
+      description:
+        "Food Handler Certificates - Duration Varies · $20BDS  For those working in the food and beverage industry requiring certificates",
+    },
+    {
+      name: "Routine Visit",
+      description: "Routine Visit - Duration Varies · $55 BDS",
+    },
+    {
+      name: "Routine Visit",
+      description: "Routine Visit - Duration Varies · $55 BDS",
+    },
+  ];
+
+  const selectServices: JSX.Element[] = services.map(
+    (service: Service, i: number) => (
+      <MenuItem value={service.name} key={i}>
+        {service.description}
+      </MenuItem>
+    )
+  );
 
   //selector end
 
@@ -137,9 +188,12 @@ const Appointment = () => {
                 </ThemeProvider>
               </MuiPickersUtilsProvider>
               <div style={{ width: "100%" }}></div>
-              {/* <div className={styles.materiAdj}>
+              <div className={styles.materiAdj}>
                 <FormControl required className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-required-label">
+                  <InputLabel
+                    id="demo-simple-select-required-label"
+                    className={classes.selectLabel}
+                  >
                     Services
                   </InputLabel>
                   <Select
@@ -149,18 +203,15 @@ const Appointment = () => {
                     onChange={handleChange}
                     className={classes.selectEmpty}
                   >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {selectServices}
                   </Select>
-            
                 </FormControl>
 
                 <FormControl required className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-required-label">
+                  <InputLabel
+                    id="demo-simple-select-required-label"
+                    className={classes.selectLabel}
+                  >
                     Time
                   </InputLabel>
                   <Select
@@ -177,9 +228,8 @@ const Appointment = () => {
                     <MenuItem value={20}>Twenty</MenuItem>
                     <MenuItem value={30}>Thirty</MenuItem>
                   </Select>
-         
                 </FormControl>
-              </div> */}
+              </div>
 
               <button type="submit" className={styles.form_button}>
                 Submit Now

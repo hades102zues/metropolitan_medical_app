@@ -75,6 +75,7 @@
   border: none;
   background-color: #583b4c;
   color: white;
+  margin-top: 20px;
 }
 
 .form_button:hover {
