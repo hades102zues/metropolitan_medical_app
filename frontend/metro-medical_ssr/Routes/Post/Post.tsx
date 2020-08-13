@@ -5,7 +5,7 @@ const Post = () => {
   return (
     <section className={styles.blogPost}>
       <div className="wrapper">
-        <div className={styles.post}>
+        <article className={styles.post}>
           <h3 className={styles.post_heading}>
             The fight against the corona virus has left society feeling
             exhausted.
@@ -50,7 +50,7 @@ const Post = () => {
               animi, id est laborum et dolorum fuga.{" "}
             </p>
           </div>
-        </div>
+        </article>
       </div>
     </section>
   );

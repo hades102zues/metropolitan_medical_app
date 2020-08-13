@@ -68,6 +68,47 @@
   /* display: flex; */
   margin-bottom: 20px;
 }
+
+.times {
+  width: 100%;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+  width: 460px;
+}
+
+.times_box {
+  height: 50px;
+  width: 140px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #583b4c;
+  margin-bottom: 20px;
+  color: #583b4c;
+}
+
+.times_box:hover {
+  background-color: #fafafa;
+  cursor: pointer;
+}
+
+.times_box.timesActive {
+  color: #ffffff;
+  background-color: #583b4c;
+}
+
+.times_box:active {
+  background-color: #fafafa;
+}
+
+.time {
+  font-weight: 500;
+}
+
 .form_button {
   padding: 10px;
   min-width: 200px;

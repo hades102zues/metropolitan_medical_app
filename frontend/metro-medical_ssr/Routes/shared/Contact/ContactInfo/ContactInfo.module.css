@@ -5,6 +5,7 @@
 }
 .infoLayout {
   display: flex;
+  padding: 20px 0px;
 }
 .details {
   width: 50%;
@@ -20,7 +21,16 @@
   align-items: center;
   /* min-width: 210px; */
   width: 270px;
+  transition: all 0.5s ease;
 }
+
+.contacts:hover {
+  -webkit-box-shadow: 0 0 4px 0 #968b96;
+  -moz-box-shadow: 0 0 4px 0 #968b96;
+  -ms-box-shadow: 0 0 4px 0 #968b96;
+  box-shadow: 0 0 4px 0 #968b96;
+}
+
 .contacts_icon {
   height: 40px;
   width: 40px;

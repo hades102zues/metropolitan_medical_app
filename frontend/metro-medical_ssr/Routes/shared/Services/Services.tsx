@@ -12,43 +12,27 @@ const Services = () => {
     },
   })(AirlineSeatFlatAngledIcon);
 
+  const services: String[] = [
+    "Pap Smear",
+    "Phlebotomy",
+    "Home Visits",
+    "Kid's Checkup",
+    "Catheterisations",
+    "Food Handler Certificates",
+    "Routine Visit",
+  ];
+
   return (
     <section className={styles.services}>
       <div className="wrapper">
         <h2 className={styles.servicesTitle}> Our Procedures & Treatments</h2>
         <div className={styles.cardList}>
-          <article className={styles.serviceCard}>
-            <StyCardIcon />
-            <h3 className={styles.serviceTitle}> Service Name</h3>
-          </article>
-          <article className={styles.serviceCard}>
-            <StyCardIcon />
-            <h3 className={styles.serviceTitle}> Service Name</h3>
-          </article>
-          <article className={styles.serviceCard}>
-            <StyCardIcon />
-            <h3 className={styles.serviceTitle}> Service Name</h3>
-          </article>
-          <article className={styles.serviceCard}>
-            <StyCardIcon />
-            <h3 className={styles.serviceTitle}> Service Name</h3>
-          </article>
-          <article className={styles.serviceCard}>
-            <StyCardIcon />
-            <h3 className={styles.serviceTitle}> Service Name</h3>
-          </article>
-          <article className={styles.serviceCard}>
-            <StyCardIcon />
-            <h3 className={styles.serviceTitle}> Service Name</h3>
-          </article>
-          <article className={styles.serviceCard}>
-            <StyCardIcon />
-            <h3 className={styles.serviceTitle}> Service Name</h3>
-          </article>
-          <article className={styles.serviceCard}>
-            <StyCardIcon />
-            <h3 className={styles.serviceTitle}> Service Name</h3>
-          </article>
+          {services.map((serviceName: string, i: number) => (
+            <article className={styles.serviceCard} key={i}>
+              <StyCardIcon />
+              <h3 className={styles.serviceTitle}> {serviceName}</h3>
+            </article>
+          ))}
         </div>
       </div>
     </section>

@@ -23,6 +23,7 @@ import {
   Select,
 } from "@material-ui/core";
 import { deserialize } from "v8";
+import { time } from "console";
 
 const Appointment = () => {
   // picker
@@ -119,10 +120,6 @@ const Appointment = () => {
       name: "Routine Visit",
       description: "Routine Visit - Duration Varies · $55 BDS",
     },
-    {
-      name: "Routine Visit",
-      description: "Routine Visit - Duration Varies · $55 BDS",
-    },
   ];
 
   const selectServices: JSX.Element[] = services.map(
@@ -206,29 +203,36 @@ const Appointment = () => {
                     {selectServices}
                   </Select>
                 </FormControl>
+              </div>
 
-                <FormControl required className={classes.formControl}>
-                  <InputLabel
-                    id="demo-simple-select-required-label"
-                    className={classes.selectLabel}
-                  >
-                    Time
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-required-label"
-                    id="demo-simple-select-required"
-                    value={age}
-                    onChange={handleChange}
-                    className={classes.selectEmpty}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
+              <div className={styles.times}>
+                <div className={styles.times_box + " " + styles.timesActive}>
+                  <p className={styles.time}>10:30 AM</p>
+                </div>
+                <div className={styles.times_box}>
+                  <p className={styles.time}>10:30 AM</p>
+                </div>
+                <div className={styles.times_box}>
+                  <p className={styles.time}>10:30 AM</p>
+                </div>
+                <div className={styles.times_box}>
+                  <p className={styles.time}>10:30 AM</p>
+                </div>
+                <div className={styles.times_box}>
+                  <p className={styles.time}>10:30 AM</p>
+                </div>
+                <div className={styles.times_box}>
+                  <p className={styles.time}>10:30 AM</p>
+                </div>
+                <div className={styles.times_box}>
+                  <p className={styles.time}>10:30 AM</p>
+                </div>
+                <div className={styles.times_box}>
+                  <p className={styles.time}>10:30 AM</p>
+                </div>
+                <div className={styles.times_box}>
+                  <p className={styles.time}>10:30 AM</p>
+                </div>
               </div>
 
               <button type="submit" className={styles.form_button}>

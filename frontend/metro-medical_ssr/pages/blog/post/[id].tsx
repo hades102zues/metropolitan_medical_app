@@ -1,5 +1,5 @@
 import React from "react";
-import BlogPost from "../../../Routes/Blog/Post/Post";
+import BlogPost from "../../../Routes/Post/Post";
 
 const Post = () => {
   return <BlogPost />;
