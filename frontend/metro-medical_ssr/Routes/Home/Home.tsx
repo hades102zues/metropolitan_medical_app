@@ -6,6 +6,7 @@ import Footer from "../shared/UI/Footer/Footer";
 import Drawer from "../shared/UI/Drawer/Drawer";
 import Hero from "./Sections/Hero/Hero";
 import About from "../shared/About/About";
+import Services from "../shared/Services/Services";
 
 import Link from "next/link";
 
@@ -101,108 +102,7 @@ const Home = () => {
       </Hero>
 
       <About />
-      {/* <section className={styles.about}>
-        <div className="wrapper">
-          <h2 className={styles.aboutHeadline}>Who we are</h2>
-          <div className={styles.aboutStory}>
-            <p className={styles.aboutStory_item}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate
-            </p>
-            <p className={styles.aboutStory_item}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate
-            </p>
-          </div>
-        </div>
-      </section> */}
-
-      <section className={styles.services}>
-        <div className="wrapper">
-          <h2 className={styles.servicesSectionTitle}>
-            {" "}
-            Our Procedures and Treatments
-          </h2>
-          <div className={styles.servicesList}>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                Click to show
-              </AccordionSummary>
-              {[
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-              ].map((card, i) => (
-                <AccordionDetails>
-                  <article className={styles.item}>
-                    <div className={styles.item_img}>
-                      <img src="" />
-                    </div>
-                    <h3 className={styles.item_name}>Hi</h3>
-                  </article>
-                </AccordionDetails>
-              ))}
-            </Accordion>
-          </div>
-
-          {/* <div className={styles.servicesBox}>
-            <div className={styles.servicesHeadline}>
-              <h2 className={styles.servicesHeadline_title}>
-                quis nostrud exercitation ullamco
-              </h2>
-            </div>
-            <div className={styles.servicesCards}>
-              {[
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-                { icon: "", title: "", info: "" },
-              ].map((card, i) => (
-                <article
-                  className={styles.serviceCard}
-                  style={{ background: "purple" }}
-                  key={card.title}
-                >
-                  <div className={styles.cardIcon}>
-                    <img src="" alt="" />
-                  </div>
-                  <h3 className={styles.cardTitle}>Card Title</h3>
-               
-                </article>
-              ))}
-            </div>
-          </div> */}
-        </div>
-      </section>
+      <Services />
 
       <section className={styles.contact}>
         <div className={styles.info}>
