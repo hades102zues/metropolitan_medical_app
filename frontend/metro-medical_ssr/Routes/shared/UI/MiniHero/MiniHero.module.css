@@ -7,15 +7,19 @@
 }
 .hero_bgImage {
   position: absolute;
-  height: 500px;
-  width: 100vw;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
 
   z-index: 0;
 }
 .hero_tint {
   position: absolute;
-  height: 500px;
-  width: 100vw;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
   background-color: black;
   opacity: 0.5;
   z-index: 1;

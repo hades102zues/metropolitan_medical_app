@@ -36,6 +36,7 @@
   .cardList {
     flex-flow: row nowrap;
     overflow-x: scroll;
+    width: 100%; /*you need to explicitly set 100% in the direction or scroll will cut off content*/
   }
 
   .serviceCard {

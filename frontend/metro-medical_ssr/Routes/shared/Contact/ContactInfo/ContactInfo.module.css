@@ -21,7 +21,7 @@
   align-items: center;
   /* min-width: 210px; */
   width: 270px;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 
 .contacts:hover {

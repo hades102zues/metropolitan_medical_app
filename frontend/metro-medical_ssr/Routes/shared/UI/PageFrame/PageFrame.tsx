@@ -6,7 +6,7 @@ import Drawer from "../Drawer/Drawer";
 import MiniHero from "../MiniHero/MiniHero";
 
 interface Props {
-  children: JSX.Element[];
+  children: JSX.Element[] | JSX.Element;
   pageTitle: string;
 }
 

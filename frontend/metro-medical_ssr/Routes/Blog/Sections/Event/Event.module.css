@@ -1,7 +1,7 @@
 /*events*/
 
 .events {
-  background-color: #4a90e2;
+  background-color: #ecc1cf;
 }
 .eventWrapper {
   width: 85%;
@@ -29,7 +29,7 @@
   color: white;
   font-size: 28px;
 
-  background-color: #31639c;
+  background-color: #dd6a8f;
 }
 
 @media all and (max-width: 545px) {

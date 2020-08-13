@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Appointment.module.css";
+import PageFrame from "../shared/UI/PageFrame/PageFrame";
 
 //date picker
 import { createMuiTheme } from "@material-ui/core";
@@ -133,125 +134,127 @@ const Appointment = () => {
   //selector end
 
   return (
-    <section className={styles.appointment}>
-      <div className="wrapper">
-        <div className={styles.formHeading}>
+    <PageFrame pageTitle="Book Now">
+      <section className={styles.appointment}>
+        <div className="wrapper">
+          {/* <div className={styles.formHeading}>
           <h2 className={styles.mainFormHead}>Book Now</h2>
           <p className={styles.secondFormHead}>and we will get back to you.</p>
-        </div>
+        </div> */}
 
-        <div className={styles.appFormArea}>
-          <div className={styles.appForm}>
-            <form className={styles.form}>
-              <input
-                type="text"
-                placeholder="Full Name*"
-                className={styles.form_item + " " + styles.itemAdjust}
-              />
-              <input
-                type="text"
-                placeholder="Email (optional)"
-                className={styles.form_item + " " + styles.itemAdjust}
-              />
+          <div className={styles.appFormArea}>
+            <div className={styles.appForm}>
+              <form className={styles.form}>
+                <input
+                  type="text"
+                  placeholder="Full Name*"
+                  className={styles.form_item + " " + styles.itemAdjust}
+                />
+                <input
+                  type="text"
+                  placeholder="Email (optional)"
+                  className={styles.form_item + " " + styles.itemAdjust}
+                />
 
-              <input
-                type="text"
-                placeholder="Phone Number*"
-                className={styles.form_item}
-              />
-              <textarea
-                rows={6}
-                placeholder="Message (optional)"
-                className={styles.form_textarea}
-              ></textarea>
-              <p className={styles.instruct}>
-                {" "}
-                Select a Date, Service and Time...
+                <input
+                  type="text"
+                  placeholder="Phone Number*"
+                  className={styles.form_item}
+                />
+                <textarea
+                  rows={6}
+                  placeholder="Message (optional)"
+                  className={styles.form_textarea}
+                ></textarea>
+                <p className={styles.instruct}>
+                  {" "}
+                  Select a Date, Service and Time...
+                </p>
+                <br />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <ThemeProvider theme={defaultMaterialTheme}>
+                    <KeyboardDatePicker
+                      margin="normal"
+                      id="date-picker-dialog"
+                      label=""
+                      format="MM/dd/yyyy"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date",
+                      }}
+                    />
+                  </ThemeProvider>
+                </MuiPickersUtilsProvider>
+                <div style={{ width: "100%" }}></div>
+                <div className={styles.materiAdj}>
+                  <FormControl required className={classes.formControl}>
+                    <InputLabel
+                      id="demo-simple-select-required-label"
+                      className={classes.selectLabel}
+                    >
+                      Services
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-required-label"
+                      id="demo-simple-select-required"
+                      value={age}
+                      onChange={handleChange}
+                      className={classes.selectEmpty}
+                    >
+                      {selectServices}
+                    </Select>
+                  </FormControl>
+                </div>
+
+                <div className={styles.times}>
+                  <div className={styles.times_box + " " + styles.timesActive}>
+                    <p className={styles.time}>10:30 AM</p>
+                  </div>
+                  <div className={styles.times_box}>
+                    <p className={styles.time}>10:30 AM</p>
+                  </div>
+                  <div className={styles.times_box}>
+                    <p className={styles.time}>10:30 AM</p>
+                  </div>
+                  <div className={styles.times_box}>
+                    <p className={styles.time}>10:30 AM</p>
+                  </div>
+                  <div className={styles.times_box}>
+                    <p className={styles.time}>10:30 AM</p>
+                  </div>
+                  <div className={styles.times_box}>
+                    <p className={styles.time}>10:30 AM</p>
+                  </div>
+                  <div className={styles.times_box}>
+                    <p className={styles.time}>10:30 AM</p>
+                  </div>
+                  <div className={styles.times_box}>
+                    <p className={styles.time}>10:30 AM</p>
+                  </div>
+                  <div className={styles.times_box}>
+                    <p className={styles.time}>10:30 AM</p>
+                  </div>
+                </div>
+
+                <button type="submit" className={styles.form_button}>
+                  Submit Now
+                </button>
+              </form>
+
+              <p className={styles.form_submit}>
+                Your form has been submitted. If there any changes to your
+                appointment time we will be sure to reach out to you.
               </p>
-              <br />
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <ThemeProvider theme={defaultMaterialTheme}>
-                  <KeyboardDatePicker
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label=""
-                    format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      "aria-label": "change date",
-                    }}
-                  />
-                </ThemeProvider>
-              </MuiPickersUtilsProvider>
-              <div style={{ width: "100%" }}></div>
-              <div className={styles.materiAdj}>
-                <FormControl required className={classes.formControl}>
-                  <InputLabel
-                    id="demo-simple-select-required-label"
-                    className={classes.selectLabel}
-                  >
-                    Services
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-required-label"
-                    id="demo-simple-select-required"
-                    value={age}
-                    onChange={handleChange}
-                    className={classes.selectEmpty}
-                  >
-                    {selectServices}
-                  </Select>
-                </FormControl>
-              </div>
 
-              <div className={styles.times}>
-                <div className={styles.times_box + " " + styles.timesActive}>
-                  <p className={styles.time}>10:30 AM</p>
-                </div>
-                <div className={styles.times_box}>
-                  <p className={styles.time}>10:30 AM</p>
-                </div>
-                <div className={styles.times_box}>
-                  <p className={styles.time}>10:30 AM</p>
-                </div>
-                <div className={styles.times_box}>
-                  <p className={styles.time}>10:30 AM</p>
-                </div>
-                <div className={styles.times_box}>
-                  <p className={styles.time}>10:30 AM</p>
-                </div>
-                <div className={styles.times_box}>
-                  <p className={styles.time}>10:30 AM</p>
-                </div>
-                <div className={styles.times_box}>
-                  <p className={styles.time}>10:30 AM</p>
-                </div>
-                <div className={styles.times_box}>
-                  <p className={styles.time}>10:30 AM</p>
-                </div>
-                <div className={styles.times_box}>
-                  <p className={styles.time}>10:30 AM</p>
-                </div>
-              </div>
-
-              <button type="submit" className={styles.form_button}>
-                Submit Now
-              </button>
-            </form>
-
-            <p className={styles.form_submit}>
-              Your form has been submitted. If there any changes to your
-              appointment time we will be sure to reach out to you.
-            </p>
-
-            <p className={styles.form_error}>
-              An error has occured. Please, try a gain Later.
-            </p>
+              <p className={styles.form_error}>
+                An error has occured. Please, try a gain Later.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </PageFrame>
   );
 };
 
