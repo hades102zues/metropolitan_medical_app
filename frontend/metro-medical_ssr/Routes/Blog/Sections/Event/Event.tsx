@@ -13,7 +13,7 @@ const Event = () => {
           />
         </div>
       </div>
-      <p className={styles.eventA}>Event</p>
+      <p className={styles.eventA}>Announcement</p>
     </section>
   );
 };

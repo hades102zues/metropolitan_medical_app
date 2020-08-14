@@ -1,33 +1,44 @@
 import styles from "./Header.module.css";
 import Link from "next/link";
 
-import { withStyles } from "@material-ui/core";
+// import { withStyles } from "@material-ui/core";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 
 const companyLogo = "/metro_logo.png";
 
+import { makeStyles } from "@material-ui/core/styles";
+
 interface Props {
   drawerHandler: () => void;
 }
 const Header: React.FC<Props> = (props) => {
-  const iconSize = "large";
+  // const iconSize = "large";
 
-  const StyledFaceBookIcon = withStyles({
+  // const StyledFaceBookIcon = withStyles({
+  //   root: {
+  //     marginRight: 20,
+  //     fontSize: 20,
+  //   },
+  // })(FacebookIcon);
+
+  const iconStyles = makeStyles({
     root: {
       marginRight: 20,
+      fontSize: 22,
     },
-  })(FacebookIcon);
+  });
 
+  const iconClasses = iconStyles();
   return (
     <header className={styles.hero_header}>
       <div className={styles.header0}>
         <div className="wrapper" style={{ overflow: "visible" }}>
           <div className={styles.socialAdj}>
             <p className={styles.socialText}>Follow us on: </p>
-            <StyledFaceBookIcon fontSize={iconSize} />
-            <InstagramIcon fontSize={iconSize} />
+            <FacebookIcon classes={{ root: iconClasses.root }} />
+            <InstagramIcon classes={{ root: iconClasses.root }} />
             <div className={styles.companyLogo}>
               <div className={styles.colorBox}>
                 <img src={companyLogo} alt="The metropolitan medical's logo" />

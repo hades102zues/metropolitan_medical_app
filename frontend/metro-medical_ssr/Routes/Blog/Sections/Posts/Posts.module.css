@@ -121,13 +121,15 @@
   margin-right: 60px;
   margin-bottom: 30px;
   border: none;
-  background-color: none;
+  background-color: #fafafa;
   cursor: pointer;
+  border: 1px solid #ccc;
 }
 
 .controlbox_button:hover,
 .controlbox_button:active {
   background-color: #dd6a8f;
   color: #ffffff;
+  border-color: #dd6a8f;
 }
 /*control box end*/

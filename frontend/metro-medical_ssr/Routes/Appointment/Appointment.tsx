@@ -137,11 +137,6 @@ const Appointment = () => {
     <PageFrame pageTitle="Book Now">
       <section className={styles.appointment}>
         <div className="wrapper">
-          {/* <div className={styles.formHeading}>
-          <h2 className={styles.mainFormHead}>Book Now</h2>
-          <p className={styles.secondFormHead}>and we will get back to you.</p>
-        </div> */}
-
           <div className={styles.appFormArea}>
             <div className={styles.appForm}>
               <form className={styles.form}>
