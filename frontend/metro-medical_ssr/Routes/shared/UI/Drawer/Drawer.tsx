@@ -7,7 +7,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { withStyles } from "@material-ui/core";
+import { withStyles, makeStyles } from "@material-ui/core";
 
 import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
@@ -43,16 +43,23 @@ const SideDrawer: React.FC<Props> = (props) => {
     },
   })(ListItemIcon);
 
-  const StyDrawer = withStyles({
+  const drawerStyle = makeStyles({
     paper: {
       backgroundImage: 'url("/bg_compressed.jpg")',
     },
-  })(Drawer);
+  });
+
+  const drawerClasses = drawerStyle();
 
   /*EVERY THING SHOULD APPEAR WITHIN THE LIST, OTHERWISE SIDEDRAWE MISBEHAVES*/
 
   return (
-    <StyDrawer open={open} onClose={closeDrawer}>
+    <Drawer
+      open={open}
+      onClose={closeDrawer}
+      anchor="left"
+      classes={{ paper: drawerClasses.paper }}
+    >
       <StylList>
         <div className={styles.sideMenu_topAccent}></div>
         <div className={styles.sideMenu_companyLogo}>
@@ -128,27 +135,8 @@ const SideDrawer: React.FC<Props> = (props) => {
             </ListItem>
           </a>
         </Link>
-
-        {/* {["Home", "About", "Services", "Blog", "Appointment", "Contact"].map(
-          (text: string, index: number) => {
-            const path =
-              text.toLowerCase() !== "home" ? `/${text.toLowerCase()}` : "/";
-            return (
-              <Link href={path} key={text}>
-                <a>
-                  <ListItem button>
-                    <StyListIcon>
-                      <FacebookIcon fontSize="large" />
-                    </StyListIcon>
-                    <'SpecialListItemText' disableTypography primary={text} />
-                  </ListItem>
-                </a>
-              </Link>
-            );
-          }
-        )} */}
       </StylList>
-    </StyDrawer>
+    </Drawer>
   );
 };
 
