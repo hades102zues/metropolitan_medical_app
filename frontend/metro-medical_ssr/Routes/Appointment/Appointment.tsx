@@ -151,6 +151,22 @@ const Appointment = () => {
 
   //selector end
 
+  //time
+  const onServiceChange = (time: string): void => {
+    formik.setFieldValue("time", time);
+  };
+
+  const pinTimes = [
+    "8:30 AM",
+    "9:00 AM",
+    "9:30 AM",
+    "10:00 AM",
+    "10:30 AM",
+    "2:00 PM",
+  ];
+
+  //time end
+
   return (
     <PageFrame pageTitle="Book Now">
       <section className={styles.appointment}>
@@ -266,33 +282,26 @@ const Appointment = () => {
                 </div>
 
                 <div className={styles.times}>
-                  <div className={styles.times_box + " " + styles.timesActive}>
-                    <p className={styles.time}>10:30 AM</p>
-                  </div>
-                  <div className={styles.times_box}>
-                    <p className={styles.time}>10:30 AM</p>
-                  </div>
-                  <div className={styles.times_box}>
-                    <p className={styles.time}>10:30 AM</p>
-                  </div>
-                  <div className={styles.times_box}>
-                    <p className={styles.time}>10:30 AM</p>
-                  </div>
-                  <div className={styles.times_box}>
-                    <p className={styles.time}>10:30 AM</p>
-                  </div>
-                  <div className={styles.times_box}>
-                    <p className={styles.time}>10:30 AM</p>
-                  </div>
-                  <div className={styles.times_box}>
-                    <p className={styles.time}>10:30 AM</p>
-                  </div>
-                  <div className={styles.times_box}>
-                    <p className={styles.time}>10:30 AM</p>
-                  </div>
-                  <div className={styles.times_box}>
-                    <p className={styles.time}>10:30 AM</p>
-                  </div>
+                  {pinTimes.map(
+                    (time: string): JSX.Element => {
+                      return (
+                        <div
+                          className={
+                            styles.times_box +
+                            " " +
+                            (formik.values.time.includes(time)
+                              ? styles.timesActive
+                              : " ")
+                          }
+                          onClick={(): void => {
+                            onServiceChange(time);
+                          }}
+                        >
+                          <p className={styles.time}>{time}</p>
+                        </div>
+                      );
+                    }
+                  )}
                 </div>
 
                 <button type="submit" className={styles.form_button}>
