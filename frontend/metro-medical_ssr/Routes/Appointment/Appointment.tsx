@@ -26,16 +26,10 @@ import {
 import { deserialize } from "v8";
 import { time } from "console";
 
+import * as Yup from "yup";
+import { useFormik, Form, Field } from "formik";
+
 const Appointment = () => {
-  // picker
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date()
-  );
-
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-  };
-
   const defaultMaterialTheme = createMuiTheme({
     typography: {
       fontSize: 20, //sweet spot. going to large will ruin the component's layout
@@ -81,10 +75,34 @@ const Appointment = () => {
   );
 
   const classes = useStyles();
-  const [age, setAge] = React.useState("");
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setAge(event.target.value as string);
+  const formik = useFormik({
+    initialValues: {
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      message: "",
+      date: new Date(),
+      service: "",
+      time: "",
+      captchaDidVerify: false, //flag for captcha verify
+
+      formDidSubmit: false, //displays success message if server responded with a 2xx
+      errorDidOccur: false, //displays error message if server responded with anything other than 2xx
+      isWaiting: false, //display message while waiting on server response
+    },
+    onSubmit: (values) => {
+      console.log("handle Submit: ", values);
+    },
+  });
+
+  // date picker handler
+  const handleDateChange = (date: Date | null) => {
+    formik.setFieldValue("date", date);
+  };
+
+  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    formik.setFieldValue("service", event.target.value as string);
   };
 
   interface Service {
@@ -139,27 +157,71 @@ const Appointment = () => {
         <div className="wrapper">
           <div className={styles.appFormArea}>
             <div className={styles.appForm}>
-              <form className={styles.form}>
+              <form onSubmit={formik.handleSubmit} className={styles.form}>
                 <input
                   type="text"
                   placeholder="Full Name*"
                   className={styles.form_item + " " + styles.itemAdjust}
+                  id="fullName"
+                  name="fullName"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.fullName}
+                  style={{
+                    border:
+                      formik.touched.fullName && formik.errors.fullName
+                        ? "1px solid red"
+                        : null,
+                  }}
                 />
                 <input
-                  type="text"
+                  type="email"
                   placeholder="Email (optional)"
                   className={styles.form_item + " " + styles.itemAdjust}
+                  id="email"
+                  name="email"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                  style={{
+                    border:
+                      formik.touched.email && formik.errors.email
+                        ? "1px solid red"
+                        : null,
+                  }}
                 />
 
                 <input
                   type="text"
                   placeholder="Phone Number*"
                   className={styles.form_item}
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.phoneNumber}
+                  style={{
+                    border:
+                      formik.touched.phoneNumber && formik.errors.phoneNumber
+                        ? "1px solid red"
+                        : null,
+                  }}
                 />
                 <textarea
                   rows={6}
                   placeholder="Message (optional)"
                   className={styles.form_textarea}
+                  id="message"
+                  name="message"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.message}
+                  style={{
+                    border:
+                      formik.touched.message && formik.errors.message
+                        ? "1px solid red"
+                        : null,
+                  }}
                 ></textarea>
                 <p className={styles.instruct}>
                   {" "}
@@ -173,7 +235,7 @@ const Appointment = () => {
                       id="date-picker-dialog"
                       label=""
                       format="MM/dd/yyyy"
-                      value={selectedDate}
+                      value={formik.values.date}
                       onChange={handleDateChange}
                       KeyboardButtonProps={{
                         "aria-label": "change date",
@@ -181,6 +243,7 @@ const Appointment = () => {
                     />
                   </ThemeProvider>
                 </MuiPickersUtilsProvider>
+
                 <div style={{ width: "100%" }}></div>
                 <div className={styles.materiAdj}>
                   <FormControl required className={classes.formControl}>
@@ -193,8 +256,8 @@ const Appointment = () => {
                     <Select
                       labelId="demo-simple-select-required-label"
                       id="demo-simple-select-required"
-                      value={age}
-                      onChange={handleChange}
+                      value={formik.values.service}
+                      onChange={handleSelectChange}
                       className={classes.selectEmpty}
                     >
                       {selectServices}
