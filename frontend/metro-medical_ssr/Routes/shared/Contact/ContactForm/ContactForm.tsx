@@ -52,9 +52,6 @@ const ContactForm = () => {
     validationSchema: contactFormSchema,
   });
 
-  const isTrue = formik.touched.fullName && formik.errors.fullName;
-  console.log(isTrue);
-
   return (
     <div className={styles.contactUs}>
       <div className="wrapper">

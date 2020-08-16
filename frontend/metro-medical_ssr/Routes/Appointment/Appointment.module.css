@@ -112,7 +112,7 @@
   padding: 10px;
   min-width: 200px;
   width: 100%;
-  border: none;
+  border: 1px solid #583b4c;
   background-color: #583b4c;
   color: white;
   margin-top: 20px;

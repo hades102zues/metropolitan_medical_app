@@ -76,35 +76,6 @@ const Appointment = () => {
 
   const classes = useStyles();
 
-  const formik = useFormik({
-    initialValues: {
-      fullName: "",
-      email: "",
-      phoneNumber: "",
-      message: "",
-      date: new Date(),
-      service: "",
-      time: "",
-      captchaDidVerify: false, //flag for captcha verify
-
-      formDidSubmit: false, //displays success message if server responded with a 2xx
-      errorDidOccur: false, //displays error message if server responded with anything other than 2xx
-      isWaiting: false, //display message while waiting on server response
-    },
-    onSubmit: (values) => {
-      console.log("handle Submit: ", values);
-    },
-  });
-
-  // date picker handler
-  const handleDateChange = (date: Date | null) => {
-    formik.setFieldValue("date", date);
-  };
-
-  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    formik.setFieldValue("service", event.target.value as string);
-  };
-
   interface Service {
     name: string;
     description: string;
@@ -166,6 +137,62 @@ const Appointment = () => {
   ];
 
   //time end
+
+  //formik
+  const appFormSchema = Yup.object().shape({
+    fullName: Yup.string()
+      .min(1, "Please supply your full name.")
+      .required("Please supply your full name."),
+
+    phoneNumber: Yup.string()
+      .min(7, "Please enter a valid phone mumber")
+      .required("Please enter a valid phone mumber"),
+
+    date: Yup.string()
+      .min(8, "Please enter a valid date.")
+      .required("Please enter a valid date."),
+
+    service: Yup.string()
+      .min(3, "Please supply a service.")
+      .required("Please supply a service."),
+
+    time: Yup.string()
+      .min(3, "Please supply a time.")
+      .required("Please supply a time."),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      message: "",
+      date: new Date().toLocaleDateString(),
+      service: "",
+      time: "",
+      captchaDidVerify: false, //flag for captcha verify
+
+      formDidSubmit: false, //displays success message if server responded with a 2xx
+      errorDidOccur: false, //displays error message if server responded with anything other than 2xx
+      isWaiting: false, //display message while waiting on server response
+    },
+    onSubmit: (values) => {
+      console.log("Sumbit work");
+      console.log("handle submit:", values);
+    },
+    validationSchema: appFormSchema,
+  });
+
+  // date picker handler
+  const handleDateChange = (date: Date | null) => {
+    formik.setFieldValue("date", date.toLocaleDateString());
+  };
+
+  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    formik.setFieldValue("service", event.target.value as string);
+  };
+
+  //formik end
 
   return (
     <PageFrame pageTitle="Book Now">
@@ -281,7 +308,15 @@ const Appointment = () => {
                   </FormControl>
                 </div>
 
-                <div className={styles.times}>
+                <div
+                  className={styles.times}
+                  style={{
+                    border:
+                      formik.touched.time && formik.errors.time
+                        ? "1px solid red"
+                        : null,
+                  }}
+                >
                   {pinTimes.map(
                     (time: string): JSX.Element => {
                       return (
@@ -309,14 +344,17 @@ const Appointment = () => {
                 </button>
               </form>
 
-              <p className={styles.form_submit}>
-                Your form has been submitted. If there any changes to your
-                appointment time we will be sure to reach out to you.
-              </p>
+              {formik.values.formDidSubmit ? (
+                <p className={styles.form_submit}>
+                  Your form has been submitted.
+                </p>
+              ) : null}
 
-              <p className={styles.form_error}>
-                An error has occured. Please, try a gain Later.
-              </p>
+              {formik.values.errorDidOccur ? (
+                <p className={styles.form_error}>
+                  An error has occured. Please, try a gain Later.
+                </p>
+              ) : null}
             </div>
           </div>
         </div>
