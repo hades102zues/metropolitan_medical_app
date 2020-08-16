@@ -318,7 +318,7 @@ const Appointment = () => {
                   }}
                 >
                   {pinTimes.map(
-                    (time: string): JSX.Element => {
+                    (time: string, i: number): JSX.Element => {
                       return (
                         <div
                           className={
@@ -331,6 +331,7 @@ const Appointment = () => {
                           onClick={(): void => {
                             onServiceChange(time);
                           }}
+                          key={i}
                         >
                           <p className={styles.time}>{time}</p>
                         </div>

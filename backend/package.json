@@ -1,0 +1,30 @@
+{
+  "name": "form_backend_server",
+  "version": "1.0.0",
+  "description": "handles the forms for the site",
+  "main": "build/server.js",
+  "author": "Joshua Wiggins",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/cors": "^2.8.7",
+    "@types/express": "^4.17.7",
+    "@types/helmet": "^0.0.47",
+    "ts-node": "^8.10.2",
+    "tslint": "^6.1.3",
+    "typescript": "^3.9.7"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev" : "nodemon src/server.ts",
+    "prod": "yarn run build && node src/server.js"
+  }
+}

@@ -13,7 +13,7 @@ const Posts = () => {
   const [posts, setPosts]: [String[], any] = useState(["", "", ""]);
   const [errorDidOccur, seterrorDidOccur]: [boolean, any] = useState(false);
   const [dataDidGet, setdataDidGet]: [boolean, any] = useState(false);
-  const [isLoading, setisLoading]: [boolean, any] = useState(false);
+  const [isLoading, setisLoading]: [boolean, any] = useState(true);
 
   //**HANDLERS
   const olderPostHandler = (): void => {
@@ -54,7 +54,7 @@ const Posts = () => {
 
   if (posts.length && !errorDidOccur && !isLoading)
     render = posts.map((item, i) => (
-      <div>
+      <div key={i}>
         <Link href="/blog/post/id" as="/blog/post/1">
           <a>
             <article className={styles.post}>
