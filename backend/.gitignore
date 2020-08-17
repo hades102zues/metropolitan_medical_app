@@ -11,3 +11,4 @@ typings/
 **/node_modules
 **/lib
 **/*.env
+**/service_account.json

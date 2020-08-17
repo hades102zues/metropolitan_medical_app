@@ -94,8 +94,7 @@ const getTimeFrames = (momentDay: number): any => {
   return timeFrames[momentDay]; //an array of shape ["8:00 AM"..."3:00PM"]
 };
 
-// You change these values according to your needs
-exports.getTimeSlots = (
+const getTimeSlots = (
   date: string,
   splits: number = 30 //the interval by which to cut the times
 ): string[] => {
@@ -110,3 +109,5 @@ exports.getTimeSlots = (
   const timeSlices = splitTime(startTime, endTime, interval);
   return timeSlices;
 };
+
+export default getTimeSlots;
