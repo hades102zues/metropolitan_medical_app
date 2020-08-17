@@ -16,7 +16,7 @@ import formRouter from "./routes/forms";
 server.use(formRouter);
 
 //error handler
-server.use((error: any, req: Request, res: Response, next: NextFunction) => {
+server.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(error);
 });
 
