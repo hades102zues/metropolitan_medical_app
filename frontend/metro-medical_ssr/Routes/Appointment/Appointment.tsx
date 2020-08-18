@@ -172,13 +172,18 @@ const Appointment = () => {
       .required("Please supply a time."),
   });
 
+  const miminumAllowableDate: Date = new Date();
+  miminumAllowableDate.setDate(miminumAllowableDate.getDate() + 2);
+
   const formik = useFormik({
     initialValues: {
       fullName: "",
       email: "",
       phoneNumber: "",
       message: "",
-      date: new Date().toLocaleDateString("en-US"), //format : MM/dd/YYYY
+      date: miminumAllowableDate.toLocaleDateString("en-US", {
+        timeZone: "America/Barbados",
+      }), // gives a short date format : MM/dd/YYYY; and ensures the client is operating on barbados time
       service: "",
       time: "",
 
@@ -199,7 +204,10 @@ const Appointment = () => {
 
   // date picker handler
   const handleDateChange = (date: Date | null) => {
-    formik.setFieldValue("date", date.toLocaleDateString("en-US"));
+    formik.setFieldValue(
+      "date",
+      date.toLocaleDateString("en-US", { timeZone: "America/Barbados" })
+    ); //gives a shortDate format : MM/dd/YYYY
     setDateDidChange(true);
   };
 
@@ -348,7 +356,9 @@ const Appointment = () => {
                       label=""
                       format="MM/dd/yyyy"
                       value={formik.values.date}
+                      minDate={miminumAllowableDate}
                       onChange={handleDateChange}
+                      disablePast
                       KeyboardButtonProps={{
                         "aria-label": "change date",
                       }}
