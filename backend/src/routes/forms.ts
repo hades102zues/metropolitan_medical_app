@@ -10,7 +10,7 @@ interface FormControll {
 
 const formControllers: FormControll = require("../controllers/form-controll");
 
-router.get("/get-available-times", formControllers.getAvailableTimes);
+router.post("/get-available-times", formControllers.getAvailableTimes);
 router.post("/send-contact-form", formControllers.postContactForm);
 router.post("/send-appointment-form", formControllers.postAppForm);
 

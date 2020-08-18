@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, response } from "express";
 const { google } = require("googleapis");
 import ServiceAccount from "./utils/getServiceAccountClient";
 import moment, { Moment } from "moment";
@@ -13,6 +13,10 @@ exports.getAvailableTimes = (
   res: Response,
   next: NextFunction
 ): any => {
+  interface slotsResponse {
+    availableTimeSlots: string[];
+  }
+
   //note that toIsoString() will produce a RFC3339/ISO timestamp in the UTC timezone!!!.
   //RFC3339/ISO comes in two formats. THH:MM:SS.mmm<> or THH:MM:SS +/- xx:xx
   //UTC can easily be spotted when there is mmmZ
@@ -33,8 +37,15 @@ exports.getAvailableTimes = (
   const TIME_ZONE: string = "America/Barbados";
   const DAY_START: string = "T00:00:00-04:00";
   const DAY_END: string = "T23:59:59-04:00";
-  const LOCALE_ISO_ENDING: string = ":00-04:00";
-  const date: string = "2020-08-18"; //api call date
+  const LOCAL_ISO_ENDING: string = ":00-04:00";
+  const date: string = req.body.date; //api call date
+
+  //**EDGE NEEDS TO BE SUPPLIED HERE */
+  //handle sunday here and date >= current barbados time+2
+  if (moment(date).day() === 0) {
+    const defaultResponse: slotsResponse = { availableTimeSlots: [] };
+    return res.status(200).json(defaultResponse);
+  }
 
   //Constructs an array of ISO strings using the appointment time frame slots, for the particular date in question.
   const appointment24HRTimes = getAppointmentSlots(date, true);
@@ -44,7 +55,7 @@ exports.getAvailableTimes = (
       const hour: string = split[0].length > 1 ? split[0] : "0" + split[0];
       const minute: string = split[1];
       const result: string =
-        date + "T" + hour + ":" + minute + LOCALE_ISO_ENDING;
+        date + "T" + hour + ":" + minute + LOCAL_ISO_ENDING;
       return result;
     }
   );
@@ -102,14 +113,14 @@ exports.getAvailableTimes = (
         const S_secondSplit: string[] = S_firstSplit.split(":");
         const S_appHour: number = Number(S_secondSplit[0]);
         const S_appMin: number = Number(S_secondSplit[1]);
-        const S_appMoment = moment({ hour: S_appHour, minute: S_appMin }); //Date.now in ISO locale time, time over written
+        const S_appMoment = moment({ hour: S_appHour, minute: S_appMin }); //Date.now in ISO locale time, time over written. Never worry obout what the date is, because we never need to care.
 
         //end time
         const E_firstSplit: string = item.end.split("T")[1];
         const E_secondSplit: string[] = E_firstSplit.split(":");
         const E_appHour: number = Number(E_secondSplit[0]);
         const E_appMin: number = Number(E_secondSplit[1]);
-        const E_appMoment = moment({ hour: E_appHour, minute: E_appMin }); //Today in locale ISO, and we are over writting the time
+        const E_appMoment = moment({ hour: E_appHour, minute: E_appMin }); //Date.now in ISO locale time, time over written. Never worry obout what the date is, because we never need to care.
 
         return {
           momentStart: S_appMoment,
@@ -124,7 +135,7 @@ exports.getAvailableTimes = (
         const secondSplit: string[] = firstSplit.split(":");
         const appHour: number = Number(secondSplit[0]);
         const appMin: number = Number(secondSplit[1]);
-        const appMoment = moment({ hour: appHour, minute: appMin }); //Today in locale ISO, and we are over writting the time
+        const appMoment = moment({ hour: appHour, minute: appMin }); //Date.now in ISO locale time, time over written. The date portion is nothing we ever need to concern ourselves with.
 
         //check to see if that time slot falls in between a busy period
         //and if so, flag the time slot as unavailable/conflicting
@@ -189,12 +200,16 @@ exports.getAvailableTimes = (
       }
 
       console.log(availableTimeSlots);
-      res.status(200).json({
-        busy: busy,
-        ISO_appointment24HRTimes,
-        isConflicting,
-        availableTimeSlots: availableTimeSlots,
-      });
+
+      const finalResponse: slotsResponse = { availableTimeSlots };
+
+      return res.status(200).json(finalResponse);
+      // {
+      // busy: busy,
+      // ISO_appointment24HRTimes,
+      // isConflicting,
+      // availableTimeSlots: availableTimeSlots,
+      //}
     }
   );
 
