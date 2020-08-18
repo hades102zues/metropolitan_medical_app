@@ -10,7 +10,7 @@ const splitTime = (
   //**The values in the array will become incorrect!
   //**format seems to work
 
-  const formatType = !raw ? "h:mmA" : "H:mm";
+  const formatType = !raw ? "h:mm A" : "H:mm";
 
   const result: string[] = [startTime.format(formatType)];
   let time: Moment = startTime.clone().add(interval, "m");
