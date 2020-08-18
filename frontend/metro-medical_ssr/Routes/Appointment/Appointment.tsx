@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Appointment.module.css";
 import PageFrame from "../shared/UI/PageFrame/PageFrame";
+
+//spinner
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 //date picker
 import { createMuiTheme } from "@material-ui/core";
@@ -29,7 +32,18 @@ import { time } from "console";
 import * as Yup from "yup";
 import { useFormik, Form, Field } from "formik";
 
+const APP_URL = "http://localhost:3001/get-available-times";
+
 const Appointment = () => {
+  const [timeSlots, setTimeSlots]: [string[], any] = useState([]);
+  const [captchaDidVerify, setCaptcha]: [boolean, any] = useState(false); //flag for captcha verify
+  const [dateDidChange, setDateDidChange]: [boolean, any] = useState(false); //used in service timeslot fetch
+  const [dateTimeSlotLoading, setDateTimeSlotLoading]: [
+    boolean,
+    any
+  ] = useState(false); //used as a flag to display spinner while fetching timeslots
+  const [timeSlotError, setTimeSlotError]: [boolean, any] = useState(false);
+
   const defaultMaterialTheme = createMuiTheme({
     typography: {
       fontSize: 20, //sweet spot. going to large will ruin the component's layout
@@ -73,8 +87,14 @@ const Appointment = () => {
       },
     })
   );
+  const useStyles1 = makeStyles({
+    progessRoot: {
+      color: "#dd6a8f",
+    },
+  });
 
   const classes = useStyles();
+  const classes1 = useStyles1();
 
   interface Service {
     name: string;
@@ -127,15 +147,6 @@ const Appointment = () => {
     formik.setFieldValue("time", time);
   };
 
-  const pinTimes = [
-    "8:30 AM",
-    "9:00 AM",
-    "9:30 AM",
-    "10:00 AM",
-    "10:30 AM",
-    "2:00 PM",
-  ];
-
   //time end
 
   //formik
@@ -167,31 +178,89 @@ const Appointment = () => {
       email: "",
       phoneNumber: "",
       message: "",
-      date: new Date().toLocaleDateString(),
+      date: new Date().toLocaleDateString("en-US"), //format : MM/dd/YYYY
       service: "",
       time: "",
-      captchaDidVerify: false, //flag for captcha verify
 
       formDidSubmit: false, //displays success message if server responded with a 2xx
       errorDidOccur: false, //displays error message if server responded with anything other than 2xx
       isWaiting: false, //display message while waiting on server response
     },
     onSubmit: (values) => {
-      console.log("Sumbit work");
-      console.log("handle submit:", values);
+      //necessary for easy server manipulation
+      const isoFormatedDateWithoutTime = new Date(values.date)
+        .toISOString()
+        .split("T")[0];
+      console.log(new Date(values.date).toISOString());
+      console.log(isoFormatedDateWithoutTime, "handle submit:", values);
     },
     validationSchema: appFormSchema,
   });
 
   // date picker handler
   const handleDateChange = (date: Date | null) => {
-    formik.setFieldValue("date", date.toLocaleDateString());
+    formik.setFieldValue("date", date.toLocaleDateString("en-US"));
+    setDateDidChange(true);
   };
 
   const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     formik.setFieldValue("service", event.target.value as string);
   };
 
+  const dataTimeSlotsFetch = (): void => {
+    //server expects iso format
+    const isoDate = new Date(formik.values.date).toISOString().split("T")[0];
+
+    interface Request {
+      date: string;
+    }
+
+    const request: Request = { date: isoDate };
+    setDateTimeSlotLoading(true);
+
+    //console.log(request, isoDate);//debug
+
+    fetch(APP_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(request),
+    })
+      .then((res: any) => {
+        if (res.status === 200) {
+          setTimeSlotError(false);
+          return res.json(); //extract data from the promise
+        } else {
+          setTimeSlotError(true);
+          setDateTimeSlotLoading(true);
+        }
+      })
+      .then((data: { availableTimeSlots: string[] }) => {
+        if (data.availableTimeSlots) {
+          setDateTimeSlotLoading(false);
+          setTimeSlots(data.availableTimeSlots);
+        } else {
+          setTimeSlotError(true);
+          setDateTimeSlotLoading(true);
+        }
+      })
+      .catch((err: any) => {
+        console.error(err);
+        setTimeSlotError(true);
+        setDateTimeSlotLoading(true);
+      });
+  };
+
+  //onMount
+  useEffect(() => {
+    dataTimeSlotsFetch();
+  }, []);
+
+  //on date picker change
+  useEffect(() => {
+    dataTimeSlotsFetch();
+    setDateDidChange(false);
+    formik.setFieldValue("time", "");
+  }, [dateDidChange]);
   //formik end
 
   return (
@@ -317,26 +386,32 @@ const Appointment = () => {
                         : null,
                   }}
                 >
-                  {pinTimes.map(
-                    (time: string, i: number): JSX.Element => {
-                      return (
-                        <div
-                          className={
-                            styles.times_box +
-                            " " +
-                            (formik.values.time.includes(time)
-                              ? styles.timesActive
-                              : " ")
-                          }
-                          onClick={(): void => {
-                            onServiceChange(time);
-                          }}
-                          key={i}
-                        >
-                          <p className={styles.time}>{time}</p>
-                        </div>
-                      );
-                    }
+                  {dateTimeSlotLoading ? (
+                    <CircularProgress
+                      classes={{ root: classes1.progessRoot }}
+                    />
+                  ) : (
+                    timeSlots.map(
+                      (time: string, i: number): JSX.Element => {
+                        return (
+                          <div
+                            className={
+                              styles.times_box +
+                              " " +
+                              (formik.values.time.includes(time)
+                                ? styles.timesActive
+                                : " ")
+                            }
+                            onClick={(): void => {
+                              onServiceChange(time);
+                            }}
+                            key={i}
+                          >
+                            <p className={styles.time}>{time}</p>
+                          </div>
+                        );
+                      }
+                    )
                   )}
                 </div>
 
