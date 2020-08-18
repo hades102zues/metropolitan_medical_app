@@ -33,9 +33,10 @@ exports.getAvailableTimes = (
   const TIME_ZONE: string = "America/Barbados";
   const DAY_START: string = "T00:00:00-04:00";
   const DAY_END: string = "T23:59:59-04:00";
-  const LOCALE_ISO_ENDING = ":00-04:00";
+  const LOCALE_ISO_ENDING: string = ":00-04:00";
   const date: string = "2020-08-18"; //api call date
 
+  //Constructs an array of ISO strings using the appointment time frame slots, for the particular date in question.
   const appointment24HRTimes = getAppointmentSlots(date, true);
   const ISO_appointment24HRTimes = appointment24HRTimes.map(
     (time: string, index: number): string => {
@@ -47,13 +48,17 @@ exports.getAvailableTimes = (
       return result;
     }
   );
+  console.log(ISO_appointment24HRTimes); //debug
 
+  //constructs a lookup object which will be used to determine if an appointment time slot is available.
   let isConflicting: any = {};
   ISO_appointment24HRTimes.forEach((iso: string, i: number) => {
     isConflicting[iso] = false;
   });
 
-  //Requires that the FreeBusy api be set on the service account
+  /********************
+   ***********BUSY/FREE DETERMINATION******
+   ********************/
   interface idItem {
     id: string;
   }
@@ -63,6 +68,8 @@ exports.getAvailableTimes = (
     timeZone: string;
     items: idItem[];
   }
+
+  //finds all busy periods for the date in question.
   const resourceItem: Resource = {
     timeMin: date + DAY_START,
     timeMax: date + DAY_END,
@@ -86,21 +93,23 @@ exports.getAvailableTimes = (
         momentEnd: Moment;
       }
 
+      //Converts the busy time frame into moments so that confliction checks can be made through moment.isBetween
       const busy: Busy[] = response.data.calendars[CALENDAR_ID].busy;
+      console.log(busy); //debug
       const busyTimeMoments: BusyMoment[] = busy.map((item: Busy, index) => {
         //start time
         const S_firstSplit: string = item.start.split("T")[1];
         const S_secondSplit: string[] = S_firstSplit.split(":");
         const S_appHour: number = Number(S_secondSplit[0]);
         const S_appMin: number = Number(S_secondSplit[1]);
-        const S_appMoment = moment({ hour: S_appHour, minute: S_appMin }); //ISO locale time
+        const S_appMoment = moment({ hour: S_appHour, minute: S_appMin }); //Date.now in ISO locale time, time over written
 
         //end time
         const E_firstSplit: string = item.end.split("T")[1];
         const E_secondSplit: string[] = E_firstSplit.split(":");
         const E_appHour: number = Number(E_secondSplit[0]);
         const E_appMin: number = Number(E_secondSplit[1]);
-        const E_appMoment = moment({ hour: E_appHour, minute: E_appMin }); //ISO locale time
+        const E_appMoment = moment({ hour: E_appHour, minute: E_appMin }); //Today in locale ISO, and we are over writting the time
 
         return {
           momentStart: S_appMoment,
@@ -108,14 +117,17 @@ exports.getAvailableTimes = (
         };
       });
 
+      //Checks if an appointment time frame, time slot is avaiable.
       ISO_appointment24HRTimes.forEach((iso: string, i: number) => {
-        //appointment
+        //first convert the time slot into a moment
         const firstSplit: string = iso.split("T")[1];
         const secondSplit: string[] = firstSplit.split(":");
         const appHour: number = Number(secondSplit[0]);
         const appMin: number = Number(secondSplit[1]);
-        const appMoment = moment({ hour: appHour, minute: appMin }); //ISO locale time
+        const appMoment = moment({ hour: appHour, minute: appMin }); //Today in locale ISO, and we are over writting the time
 
+        //check to see if that time slot falls in between a busy period
+        //and if so, flag the time slot as unavailable/conflicting
         busyTimeMoments.forEach((item: BusyMoment, index: number) => {
           // console.log(
           //   "Comparison APP:",
@@ -134,7 +146,7 @@ exports.getAvailableTimes = (
               item.momentStart,
               item.momentEnd,
               undefined,
-              "[]"
+              "[)" // ) because it is fine to have one event end and then another event start
             )
           ) {
             isConflicting[iso] = true;
@@ -143,9 +155,14 @@ exports.getAvailableTimes = (
         });
       });
 
+      console.log("Point of conflits", isConflicting); //debug
+      /********************
+       ***********SEND BACK FREE TIME SLOTS******
+       ********************/
+
       let availableTimeSlots: string[] = [];
 
-      //send back slot of nonconflicting time
+      //create a slot item of "HH:MM AM/PM" and push it onto available slots.
       for (const time in isConflicting) {
         if (isConflicting[time]) continue;
 
@@ -155,8 +172,9 @@ exports.getAvailableTimes = (
         const startHour: number = Number(secondSplit[0]);
         const startMin: number = Number(secondSplit[1]);
 
-        console.log("START HOUR:", startHour);
-        console.log("START MIN", startMin);
+        // console.log("START HOUR:", startHour); //debug
+        // console.log("START MIN", startMin); //debug
+
         //they will both be the same and the implement will work
         const startMoment: Moment = moment({
           hour: startHour,
@@ -165,11 +183,12 @@ exports.getAvailableTimes = (
         const endMoment: Moment = moment({ hour: startHour, minute: startMin });
 
         const timeSlot: string[] = createTimeSlots(startMoment, endMoment);
-        console.log("TIMESLOT", timeSlot);
+        // console.log("TIMESLOT", timeSlot);
         //add info
         availableTimeSlots = availableTimeSlots.concat(timeSlot);
       }
 
+      console.log(availableTimeSlots);
       res.status(200).json({
         busy: busy,
         ISO_appointment24HRTimes,
