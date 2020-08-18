@@ -4,7 +4,7 @@ const { google } = require("googleapis");
 import path from "path";
 
 const googleAuthKeys = require("./service_account.json"); //api keys
-const apiScopes = ["https://www.googleapis.com/auth/calendar.events"]; //what apis we will be manipulating
+const apiScopes = ["https://www.googleapis.com/auth/calendar"]; //what apis we will be manipulating
 
 const getNewTokensV1 = (jwtClient: any) => {
   //authorize gets and then sets the token within the Client

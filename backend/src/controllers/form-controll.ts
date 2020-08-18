@@ -22,6 +22,7 @@ exports.getAvailableTimes = (
 
   //google apis allow us to work in our tradition time.
   //so long as we set our timezone.
+  //Barbados ISO time format is of THH:MM:SS-4:00
   //E.g '2020-08-17T20:23:21-04:00' which is 8:23 PM GMT -4
 
   const event = {
@@ -82,11 +83,37 @@ exports.getAvailableTimes = (
       //if a startTime is in lookup, then set the look item to true
       //return appointTImeSLots iff their lookup is still false.
 
-      return res.status(200).json({ startSlots });
+      console.log(moment().format(), events);
     })
     .catch((err: Error) => {
       next(err);
     });
+
+  //Requires that the FreeBusy api be set on the service account
+  interface idItem {
+    id: string;
+  }
+  interface Resource {
+    timeMin: string;
+    timeMax: string;
+    timeZone: string;
+    items: idItem[];
+  }
+  const resourceItem: Resource = {
+    timeMin: "2020-08-18" + "T00:00:00-04:00",
+    timeMax: "2020-08-18" + "T23:59:59-04:00",
+    timeZone: "Etc/GMT+4",
+    items: [{ id: CALENDAR_ID }],
+  };
+  calendar.freebusy.query(
+    {
+      resource: resourceItem,
+    },
+    (err: any, response: any) => {
+      if (err) return next(err);
+      res.status(200).json({ busy: response.data });
+    }
+  );
 };
 exports.postContactForm = (
   req: Request,
