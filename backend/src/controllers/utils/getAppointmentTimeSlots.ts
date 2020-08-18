@@ -78,17 +78,18 @@ const getTimeFrames = (momentDay: number): any => {
 
 const getTimeSlots = (
   date: string,
+  raw: boolean = false,
   splits: number = 30 //the interval by which to cut the times
 ): string[] => {
   const interval: number = splits;
   const { startHour, startMin, endHour, endMin }: Frame = getTimeFrames(
-    moment(date).day()
+    moment(date).day() //not locale specific
   );
 
   const startTime: Moment = moment({ hour: startHour, minute: startMin });
   const endTime: Moment = moment({ hour: endHour, minute: endMin });
 
-  const timeSlices = splitTime(startTime, endTime, interval);
+  const timeSlices = splitTime(startTime, endTime, interval, raw);
   return timeSlices;
 };
 
