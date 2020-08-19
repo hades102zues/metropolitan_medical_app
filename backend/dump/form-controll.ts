@@ -109,10 +109,22 @@ exports.getAvailableTimes = (
       console.log(busy); //debug
       const busyTimeMoments: BusyMoment[] = busy.map((item: Busy, index) => {
         //start time
+        // const S_firstSplit: string = item.start.split("T")[1];
+        // const S_secondSplit: string[] = S_firstSplit.split(":");
+        // const S_appHour: number = Number(S_secondSplit[0]);
+        // const S_appMin: number = Number(S_secondSplit[1]);
+        //const S_appMoment = moment({ hour: S_appHour, minute: S_appMin }); //Date.now in ISO locale time, time over written. Never worry obout what the date is, because we never need to care.
+
         const S_splitter: string[] = item.start.split("T");
         const S_appMoment = moment(`${S_splitter[0]} ${S_splitter[1]}`);
 
         //end time
+        // const E_firstSplit: string = item.end.split("T")[1];
+        // const E_secondSplit: string[] = E_firstSplit.split(":");
+        // const E_appHour: number = Number(E_secondSplit[0]);
+        // const E_appMin: number = Number(E_secondSplit[1]);
+        //const E_appMoment = moment({ hour: E_appHour, minute: E_appMin }); //Date.now in ISO locale time, time over written. Never worry obout what the date is, because we never need to care.
+
         const E_splitter: string[] = item.end.split("T");
         const E_appMoment = moment(`${E_splitter[0]} ${E_splitter[1]}`);
 
@@ -125,12 +137,30 @@ exports.getAvailableTimes = (
       //Checks if an appointment time frame, time slot is avaiable.
       ISO_appointment24HRTimes.forEach((iso: string, i: number) => {
         //first convert the time slot into a moment
+        // const firstSplit: string = iso.split("T")[1];
+        // const secondSplit: string[] = firstSplit.split(":");
+        // const appHour: number = Number(secondSplit[0]);
+        // const appMin: number = Number(secondSplit[1]);
+        // const appMoment = moment({ hour: appHour, minute: appMin }); //Date.now in ISO locale time, time over written. The date portion is nothing we ever need to concern ourselves with.
+
         const A_splitter: string[] = iso.split("T");
         const appMoment = moment(`${A_splitter[0]} ${A_splitter[1]}`);
 
         //check to see if that time slot falls in between a busy period
         //and if so, flag the time slot as unavailable/conflicting
         busyTimeMoments.forEach((item: BusyMoment, index: number) => {
+          // console.log(
+          //   "Comparison APP:",
+          //   appMoment,
+          //   item.momentStart,
+          //   item.momentEnd,
+          //   appMoment.isBetween(
+          //     item.momentStart,
+          //     item.momentEnd,
+          //     undefined,
+          //     "[]"
+          //   )
+          // );
           if (
             appMoment.isBetween(
               item.momentStart,
