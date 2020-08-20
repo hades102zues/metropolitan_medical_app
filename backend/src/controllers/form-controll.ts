@@ -345,7 +345,9 @@ exports.postAppForm = (
   if (dayPoint.toLowerCase().includes("pm")) {
     if (!hour.includes("12")) hour = (Number(hour) + 12).toString(); //13 adjusted to 24hr time
   } else if (dayPoint.toLowerCase().includes("am")) {
-    hour = "0" + hour;
+    if (Number(hour) >= 1 && Number(hour) <= 9) hour = "0" + hour;
+
+    if (Number(hour) === 12) hour = "00";
   } else {
     return res.status(400).json({ message: "Broken time payload." });
   }
