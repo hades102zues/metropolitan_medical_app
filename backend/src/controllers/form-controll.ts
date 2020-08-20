@@ -157,12 +157,19 @@ exports.getAvailableTimes = (
         //check to see if that time slot falls in between a busy period
         //and if so, flag the time slot as unavailable/conflicting
         busyTimeMoments.forEach((item: BusyMoment, index: number) => {
+          const endAppMoment = appMoment.clone().add(interval, "m");
           if (
             appMoment.isBetween(
               item.momentStart,
               item.momentEnd,
               undefined,
               "[)" // ) because it is fine to schedule an event at the end of another
+            ) ||
+            endAppMoment.isBetween(
+              item.momentStart,
+              item.momentEnd,
+              undefined,
+              "[]"
             )
           ) {
             isConflicting[iso] = true;
@@ -410,12 +417,20 @@ exports.postAppForm = (
       const startDateTimeMoment: Moment = moment(`${firstHalf} ${secondHalf}`);
       let isConflict: boolean = false;
       busyTimeMoments.forEach((item: BusyMoment, index: number) => {
+        const endTimeMOment = startDateTimeMoment.clone().add(interval, "m");
+
         if (
           startDateTimeMoment.isBetween(
             item.momentStart,
             item.momentEnd,
             undefined,
             "[)" // ) because it is fine to schedule an event at the end of another
+          ) ||
+          endTimeMOment.isBetween(
+            item.momentStart,
+            item.momentEnd,
+            undefined,
+            "[]"
           )
         ) {
           isConflict = true;

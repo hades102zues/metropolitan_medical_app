@@ -35,7 +35,12 @@ import { useFormik, Form, Field } from "formik";
 const APP_URL = "http://localhost:3001/get-available-times";
 
 const Appointment = () => {
-  const [timeSlots, setTimeSlots]: [string[], any] = useState([]);
+  interface TimePair {
+    _time: string;
+    _isotime: string;
+  }
+
+  const [timeSlots, setTimeSlots]: [TimePair[], any] = useState([]);
   const [captchaDidVerify, setCaptcha]: [boolean, any] = useState(false); //flag for captcha verify
   const [dateDidChange, setDateDidChange]: [boolean, any] = useState(false); //used in service timeslot fetch
   const [dateTimeSlotLoading, setDateTimeSlotLoading]: [
@@ -152,7 +157,7 @@ const Appointment = () => {
   //formik
   const appFormSchema = Yup.object().shape({
     fullName: Yup.string()
-      .min(1, "Please supply your full name.")
+      .min(3, "Please supply your full name.")
       .required("Please supply your full name."),
 
     phoneNumber: Yup.string()
@@ -168,7 +173,7 @@ const Appointment = () => {
       .required("Please supply a service."),
 
     time: Yup.string()
-      .min(3, "Please supply a time.")
+      .min(4, "Please supply a time.")
       .required("Please supply a time."),
   });
 
@@ -402,22 +407,23 @@ const Appointment = () => {
                     />
                   ) : (
                     timeSlots.map(
-                      (time: string, i: number): JSX.Element => {
+                      (time: TimePair, i: number): JSX.Element => {
+                        const display: string = time._time;
                         return (
                           <div
                             className={
                               styles.times_box +
                               " " +
-                              (formik.values.time.includes(time)
+                              (formik.values.time.includes(display)
                                 ? styles.timesActive
                                 : " ")
                             }
                             onClick={(): void => {
-                              onServiceChange(time);
+                              onServiceChange(display);
                             }}
                             key={i}
                           >
-                            <p className={styles.time}>{time}</p>
+                            <p className={styles.time}>{display}</p>
                           </div>
                         );
                       }
