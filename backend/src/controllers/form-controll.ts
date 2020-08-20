@@ -173,7 +173,7 @@ exports.getAvailableTimes = (
               item.momentStart,
               item.momentEnd,
               undefined,
-              "[]"
+              "(]" // because it is fine to end an event at the start of another
             )
           ) {
             isConflicting[iso] = true;
@@ -468,13 +468,13 @@ exports.postAppForm = (
             item.momentStart,
             item.momentEnd,
             undefined,
-            "[)" // ) because it is fine to schedule an event at the end of another
+            "[)" // because it is fine to schedule an event at the end of another
           ) ||
           endTimeMOment.isBetween(
             item.momentStart,
             item.momentEnd,
             undefined,
-            "[]"
+            "(]" // because it is fine to end an event at the start of another
           )
         ) {
           isConflict = true;
