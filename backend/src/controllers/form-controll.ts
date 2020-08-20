@@ -162,7 +162,7 @@ exports.getAvailableTimes = (
               item.momentStart,
               item.momentEnd,
               undefined,
-              "[)" // ) because it is fine to have one event end and then another event start
+              "[)" // ) because it is fine to schedule an event at the end of another
             )
           ) {
             isConflicting[iso] = true;
@@ -333,7 +333,7 @@ exports.postAppForm = (
   const minutes: string = hour_minutes[1]; //"30"
   const dayPoint: string = split[1]; //"PM"
 
-  if (hour.length < 1 || minutes.length < 2)
+  if (hour.length < 1 || minutes.length < 2 || Number(minutes) >= 60)
     return res.status(400).json({ message: "Broken time payload." });
 
   if (dayPoint.toLowerCase().includes("pm")) {
@@ -407,7 +407,7 @@ exports.postAppForm = (
             item.momentStart,
             item.momentEnd,
             undefined,
-            "[)" // ) because it is fine to have one event end and then another event start
+            "[)" // ) because it is fine to schedule an event at the end of another
           )
         ) {
           isConflict = true;
@@ -425,13 +425,13 @@ exports.postAppForm = (
       const startDateTime: string = firstHalf + "T" + secondHalf; //ISO format
       console.log(startDateTime); //debug
       const endDateTime: Moment = startDateTimeMoment.clone();
-      endDateTime.add(interval - 1, "m");
+      endDateTime.add(interval, "m");
       console.log(endDateTime.format()); //debug
 
       const event = {
         summary: "Appointment: " + fullName,
         description: message,
-        colorId: 6,
+        colorId: 3,
         start: {
           dateTime: startDateTime,
           timeZone: TIME_ZONE,
