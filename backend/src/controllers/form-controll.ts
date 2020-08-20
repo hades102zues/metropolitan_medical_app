@@ -312,7 +312,7 @@ exports.postContactForm = (
 
   if (!validationResult(req).isEmpty()) {
     const defaultResponse: DefaultResponse = {
-      message: "Some required field were not filled out.",
+      message: "Input field requirements were not met.",
     };
     return res.status(400).json(defaultResponse);
   }
@@ -365,7 +365,7 @@ exports.postAppForm = (
 
   if (!validationResult(req).isEmpty()) {
     const defaultResponse: DefaultResponse = {
-      message: "Some required field were not filled out.",
+      message: "Input field requirements were not met.",
     };
     return res.status(400).json(defaultResponse);
   }
