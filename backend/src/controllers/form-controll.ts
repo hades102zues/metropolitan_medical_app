@@ -399,6 +399,7 @@ exports.postAppForm = (
 
       //check if startdate falls in a busy range
       const startDateTimeMoment: Moment = moment(`${firstHalf} ${secondHalf}`);
+      let isConflict: boolean = false;
       busyTimeMoments.forEach((item: BusyMoment, index: number) => {
         if (
           startDateTimeMoment.isBetween(
@@ -408,12 +409,16 @@ exports.postAppForm = (
             "[)" // ) because it is fine to have one event end and then another event start
           )
         ) {
-          return res
-            .status(400)
-            .json({ server: "Time slot is no longer available." });
+          isConflict = true;
+          return;
         }
       });
 
+      if (isConflict) {
+        return res
+          .status(400)
+          .json({ server: "Time slot is no longer available." });
+      }
       //ADD EVENT TO CALENDAR
       const startDateTime: string = firstHalf + "T" + secondHalf; //ISO format
       console.log(startDateTime); //debug
