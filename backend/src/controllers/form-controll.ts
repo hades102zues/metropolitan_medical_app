@@ -336,15 +336,21 @@ exports.postAppForm = (
   if (hour.length < 1 || minutes.length < 2 || Number(minutes) >= 60)
     return res.status(400).json({ message: "Broken time payload." });
 
+  console.log(
+    hour,
+    !hour.includes("12"),
+    Number(hour) !== 12,
+    dayPoint.toLowerCase().includes("pm")
+  );
   if (dayPoint.toLowerCase().includes("pm")) {
-    hour = (Number(hour) + 12).toString(); //13 adjusted to 24hr time
+    if (!hour.includes("12")) hour = (Number(hour) + 12).toString(); //13 adjusted to 24hr time
   } else if (dayPoint.toLowerCase().includes("am")) {
     hour = "0" + hour;
   } else {
     return res.status(400).json({ message: "Broken time payload." });
   }
 
-  console.log(hour, minutes, dayPoint);
+  console.log(hour, minutes, dayPoint); //debu
 
   const firstHalf: string = date;
   const secondHalf: string = hour + ":" + minutes + LOCAL_ISO_ENDING;
