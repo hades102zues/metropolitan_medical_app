@@ -333,14 +333,15 @@ exports.postAppForm = (
   const minutes: string = hour_minutes[1]; //"30"
   const dayPoint: string = split[1]; //"PM"
 
+  if (hour.length < 1 || minutes.length < 2)
+    return res.status(400).json({ message: "Broken time payload." });
+
   if (dayPoint.toLowerCase().includes("pm")) {
     hour = (Number(hour) + 12).toString(); //13 adjusted to 24hr time
   } else if (dayPoint.toLowerCase().includes("am")) {
     hour = "0" + hour;
   } else {
-    return res
-      .status(400)
-      .json({ server: "Invalid item supplied. Cannot fulfill request." });
+    return res.status(400).json({ message: "Broken time payload." });
   }
 
   console.log(hour, minutes, dayPoint);
@@ -415,9 +416,10 @@ exports.postAppForm = (
       });
 
       if (isConflict) {
-        return res
-          .status(400)
-          .json({ server: "Time slot is no longer available." });
+        return res.status(400).json({
+          server: "Time slot is no longer available.",
+          noLongerAvailable: true,
+        });
       }
       //ADD EVENT TO CALENDAR
       const startDateTime: string = firstHalf + "T" + secondHalf; //ISO format
