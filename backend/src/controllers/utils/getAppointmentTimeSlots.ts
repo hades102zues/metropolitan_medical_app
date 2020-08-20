@@ -79,7 +79,7 @@ const getTimeFrames = (momentDay: number): any => {
 const getTimeSlots = (
   date: string,
   raw: boolean = false,
-  splits: number = 30 //the interval by which to cut the times
+  splits: number //the interval by which to cut the times
 ): string[] => {
   const interval: number = splits;
   const { startHour, startMin, endHour, endMin }: Frame = getTimeFrames(

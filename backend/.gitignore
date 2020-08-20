@@ -12,3 +12,4 @@ typings/
 **/lib
 **/*.env
 **/service_account.json
+**/build

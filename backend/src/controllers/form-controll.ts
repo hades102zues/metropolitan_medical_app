@@ -1,20 +1,59 @@
-import { Request, Response, NextFunction, response } from "express";
-const { google } = require("googleapis");
+//LOCALS
 import ServiceAccount from "./utils/getServiceAccountClient";
-import moment, { Moment } from "moment";
-
 import createTimeSlots from "./utils/createTimeSlots";
 import getAppointmentSlots from "./utils/getAppointmentTimeSlots";
 
+//PACKAGES
+import { Request, Response, NextFunction, response } from "express";
+import { validationResult } from "express-validator";
+import moment, { Moment } from "moment";
+const { google } = require("googleapis");
+import mailgun from "mailgun-js";
+
+//KEYS
+//mailgun api
+
+const DOMAIN: any = process.env.MAILGUN_DOMAIN;
+const APIKEY: any = process.env.MAILGUN_KEY;
+
+const TO: any = process.env.MAIL_TO; //email that the mail will be delivered to
+const FROM: any = process.env.MAIL_FROM; //the domain that we'll be sending the emails from ;
+const EMAIL_NAME: any = process.env.MAIL_NAME; //the name that will appear in the from line
+
 const CALENDAR_ID = "jwiggins.works@gmail.com";
+
+//globals
+const mg = mailgun({
+  apiKey: APIKEY,
+  domain: DOMAIN,
+});
+const interval: number = 30; //the interval by which to cut the times
+const TIME_ZONE: string = "America/Barbados";
+const DAY_START: string = "T00:00:00-04:00";
+const DAY_END: string = "T23:59:59-04:00";
+const LOCAL_ISO_ENDING: string = ":00-04:00";
+
+interface idItem {
+  id: string;
+}
+interface Resource {
+  timeMin: string;
+  timeMax: string;
+  timeZone: string;
+  items: idItem[];
+}
 
 exports.getAvailableTimes = (
   req: Request,
   res: Response,
   next: NextFunction
 ): any => {
+  interface TimePair {
+    _time: string;
+    _isotime: string;
+  }
   interface slotsResponse {
-    availableTimeSlots: string[];
+    availableTimeSlots: TimePair[];
   }
 
   //note that toIsoString() will produce a RFC3339/ISO timestamp in the UTC timezone!!!.
@@ -34,21 +73,17 @@ exports.getAvailableTimes = (
   const account = ServiceAccount();
   const calendar = google.calendar({ version: "v3", auth: account });
 
-  const TIME_ZONE: string = "America/Barbados";
-  const DAY_START: string = "T00:00:00-04:00";
-  const DAY_END: string = "T23:59:59-04:00";
-  const LOCAL_ISO_ENDING: string = ":00-04:00";
   const date: string = req.body.date; //api call date
 
   //**EDGE NEEDS TO BE SUPPLIED HERE */
   //handle sunday here and date >= current barbados time+2
-  if (moment(date).day() === 0) {
+  if (moment(date).day() === 0 || !validationResult(req).isEmpty()) {
     const defaultResponse: slotsResponse = { availableTimeSlots: [] };
     return res.status(200).json(defaultResponse);
   }
 
   //Constructs an array of ISO strings using the appointment time frame slots, for the particular date in question.
-  const appointment24HRTimes = getAppointmentSlots(date, true);
+  const appointment24HRTimes = getAppointmentSlots(date, true, interval);
   const ISO_appointment24HRTimes = appointment24HRTimes.map(
     (time: string, index: number): string => {
       const split: string[] = time.split(":");
@@ -70,15 +105,6 @@ exports.getAvailableTimes = (
   /********************
    ***********BUSY/FREE DETERMINATION******
    ********************/
-  interface idItem {
-    id: string;
-  }
-  interface Resource {
-    timeMin: string;
-    timeMax: string;
-    timeZone: string;
-    items: idItem[];
-  }
 
   //finds all busy periods for the date in question.
   const resourceItem: Resource = {
@@ -150,7 +176,7 @@ exports.getAvailableTimes = (
        ***********SEND BACK FREE TIME SLOTS******
        ********************/
 
-      let availableTimeSlots: string[] = [];
+      let availableTimeSlots: TimePair[] = [];
 
       //create a slot item of "HH:MM AM/PM" and push it onto available slots.
       for (const time in isConflicting) {
@@ -172,10 +198,19 @@ exports.getAvailableTimes = (
         });
         const endMoment: Moment = moment({ hour: startHour, minute: startMin });
 
-        const timeSlot: string[] = createTimeSlots(startMoment, endMoment);
-        // console.log("TIMESLOT", timeSlot);
-        //add info
-        availableTimeSlots = availableTimeSlots.concat(timeSlot);
+        const timeSlot: string[] = createTimeSlots(
+          startMoment,
+          endMoment,
+          interval
+        ); //will always be a single item
+
+        const timePair: TimePair[] = [
+          {
+            _time: timeSlot[0],
+            _isotime: time,
+          },
+        ];
+        availableTimeSlots = availableTimeSlots.concat(timePair);
       }
 
       console.log(availableTimeSlots);
@@ -264,5 +299,191 @@ exports.postAppForm = (
   res: Response,
   next: NextFunction
 ): any => {
-  return res.status(200).json({ message: "App form" });
+  interface DefaultResponse {
+    message: string;
+  }
+  interface AppointmentBody {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+    message: string;
+    date: string;
+    service: string;
+    time: string;
+  }
+
+  if (!validationResult(req).isEmpty()) {
+    const defaultResponse: DefaultResponse = {
+      message: "Some required field were not filled out.",
+    };
+    return res.status(400).json(defaultResponse);
+  }
+
+  const account = ServiceAccount();
+  const calendar = google.calendar({ version: "v3", auth: account });
+  const body: AppointmentBody = req.body;
+  const { fullName, service, date, time, phoneNumber, email, message } = body;
+
+  //********
+  //*****Transform time sent in body to iso splits
+  //*******
+  const split: string[] = time.split(" "); //"1:30 PM"
+  const hour_minutes: string[] = split[0].split(":"); //["1","30"]
+  let hour: string = hour_minutes[0]; //"1"
+  const minutes: string = hour_minutes[1]; //"30"
+  const dayPoint: string = split[1]; //"PM"
+
+  if (dayPoint.toLowerCase().includes("pm")) {
+    hour = (Number(hour) + 12).toString(); //13 adjusted to 24hr time
+  } else if (dayPoint.toLowerCase().includes("am")) {
+    hour = "0" + hour;
+  } else {
+    return res
+      .status(400)
+      .json({ server: "Invalid item supplied. Cannot fulfill request." });
+  }
+
+  console.log(hour, minutes, dayPoint);
+
+  const firstHalf: string = date;
+  const secondHalf: string = hour + ":" + minutes + LOCAL_ISO_ENDING;
+
+  //the splits are used to create a start date moment for busy
+  //the splits are used to create a start date iso for the event creation
+
+  //********
+  //*****Determine if time slot is still available
+  //*******
+
+  const resourceItem: Resource = {
+    timeMin: date + DAY_START,
+    timeMax: date + DAY_END,
+    timeZone: TIME_ZONE,
+    items: [{ id: CALENDAR_ID }],
+  };
+
+  calendar.freebusy.query(
+    {
+      resource: resourceItem,
+    },
+    (err: any, response: any) => {
+      if (err) return next(err);
+
+      interface Busy {
+        start: string;
+        end: string;
+      }
+
+      interface BusyMoment {
+        momentStart: Moment;
+        momentEnd: Moment;
+      }
+
+      //Converts the busy time frame into moments so that confliction checks can be made through moment.isBetween
+      const busy: Busy[] = response.data.calendars[CALENDAR_ID].busy;
+      console.log(busy); //debug
+      const busyTimeMoments: BusyMoment[] = busy.map((item: Busy, index) => {
+        //start time
+        const S_splitter: string[] = item.start.split("T");
+        const S_appMoment = moment(`${S_splitter[0]} ${S_splitter[1]}`);
+
+        //end time
+        const E_splitter: string[] = item.end.split("T");
+        const E_appMoment = moment(`${E_splitter[0]} ${E_splitter[1]}`);
+
+        return {
+          momentStart: S_appMoment,
+          momentEnd: E_appMoment,
+        };
+      });
+
+      //check if startdate falls in a busy range
+      const startDateTimeMoment: Moment = moment(`${firstHalf} ${secondHalf}`);
+      busyTimeMoments.forEach((item: BusyMoment, index: number) => {
+        if (
+          startDateTimeMoment.isBetween(
+            item.momentStart,
+            item.momentEnd,
+            undefined,
+            "[)" // ) because it is fine to have one event end and then another event start
+          )
+        ) {
+          return res
+            .status(400)
+            .json({ server: "Time slot is no longer available." });
+        }
+      });
+
+      //ADD EVENT TO CALENDAR
+      const startDateTime: string = firstHalf + "T" + secondHalf; //ISO format
+      console.log(startDateTime); //debug
+      const endDateTime: Moment = startDateTimeMoment.clone();
+      endDateTime.add(interval - 1, "m");
+      console.log(endDateTime.format()); //debug
+
+      const event = {
+        summary: "Appointment: " + fullName,
+        description: message,
+        colorId: 6,
+        start: {
+          dateTime: startDateTime,
+          timeZone: TIME_ZONE,
+        },
+        end: {
+          dateTime: endDateTime.format(),
+          timeZone: TIME_ZONE,
+        },
+      };
+
+      calendar.events.insert(
+        {
+          //setting this to primary would make the event on the service accounts calendar!!
+          //Go into the specific Google Calendar's setting and share the calendar you want with the service account.
+          //Set these permissions to "Make changes to event"
+          //You can find the calender Id for the calender in the settings as well
+          calendarId: CALENDAR_ID,
+          resource: event,
+        },
+        function (err: any, event: any) {
+          if (err) {
+            console.log(
+              "There was an error contacting the Calendar service: " + err
+            ); //debug
+            return;
+          }
+          console.log("Event successfully created: ", event); //debug
+        }
+      );
+
+      //Deposit appointment slip in our business email
+
+      const mail = {
+        from: `${EMAIL_NAME} <${FROM.trim()}>`,
+        to: TO,
+        subject: "Appointment Booked: " + req.body.date,
+        html: `
+    <html><body><div class="body_div">
+        <h1>Appointment Booked</h1>
+        <p>Client: ${fullName}</p> 
+        <p>Service: ${service}</p>
+        <p>Appointment Date: ${date}</p>
+        <p>Appointment Time: ${time} </p>
+        <p>Phone: ${phoneNumber}</p>
+        <p>Email: ${email}</p>
+        <p>Message: ${message}</p>
+
+        <p style="margin-top:50px; text-align:center; color:#ccc;">Generated by the Metropolitan Medical website.</p>
+    </div></body></html>`,
+      };
+
+      mg.messages().send(mail as any, (error, body) => {
+        if (!error)
+          return res
+            .status(200)
+            .json({ server: "Email was successfully sent.", body });
+
+        return res.status(500).json({ server: "Email was not sent", error });
+      });
+    }
+  ); //end of busy query
 };

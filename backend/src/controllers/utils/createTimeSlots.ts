@@ -3,7 +3,7 @@ import moment, { Moment } from "moment";
 const splitTime = (
   startTime: Moment,
   endTime: Moment,
-  interval: number = 30,
+  interval: number,
   raw: boolean = false
 ): string[] => {
   //**NOTE never push a raw moment to an array!!!

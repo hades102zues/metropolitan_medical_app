@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 import cors from "cors";
+import path from "path";
 require("dotenv").config();
 
 //basic setup

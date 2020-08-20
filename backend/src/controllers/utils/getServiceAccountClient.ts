@@ -1,10 +1,14 @@
-//google apis failed to provide a type declaration file
+//LOCALS
 
+//PACKAGES
 const { google } = require("googleapis");
 import path from "path";
 
-const googleAuthKeys = require("./service_account.json"); //api keys
-const apiScopes = ["https://www.googleapis.com/auth/calendar"]; //what apis we will be manipulating
+//KEYS
+const googleAuthKeys = require(path.resolve(
+  process.cwd(),
+  "service_account.json"
+)); //The structure of the private key does not parse well when imported from .env
 
 const getNewTokensV1 = (jwtClient: any) => {
   //authorize gets and then sets the token within the Client
@@ -18,6 +22,8 @@ const getNewTokensV1 = (jwtClient: any) => {
 };
 
 const getServiceAccountClient = () => {
+  const apiScopes = ["https://www.googleapis.com/auth/calendar"]; //what apis we will be manipulating
+
   //provide client credentials
   const googleJwtClient = new google.auth.JWT(
     googleAuthKeys.client_email,
