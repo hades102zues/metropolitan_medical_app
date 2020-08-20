@@ -16,7 +16,18 @@ router.post(
   [body("date").isLength({ min: 10 })],
   formControllers.getAvailableTimes
 );
-router.post("/send-contact-form", formControllers.postContactForm);
+
+router.post(
+  "/send-contact-form",
+  [
+    body("fullName").isLength({ min: 3 }),
+    body("email").isEmail(),
+    body("subject").isLength({ min: 5 }),
+    body("message").isLength({ min: 5 }),
+  ],
+  formControllers.postContactForm
+);
+
 router.post(
   "/send-appointment-form",
   [
