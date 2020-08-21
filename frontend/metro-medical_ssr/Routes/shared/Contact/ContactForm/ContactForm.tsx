@@ -19,7 +19,7 @@ const ContactForm = () => {
 
   const contactFormSchema = Yup.object().shape({
     fullName: Yup.string()
-      .min(1, "Please supply your full name.")
+      .min(3, "Please supply your full name.")
       .required("Please supply your full name."),
 
     email: Yup.string()
@@ -27,11 +27,11 @@ const ContactForm = () => {
       .required("Please enter a valid email address."),
 
     subject: Yup.string()
-      .min(1, "Please enter a subject.")
+      .min(5, "Please enter a subject.")
       .required("Please enter a subject."),
 
     message: Yup.string()
-      .min(1, "Please supply a message.")
+      .min(5, "Please supply a message.")
       .required("Please supply a message."),
   });
   const formik = useFormik({

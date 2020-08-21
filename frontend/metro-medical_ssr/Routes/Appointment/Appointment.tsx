@@ -32,7 +32,9 @@ import { time } from "console";
 import * as Yup from "yup";
 import { useFormik, Form, Field } from "formik";
 
-const APP_URL = "http://localhost:3001/get-available-times";
+const APPOINTMENT_FORM_TARGET_URL: string =
+  "http://localhost:3001/send-appointment-form";
+const TIMESLOTS_TARGET_URL = "http://localhost:3001/get-available-times";
 
 const Appointment = () => {
   interface TimePair {
@@ -48,6 +50,187 @@ const Appointment = () => {
     any
   ] = useState(false); //used as a flag to display spinner while fetching timeslots
   const [timeSlotError, setTimeSlotError]: [boolean, any] = useState(false);
+
+  const dataTimeSlotsFetch = (): void => {
+    //server expects iso format
+    const isoDate = new Date(formik.values.date).toISOString().split("T")[0];
+
+    interface Request {
+      date: string;
+    }
+
+    const request: Request = { date: isoDate };
+    setDateTimeSlotLoading(true);
+
+    //console.log(request, isoDate);//debug
+
+    fetch(TIMESLOTS_TARGET_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(request),
+    })
+      .then((res: any) => {
+        if (res.status === 200) {
+          setTimeSlotError(false);
+        } else {
+          setTimeSlotError(true);
+          setDateTimeSlotLoading(true);
+          formik.setFieldValue("errorDidOccur", true);
+        }
+        return res.json(); //extract data from the promise
+      })
+      .then((data: { availableTimeSlots: string[] }) => {
+        if (data.availableTimeSlots) {
+          setDateTimeSlotLoading(false);
+          setTimeSlots(data.availableTimeSlots);
+        } else {
+          setTimeSlotError(true);
+          setDateTimeSlotLoading(true);
+          formik.setFieldValue("errorDidOccur", true);
+          console.error("Failed to fetch time slots: ");
+        }
+      })
+      .catch((err: any) => {
+        setTimeSlotError(true);
+        setDateTimeSlotLoading(true);
+        formik.setFieldValue("errorDidOccur", true);
+        console.error("Failed to fetch time slots: ", err);
+      });
+  };
+
+  //formik
+  const appFormSchema = Yup.object().shape({
+    fullName: Yup.string()
+      .min(3, "Please supply your full name.")
+      .required("Please supply your full name."),
+
+    phoneNumber: Yup.string()
+      .min(7, "Please enter a valid phone mumber")
+      .required("Please enter a valid phone mumber"),
+
+    date: Yup.string()
+      .min(8, "Please enter a valid date.")
+      .required("Please enter a valid date."),
+
+    service: Yup.string()
+      .min(3, "Please supply a service.")
+      .required("Please supply a service."),
+
+    time: Yup.string()
+      .min(4, "Please supply a time.")
+      .required("Please supply a time."),
+  });
+
+  const miminumAllowableDate: Date = new Date();
+  miminumAllowableDate.setDate(miminumAllowableDate.getDate() + 2);
+
+  const formik = useFormik({
+    initialValues: {
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      message: "",
+      date: miminumAllowableDate.toLocaleDateString("en-US", {
+        timeZone: "America/Barbados",
+      }), // gives a short date format : MM/dd/YYYY; and ensures the client is operating on barbados time
+      service: "",
+      time: "",
+
+      //have a flag for each status/scenerio you planned to have occur
+      isWaiting: false, //used to signal waiting on server response
+      formDidSubmit: false, //used to display success message if status 200 - form accepted
+      errorDidOccur: false, //displays error message if status 400 - form rejected
+      timeSlotTaken: false, //display error message if status 409 - timeslot no longer available
+    },
+    onSubmit: (values) => {
+      interface FetchPackage {
+        fullName: string;
+        email: string;
+        phoneNumber: string;
+        message: string;
+        date: string;
+        service: string;
+        time: string;
+      }
+
+      //RECAPTCHA VERIFY OR REJECT
+
+      //necessary for easy server manipulation
+      const isoFormatedDateWithoutTime = new Date(values.date)
+        .toISOString()
+        .split("T")[0]; //time portion would be wrong
+
+      const fPackage: FetchPackage = {
+        fullName: values.fullName,
+        email: values.email,
+        phoneNumber: values.phoneNumber,
+        message: values.message,
+        date: isoFormatedDateWithoutTime,
+        service: values.service,
+        time: values.time,
+      };
+
+      interface Headers {
+        "Content-Type": string;
+      }
+
+      interface FetchParameters {
+        method: string;
+        headers: Headers;
+        body: JSON;
+      }
+      const fetchParameters = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fPackage),
+      };
+      console.log("Appointment request package: ", fPackage);
+
+      formik.setFieldValue("isWaiting", true);
+      formik.setFieldValue("formDidSubmit", false);
+      formik.setFieldValue("errorDidOccur", false);
+      formik.setFieldValue("timeSlotTaken", false);
+
+      //Lesson learnt:
+      //the setFieldValue() will not update the value until after onSubmit has concluded. (Note that it also triggers a rerender)
+      //Our html elements will update themselves in the intuitive manner we expect,
+      //However, the change in the value will not occur immediately and any attempt to use them as flags will lead to failure!!!!
+      //if you need flags, define new variables...
+
+      let status: number;
+
+      fetch(APPOINTMENT_FORM_TARGET_URL, fetchParameters)
+        .then((response: any) => {
+          //set flags based on status
+
+          formik.setFieldValue("isWaiting", false);
+
+          if (response.status === 200) {
+            formik.setFieldValue("formDidSubmit", true);
+          }
+
+          if (response.status === 400) {
+            formik.setFieldValue("errorDidOccur", true);
+            console.error("Error: Invalid form was submitted.");
+          }
+
+          if (response.status === 409) {
+            formik.setFieldValue("timeSlotTaken", true);
+          }
+
+          dataTimeSlotsFetch();
+          formik.setFieldValue("time", "", false);
+          return response.json();
+        })
+        .then((data) => {})
+        .catch((err: any) => {
+          formik.setFieldValue("isWaiting", false);
+          formik.setFieldValue("errorDidOccur", true);
+          console.error("Error caught on form request.", err);
+        });
+    },
+    validationSchema: appFormSchema,
+  });
 
   const defaultMaterialTheme = createMuiTheme({
     typography: {
@@ -154,59 +337,6 @@ const Appointment = () => {
 
   //time end
 
-  //formik
-  const appFormSchema = Yup.object().shape({
-    fullName: Yup.string()
-      .min(3, "Please supply your full name.")
-      .required("Please supply your full name."),
-
-    phoneNumber: Yup.string()
-      .min(7, "Please enter a valid phone mumber")
-      .required("Please enter a valid phone mumber"),
-
-    date: Yup.string()
-      .min(8, "Please enter a valid date.")
-      .required("Please enter a valid date."),
-
-    service: Yup.string()
-      .min(3, "Please supply a service.")
-      .required("Please supply a service."),
-
-    time: Yup.string()
-      .min(4, "Please supply a time.")
-      .required("Please supply a time."),
-  });
-
-  const miminumAllowableDate: Date = new Date();
-  miminumAllowableDate.setDate(miminumAllowableDate.getDate() + 2);
-
-  const formik = useFormik({
-    initialValues: {
-      fullName: "",
-      email: "",
-      phoneNumber: "",
-      message: "",
-      date: miminumAllowableDate.toLocaleDateString("en-US", {
-        timeZone: "America/Barbados",
-      }), // gives a short date format : MM/dd/YYYY; and ensures the client is operating on barbados time
-      service: "",
-      time: "",
-
-      formDidSubmit: false, //displays success message if server responded with a 2xx
-      errorDidOccur: false, //displays error message if server responded with anything other than 2xx
-      isWaiting: false, //display message while waiting on server response
-    },
-    onSubmit: (values) => {
-      //necessary for easy server manipulation
-      const isoFormatedDateWithoutTime = new Date(values.date)
-        .toISOString()
-        .split("T")[0];
-      console.log(new Date(values.date).toISOString());
-      console.log(isoFormatedDateWithoutTime, "handle submit:", values);
-    },
-    validationSchema: appFormSchema,
-  });
-
   // date picker handler
   const handleDateChange = (date: Date | null) => {
     formik.setFieldValue(
@@ -220,49 +350,6 @@ const Appointment = () => {
     formik.setFieldValue("service", event.target.value as string);
   };
 
-  const dataTimeSlotsFetch = (): void => {
-    //server expects iso format
-    const isoDate = new Date(formik.values.date).toISOString().split("T")[0];
-
-    interface Request {
-      date: string;
-    }
-
-    const request: Request = { date: isoDate };
-    setDateTimeSlotLoading(true);
-
-    //console.log(request, isoDate);//debug
-
-    fetch(APP_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(request),
-    })
-      .then((res: any) => {
-        if (res.status === 200) {
-          setTimeSlotError(false);
-          return res.json(); //extract data from the promise
-        } else {
-          setTimeSlotError(true);
-          setDateTimeSlotLoading(true);
-        }
-      })
-      .then((data: { availableTimeSlots: string[] }) => {
-        if (data.availableTimeSlots) {
-          setDateTimeSlotLoading(false);
-          setTimeSlots(data.availableTimeSlots);
-        } else {
-          setTimeSlotError(true);
-          setDateTimeSlotLoading(true);
-        }
-      })
-      .catch((err: any) => {
-        console.error(err);
-        setTimeSlotError(true);
-        setDateTimeSlotLoading(true);
-      });
-  };
-
   //onMount
   useEffect(() => {
     dataTimeSlotsFetch();
@@ -272,10 +359,11 @@ const Appointment = () => {
   useEffect(() => {
     dataTimeSlotsFetch();
     setDateDidChange(false);
-    formik.setFieldValue("time", "");
+    formik.setFieldValue("time", "", false);
   }, [dateDidChange]);
   //formik end
 
+  console.log("Regular: ", formik.values);
   return (
     <PageFrame pageTitle="Book Now">
       <section className={styles.appointment}>
@@ -432,7 +520,7 @@ const Appointment = () => {
                 </div>
 
                 <button type="submit" className={styles.form_button}>
-                  Submit Now
+                  {formik.values.isWaiting ? "Sending..." : "Submit Now"}
                 </button>
               </form>
 
@@ -444,7 +532,14 @@ const Appointment = () => {
 
               {formik.values.errorDidOccur ? (
                 <p className={styles.form_error}>
-                  An error has occured. Please, try a gain Later.
+                  An error has occured. Please, try again later.
+                </p>
+              ) : null}
+
+              {formik.values.timeSlotTaken ? (
+                <p className={styles.form_error}>
+                  Sorry, that time has been taken. Please, choose another
+                  appointment slot and resubmit your form.
                 </p>
               ) : null}
             </div>
