@@ -497,7 +497,7 @@ exports.postAppForm = (
       console.log(endDateTime.format()); //debug
 
       const event = {
-        summary: "Appointment: " + fullName,
+        summary: service + " Appointment: " + fullName,
         description: message,
         colorId: 3,
         start: {
