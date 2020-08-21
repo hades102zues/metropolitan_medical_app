@@ -176,10 +176,10 @@ const Appointment = () => {
 
       interface FetchParameters {
         method: string;
-        headers: Headers;
-        body: string;
+        headers: HeadersInit;
+        body: BodyInit;
       }
-      const fetchParameters = {
+      const fetchParameters: FetchParameters = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(fPackage),

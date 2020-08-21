@@ -61,8 +61,8 @@ const ContactForm = () => {
 
       interface FetchParameters {
         method: string;
-        headers: Headers;
-        body: JSON;
+        headers: HeadersInit;
+        body: BodyInit;
       }
 
       const fetchPackage: FetchPackage = {
@@ -97,7 +97,7 @@ const ContactForm = () => {
         });
     },
     validationSchema: contactFormSchema,
-  }).catch();
+  });
 
   return (
     <div className={styles.contactUs}>
