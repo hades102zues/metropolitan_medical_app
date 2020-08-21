@@ -177,7 +177,7 @@ const Appointment = () => {
       interface FetchParameters {
         method: string;
         headers: Headers;
-        body: JSON;
+        body: string;
       }
       const fetchParameters = {
         method: "POST",

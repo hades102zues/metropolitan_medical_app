@@ -4,6 +4,7 @@ import styles from "./ContactForm.module.css";
 import * as Yup from "yup";
 import { useFormik, Form, Field } from "formik";
 
+const CONTACT_FORM_TARGET_URL = "http://localhost:3001/send-contact-form";
 const ContactForm = () => {
   interface InitialValues {
     fullName: string;
@@ -42,15 +43,61 @@ const ContactForm = () => {
       message: "",
       captchaDidVerify: false, //flag for captcha verify
 
-      formDidSubmit: false, //displays success message if server responded with a 2xx
-      errorDidOccur: false, //displays error message if server responded with anything other than 2xx
-      isWaiting: false, //display message while waiting on server response
+      //have a flag for each status/scenerio you planned to have occur
+      isWaiting: false, //used to signal waiting on server response
+      formDidSubmit: false, //used to display success message if status 200 - form accepted
+      errorDidOccur: false, //displays error message if status 400 - form rejected
     },
     onSubmit: (values) => {
-      console.log(values);
+      interface FetchPackage {
+        fullName: string;
+        email: string;
+        subject: string;
+        message: string;
+      }
+      interface Headers {
+        "Content-Type": string;
+      }
+
+      interface FetchParameters {
+        method: string;
+        headers: Headers;
+        body: JSON;
+      }
+
+      const fetchPackage: FetchPackage = {
+        fullName: values.fullName,
+        email: values.email,
+        subject: values.subject,
+        message: values.message,
+      };
+
+      const fetchParameters: FetchParameters = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fetchPackage),
+      };
+
+      formik.setFieldValue("isWaiting", true);
+      formik.setFieldValue("formDidSubmit", false);
+      formik.setFieldValue("errorDidOccur", false);
+
+      fetch(CONTACT_FORM_TARGET_URL, fetchParameters)
+        .then((response) => {
+          formik.setFieldValue("isWaiting", false);
+          if (response.status === 200)
+            formik.setFieldValue("formDidSubmit", true);
+          if (response.status === 400)
+            formik.setFieldValue("errorDidOccur", true);
+        })
+        .catch((err) => {
+          formik.setFieldValue("isWaiting", false);
+          formik.setFieldValue("errorDidOccur", true);
+          console.error("Error caught on form request.", err);
+        });
     },
     validationSchema: contactFormSchema,
-  });
+  }).catch();
 
   return (
     <div className={styles.contactUs}>
