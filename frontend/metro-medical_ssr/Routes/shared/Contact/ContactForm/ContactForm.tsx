@@ -4,7 +4,11 @@ import styles from "./ContactForm.module.css";
 import * as Yup from "yup";
 import { useFormik, Form, Field } from "formik";
 
-const CONTACT_FORM_TARGET_URL = "http://localhost:3001/send-contact-form";
+//const BASE_URL = "https://c1ed827dd85c.ngrok.io";
+const BASE_URL = "http://localhost:3001";
+
+const CONTACT_FORM_TARGET_URL = BASE_URL + "/send-contact-form";
+
 const ContactForm = () => {
   interface InitialValues {
     fullName: string;
@@ -108,75 +112,77 @@ const ContactForm = () => {
         </div>
         <div className={styles.contactFormArea}>
           <div className={styles.contactForm}>
-            <form onSubmit={formik.handleSubmit} className={styles.form}>
-              <input
-                placeholder="Full Name*"
-                className={styles.form_item + " " + styles.itemAdjust}
-                type="text"
-                id="fullName"
-                name="fullName"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                value={formik.values.fullName}
-                style={{
-                  border:
-                    formik.touched.fullName && formik.errors.fullName
-                      ? "1px solid red"
-                      : null,
-                }}
-              />
-              <input
-                placeholder="Email*"
-                className={styles.form_item + " " + styles.itemAdjust}
-                type="email"
-                id="email"
-                name="email"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-                style={{
-                  border:
-                    formik.touched.email && formik.errors.email
-                      ? "1px solid red"
-                      : null,
-                }}
-              />
-              <input
-                placeholder="Subject*"
-                className={styles.form_item}
-                type="text"
-                id="subject"
-                name="subject"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.subject}
-                style={{
-                  border:
-                    formik.touched.subject && formik.errors.subject
-                      ? "1px solid red"
-                      : null,
-                }}
-              />
-              <textarea
-                rows={6}
-                placeholder="Message*"
-                className={styles.form_textarea}
-                id="message"
-                name="message"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.message}
-                style={{
-                  border:
-                    formik.touched.message && formik.errors.message
-                      ? "1px solid red"
-                      : null,
-                }}
-              ></textarea>
-              <button type="submit" className={styles.form_button}>
-                Submit Now
-              </button>
-            </form>
+            {formik.values.formDidSubmit ? null : (
+              <form onSubmit={formik.handleSubmit} className={styles.form}>
+                <input
+                  placeholder="Full Name*"
+                  className={styles.form_item + " " + styles.itemAdjust}
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.fullName}
+                  style={{
+                    border:
+                      formik.touched.fullName && formik.errors.fullName
+                        ? "1px solid red"
+                        : null,
+                  }}
+                />
+                <input
+                  placeholder="Email*"
+                  className={styles.form_item + " " + styles.itemAdjust}
+                  type="email"
+                  id="email"
+                  name="email"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                  style={{
+                    border:
+                      formik.touched.email && formik.errors.email
+                        ? "1px solid red"
+                        : null,
+                  }}
+                />
+                <input
+                  placeholder="Subject*"
+                  className={styles.form_item}
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.subject}
+                  style={{
+                    border:
+                      formik.touched.subject && formik.errors.subject
+                        ? "1px solid red"
+                        : null,
+                  }}
+                />
+                <textarea
+                  rows={6}
+                  placeholder="Message*"
+                  className={styles.form_textarea}
+                  id="message"
+                  name="message"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.message}
+                  style={{
+                    border:
+                      formik.touched.message && formik.errors.message
+                        ? "1px solid red"
+                        : null,
+                  }}
+                ></textarea>
+                <button type="submit" className={styles.form_button}>
+                  {formik.values.isWaiting ? "Sending..." : "Submit Now"}
+                </button>
+              </form>
+            )}
 
             {formik.values.formDidSubmit ? (
               <p className={styles.form_submit}>

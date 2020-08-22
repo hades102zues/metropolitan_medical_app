@@ -32,9 +32,11 @@ import { time } from "console";
 import * as Yup from "yup";
 import { useFormik, Form, Field } from "formik";
 
-const APPOINTMENT_FORM_TARGET_URL: string =
-  "http://localhost:3001/send-appointment-form";
-const TIMESLOTS_TARGET_URL = "http://localhost:3001/get-available-times";
+//const BASE_URL = "https://c1ed827dd85c.ngrok.io";
+const BASE_URL = "http://localhost:3001";
+
+const APPOINTMENT_FORM_TARGET_URL: string = BASE_URL + "/send-appointment-form";
+const TIMESLOTS_TARGET_URL = BASE_URL + "/get-available-times";
 
 const Appointment = () => {
   interface TimePair {
@@ -50,6 +52,7 @@ const Appointment = () => {
     any
   ] = useState(false); //used as a flag to display spinner while fetching timeslots
   const [timeSlotError, setTimeSlotError]: [boolean, any] = useState(false);
+  const [submittedForm, setSubmittedForm]: [any, any] = useState({}); //the successfully submitted form.
 
   const dataTimeSlotsFetch = (): void => {
     //server expects iso format
@@ -124,24 +127,39 @@ const Appointment = () => {
   const miminumAllowableDate: Date = new Date();
   miminumAllowableDate.setDate(miminumAllowableDate.getDate() + 2);
 
-  const formik = useFormik({
-    initialValues: {
-      fullName: "",
-      email: "",
-      phoneNumber: "",
-      message: "",
-      date: miminumAllowableDate.toLocaleDateString("en-US", {
-        timeZone: "America/Barbados",
-      }), // gives a short date format : MM/dd/YYYY; and ensures the client is operating on barbados time
-      service: "",
-      time: "",
+  interface FormShape {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+    message: string;
+    date: string;
+    service: string;
+    time: string;
+    isWaiting: boolean;
+    formDidSubmit: boolean;
+    errorDidOccur: boolean;
+    timeSlotTaken: boolean;
+  }
 
-      //have a flag for each status/scenerio you planned to have occur
-      isWaiting: false, //used to signal waiting on server response
-      formDidSubmit: false, //used to display success message if status 200 - form accepted
-      errorDidOccur: false, //displays error message if status 400 - form rejected
-      timeSlotTaken: false, //display error message if status 409 - timeslot no longer available
-    },
+  const form: FormShape = {
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    message: "",
+    date: miminumAllowableDate.toLocaleDateString("en-US", {
+      timeZone: "America/Barbados",
+    }), // gives a short date format : MM/dd/YYYY; and ensures the client is operating on barbados time
+    service: "",
+    time: "",
+
+    //have a flag for each status/scenerio you planned to have occur
+    isWaiting: false, //used to signal waiting on server response
+    formDidSubmit: false, //used to display success message if status 200 - form accepted
+    errorDidOccur: false, //displays error message if status 400 - form rejected
+    timeSlotTaken: false, //display error message if status 409 - timeslot no longer available
+  };
+  const formik = useFormik({
+    initialValues: form,
     onSubmit: (values) => {
       interface FetchPackage {
         fullName: string;
@@ -190,6 +208,7 @@ const Appointment = () => {
       formik.setFieldValue("formDidSubmit", false);
       formik.setFieldValue("errorDidOccur", false);
       formik.setFieldValue("timeSlotTaken", false);
+      setSubmittedForm({});
 
       //Lesson learnt:
       //the setFieldValue() will not update the value until after onSubmit has concluded. (Note that it also triggers a rerender)
@@ -207,6 +226,7 @@ const Appointment = () => {
 
           if (response.status === 200) {
             formik.setFieldValue("formDidSubmit", true);
+            setSubmittedForm(values);
           }
 
           if (response.status === 400) {
@@ -370,163 +390,176 @@ const Appointment = () => {
         <div className="wrapper">
           <div className={styles.appFormArea}>
             <div className={styles.appForm}>
-              <form onSubmit={formik.handleSubmit} className={styles.form}>
-                <input
-                  type="text"
-                  placeholder="Full Name*"
-                  className={styles.form_item + " " + styles.itemAdjust}
-                  id="fullName"
-                  name="fullName"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  value={formik.values.fullName}
-                  style={{
-                    border:
-                      formik.touched.fullName && formik.errors.fullName
-                        ? "1px solid red"
-                        : null,
-                  }}
-                />
-                <input
-                  type="email"
-                  placeholder="Email (optional)"
-                  className={styles.form_item + " " + styles.itemAdjust}
-                  id="email"
-                  name="email"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.email}
-                  style={{
-                    border:
-                      formik.touched.email && formik.errors.email
-                        ? "1px solid red"
-                        : null,
-                  }}
-                />
+              {formik.values.formDidSubmit ? null : (
+                <form onSubmit={formik.handleSubmit} className={styles.form}>
+                  <input
+                    type="text"
+                    placeholder="Full Name*"
+                    className={styles.form_item + " " + styles.itemAdjust}
+                    id="fullName"
+                    name="fullName"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    value={formik.values.fullName}
+                    style={{
+                      border:
+                        formik.touched.fullName && formik.errors.fullName
+                          ? "1px solid red"
+                          : null,
+                    }}
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email (optional)"
+                    className={styles.form_item + " " + styles.itemAdjust}
+                    id="email"
+                    name="email"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.email}
+                    style={{
+                      border:
+                        formik.touched.email && formik.errors.email
+                          ? "1px solid red"
+                          : null,
+                    }}
+                  />
 
-                <input
-                  type="text"
-                  placeholder="Phone Number*"
-                  className={styles.form_item}
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.phoneNumber}
-                  style={{
-                    border:
-                      formik.touched.phoneNumber && formik.errors.phoneNumber
-                        ? "1px solid red"
-                        : null,
-                  }}
-                />
-                <textarea
-                  rows={6}
-                  placeholder="Message (optional)"
-                  className={styles.form_textarea}
-                  id="message"
-                  name="message"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.message}
-                  style={{
-                    border:
-                      formik.touched.message && formik.errors.message
-                        ? "1px solid red"
-                        : null,
-                  }}
-                ></textarea>
-                <p className={styles.instruct}>
-                  {" "}
-                  Select a Date, Service and Time...
-                </p>
-                <br />
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <ThemeProvider theme={defaultMaterialTheme}>
-                    <KeyboardDatePicker
-                      margin="normal"
-                      id="date-picker-dialog"
-                      label=""
-                      format="MM/dd/yyyy"
-                      value={formik.values.date}
-                      minDate={miminumAllowableDate}
-                      onChange={handleDateChange}
-                      disablePast
-                      KeyboardButtonProps={{
-                        "aria-label": "change date",
-                      }}
-                    />
-                  </ThemeProvider>
-                </MuiPickersUtilsProvider>
+                  <input
+                    type="text"
+                    placeholder="Phone Number*"
+                    className={styles.form_item}
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.phoneNumber}
+                    style={{
+                      border:
+                        formik.touched.phoneNumber && formik.errors.phoneNumber
+                          ? "1px solid red"
+                          : null,
+                    }}
+                  />
+                  <textarea
+                    rows={6}
+                    placeholder="Message (optional)"
+                    className={styles.form_textarea}
+                    id="message"
+                    name="message"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.message}
+                    style={{
+                      border:
+                        formik.touched.message && formik.errors.message
+                          ? "1px solid red"
+                          : null,
+                    }}
+                  ></textarea>
+                  <p className={styles.instruct}>
+                    {" "}
+                    Select a Date, Service and Time...
+                  </p>
+                  <br />
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <ThemeProvider theme={defaultMaterialTheme}>
+                      <KeyboardDatePicker
+                        margin="normal"
+                        id="date-picker-dialog"
+                        label=""
+                        format="MM/dd/yyyy"
+                        value={formik.values.date}
+                        minDate={miminumAllowableDate}
+                        onChange={handleDateChange}
+                        disablePast
+                        KeyboardButtonProps={{
+                          "aria-label": "change date",
+                        }}
+                      />
+                    </ThemeProvider>
+                  </MuiPickersUtilsProvider>
 
-                <div style={{ width: "100%" }}></div>
-                <div className={styles.materiAdj}>
-                  <FormControl required className={classes.formControl}>
-                    <InputLabel
-                      id="demo-simple-select-required-label"
-                      className={classes.selectLabel}
-                    >
-                      Services
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-required-label"
-                      id="demo-simple-select-required"
-                      value={formik.values.service}
-                      onChange={handleSelectChange}
-                      className={classes.selectEmpty}
-                    >
-                      {selectServices}
-                    </Select>
-                  </FormControl>
-                </div>
+                  <div style={{ width: "100%" }}></div>
+                  <div className={styles.materiAdj}>
+                    <FormControl required className={classes.formControl}>
+                      <InputLabel
+                        id="demo-simple-select-required-label"
+                        className={classes.selectLabel}
+                      >
+                        Services
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-required-label"
+                        id="demo-simple-select-required"
+                        value={formik.values.service}
+                        onChange={handleSelectChange}
+                        className={classes.selectEmpty}
+                      >
+                        {selectServices}
+                      </Select>
+                    </FormControl>
+                  </div>
 
-                <div
-                  className={styles.times}
-                  style={{
-                    border:
-                      formik.touched.time && formik.errors.time
-                        ? "1px solid red"
-                        : null,
-                  }}
-                >
-                  {dateTimeSlotLoading ? (
-                    <CircularProgress
-                      classes={{ root: classes1.progessRoot }}
-                    />
-                  ) : (
-                    timeSlots.map(
-                      (time: TimePair, i: number): JSX.Element => {
-                        const display: string = time._time;
-                        return (
-                          <div
-                            className={
-                              styles.times_box +
-                              " " +
-                              (formik.values.time.includes(display)
-                                ? styles.timesActive
-                                : " ")
-                            }
-                            onClick={(): void => {
-                              onServiceChange(display);
-                            }}
-                            key={i}
-                          >
-                            <p className={styles.time}>{display}</p>
-                          </div>
-                        );
-                      }
-                    )
-                  )}
-                </div>
+                  <div
+                    className={styles.times}
+                    style={{
+                      border:
+                        formik.touched.time && formik.errors.time
+                          ? "1px solid red"
+                          : null,
+                    }}
+                  >
+                    {dateTimeSlotLoading ? (
+                      <CircularProgress
+                        classes={{ root: classes1.progessRoot }}
+                      />
+                    ) : (
+                      timeSlots.map(
+                        (time: TimePair, i: number): JSX.Element => {
+                          const display: string = time._time;
+                          return (
+                            <div
+                              className={
+                                styles.times_box +
+                                " " +
+                                (formik.values.time.trim() === display.trim()
+                                  ? styles.timesActive
+                                  : " ")
+                              }
+                              onClick={(): void => {
+                                onServiceChange(display);
+                              }}
+                              key={i}
+                            >
+                              <p className={styles.time}>{display}</p>
+                            </div>
+                          );
+                        }
+                      )
+                    )}
+                  </div>
 
-                <button type="submit" className={styles.form_button}>
-                  {formik.values.isWaiting ? "Sending..." : "Submit Now"}
-                </button>
-              </form>
-
+                  <button type="submit" className={styles.form_button}>
+                    {formik.values.isWaiting ? "Sending..." : "Submit Now"}
+                  </button>
+                </form>
+              )}
               {formik.values.formDidSubmit ? (
                 <p className={styles.form_submit}>
                   Your form has been submitted.
+                  <br />
+                  <br />
+                  Name: {submittedForm.fullName}
+                  <br />
+                  Service: {submittedForm.service}
+                  <br />
+                  Date: {submittedForm.date}
+                  <br />
+                  Time: {submittedForm.time}
+                  <br />
+                  <br />
+                  See you then!
                 </p>
               ) : null}
 

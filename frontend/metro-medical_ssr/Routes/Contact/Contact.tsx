@@ -9,8 +9,8 @@ const Contact = () => {
   return (
     <div>
       <PageFrame pageTitle="Contact">
-        <ContactInfo />
         <ContactForm />
+        <ContactInfo />
       </PageFrame>
     </div>
   );
