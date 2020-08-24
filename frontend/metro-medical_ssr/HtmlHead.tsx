@@ -2,11 +2,11 @@ import Head from "next/head";
 
 interface Props {
   baseUrl: string;
-  logoPath: string;
+  logoPath: string; //used for fb
   title: string;
   contentDescription: string;
   canonical: string;
-
+  allowIndex: boolean;
   googleOwnerShipID: string;
   bingOwnerShipID: string;
 
@@ -17,6 +17,7 @@ const HtmlHead: React.FC<Props> = (props) => {
     <Head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
+      {props.allowIndex ? null : <meta name="robots" content="noindex" />}
 
       {/* IOS Safari Simply rename the original touch icon to produce the precompose */}
       <link
