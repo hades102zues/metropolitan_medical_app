@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./Appointment.module.css";
 import PageFrame from "../shared/UI/PageFrame/PageFrame";
 
+import moment from "moment-timezone";
 //spinner
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -133,8 +134,13 @@ const Appointment = () => {
       .required("Please supply a time."),
   });
 
-  const miminumAllowableDate: Date = new Date();
-  miminumAllowableDate.setDate(miminumAllowableDate.getDate() + 2);
+  // const miminumAllowableDate: Date = new Date();
+  // miminumAllowableDate.setDate(miminumAllowableDate.getDate() + 2);
+
+  const miminumAllowableDate = moment()
+    .add(2, "days")
+    .tz("America/Barbados")
+    .format("MM/DD/YYYY");
 
   interface FormShape {
     fullName: string;
@@ -156,9 +162,10 @@ const Appointment = () => {
     email: "",
     phoneNumber: "",
     message: "",
-    date: miminumAllowableDate.toLocaleDateString("en-US", {
-      timeZone: "America/Barbados",
-    }), // gives a short date format : MM/dd/YYYY; and ensures the client is operating on barbados time
+    date: miminumAllowableDate,
+    // date: miminumAllowableDate.toLocaleDateString("en-US", {
+    //   timeZone: "America/Barbados",
+    // }), // gives a short date format : MM/dd/YYYY; and ensures the client is operating on barbados time
     service: "",
     time: "",
 
@@ -371,10 +378,15 @@ const Appointment = () => {
 
   // date picker handler
   const handleDateChange = (date: Date | null) => {
+    // formik.setFieldValue(
+    //   "date",
+    //   date.toLocaleDateString("en-US", { timeZone: "America/Barbados" })
+    // ); //gives a shortDate format : MM/dd/YYYY
+    // console.log();
     formik.setFieldValue(
       "date",
-      date.toLocaleDateString("en-US", { timeZone: "America/Barbados" })
-    ); //gives a shortDate format : MM/dd/YYYY
+      moment(date).tz("America/Barbados").format("MM/DD/YYYY")
+    );
     setDateDidChange(true);
   };
 
@@ -527,28 +539,35 @@ const Appointment = () => {
                         classes={{ root: classes1.progessRoot }}
                       />
                     ) : (
-                      timeSlots.map(
-                        (time: TimePair, i: number): JSX.Element => {
-                          const display: string = time._time;
-                          return (
-                            <div
-                              className={
-                                styles.times_box +
-                                " " +
-                                (formik.values.time.trim() === display.trim()
-                                  ? styles.timesActive
-                                  : " ")
-                              }
-                              onClick={(): void => {
-                                onServiceChange(display);
-                              }}
-                              key={i}
-                            >
-                              <p className={styles.time}>{display}</p>
-                            </div>
-                          );
-                        }
-                      )
+                      <React.Fragment>
+                        {timeSlots.map(
+                          (time: TimePair, i: number): JSX.Element => {
+                            const display: string = time._time;
+                            return (
+                              <div
+                                className={
+                                  styles.times_box +
+                                  " " +
+                                  (formik.values.time.trim() === display.trim()
+                                    ? styles.timesActive
+                                    : " ")
+                                }
+                                onClick={(): void => {
+                                  onServiceChange(display);
+                                }}
+                                key={i}
+                              >
+                                <p className={styles.time}>{display}</p>
+                              </div>
+                            );
+                          }
+                        )}
+                        {timeSlots.length < 1 ? (
+                          <p>
+                            Sorry, there are no availables time for that date.
+                          </p>
+                        ) : null}
+                      </React.Fragment>
                     )}
                   </div>
 
@@ -577,7 +596,8 @@ const Appointment = () => {
                   Time: {submittedForm.time}
                   <br />
                   <br />
-                  See you then!
+                  We will reach out to you should there be a change in your
+                  appointment date. See you then!
                 </p>
               ) : null}
 

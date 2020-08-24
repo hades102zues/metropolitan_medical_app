@@ -196,7 +196,7 @@ const ContactForm = () => {
                   onChange={onRecaptchaVerify}
                   onExpired={onRecaptchaExpired}
                 />
-                ,
+
                 <button type="submit" className={styles.form_button}>
                   {formik.values.isWaiting ? "Sending..." : "Submit Now"}
                 </button>
