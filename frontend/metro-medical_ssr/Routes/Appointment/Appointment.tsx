@@ -407,7 +407,7 @@ const Appointment = () => {
   }, [dateDidChange]);
   //formik end
 
-  console.log("Regular: ", formik.values);
+  //console.log("Regular: ", formik.values);
   return (
     <PageFrame pageTitle="Book Now">
       <section className={styles.appointment}>

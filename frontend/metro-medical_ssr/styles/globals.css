@@ -9,6 +9,7 @@ html {
 
   font-family: Arial, sans-serif;
   font-size: 1.4rem;
+  line-height: 1.6;
 }
 
 html,
@@ -42,6 +43,9 @@ button {
 
 ul {
   list-style: none;
+}
+
+p {
 }
 
 .wrapper {
