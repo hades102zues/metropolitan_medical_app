@@ -259,21 +259,20 @@ const Appointment = () => {
     overrides: {
       MuiPickersToolbar: {
         toolbar: {
-          backgroundColor: "#583b4c",
+          backgroundColor: "#583b4c", //sets the calendar's head color
         },
       },
+
       MuiPickersDay: {
         day: {
           color: "#583b4c", //sets the color for individual unselected days
         },
         daySelected: {
-          backgroundColor: "#dd6a8f", //sets the color of the selection sphere
+          backgroundColor: "#dd6a8f", //sets the color of the selected day's selection sphere
+          "&:hover": {
+            backgroundColor: "#dd6a8f", //sets the color of the selected day's selection sphere when on hover
+          },
         },
-        current: {
-          color: "red", //sets the color for the number that matches today's date
-        },
-
-        //property that handles the color for hover has not been found yet
       },
     } as any,
   });
