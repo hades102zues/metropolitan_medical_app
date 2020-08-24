@@ -503,12 +503,12 @@ const Appointment = () => {
 
                   <div
                     className={styles.times}
-                    style={{
-                      border:
-                        formik.touched.time && formik.errors.time
-                          ? "1px solid red"
-                          : null,
-                    }}
+                    // style={{
+                    //   border:
+                    //     formik.touched.time && formik.errors.time
+                    //       ? "1px solid red"
+                    //       : null,
+                    // }}
                   >
                     {dateTimeSlotLoading ? (
                       <CircularProgress
