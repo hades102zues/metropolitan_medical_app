@@ -15,6 +15,7 @@
 .mainFormHead {
   margin-bottom: 10px;
   font-size: 42px;
+  text-align: center;
 }
 
 .secondFormHead {
@@ -67,6 +68,7 @@
   background-color: #583b4c;
   color: white;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .form_button:hover {

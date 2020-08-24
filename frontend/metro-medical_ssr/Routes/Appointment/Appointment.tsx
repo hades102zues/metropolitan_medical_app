@@ -31,9 +31,11 @@ import { time } from "console";
 
 import * as Yup from "yup";
 import { useFormik, Form, Field } from "formik";
+import ReCAPTCHA from "react-google-recaptcha";
 
 //const BASE_URL = "https://c1ed827dd85c.ngrok.io";
 const BASE_URL = "http://localhost:3001";
+const RECAPTCHA_KEY = "6LcNtcIZAAAAAGdb6P0gJmQ5ANM1UdoYRjUnyB9I";
 
 const APPOINTMENT_FORM_TARGET_URL: string = BASE_URL + "/send-appointment-form";
 const TIMESLOTS_TARGET_URL = BASE_URL + "/get-available-times";
@@ -54,6 +56,13 @@ const Appointment = () => {
   const [timeSlotError, setTimeSlotError]: [boolean, any] = useState(false);
   const [submittedForm, setSubmittedForm]: [any, any] = useState({}); //the successfully submitted form.
 
+  const onRecaptchaVerify = () => {
+    formik.setFieldValue("captchaDidVerify", true);
+  };
+
+  const onRecaptchaExpired = () => {
+    formik.setFieldValue("captchaDidVerify", false);
+  };
   const dataTimeSlotsFetch = (): void => {
     //server expects iso format
     const isoDate = new Date(formik.values.date).toISOString().split("T")[0];
@@ -139,6 +148,7 @@ const Appointment = () => {
     formDidSubmit: boolean;
     errorDidOccur: boolean;
     timeSlotTaken: boolean;
+    captchaDidVerify: boolean;
   }
 
   const form: FormShape = {
@@ -152,6 +162,8 @@ const Appointment = () => {
     service: "",
     time: "",
 
+    captchaDidVerify: false, //flag for captcha verify
+
     //have a flag for each status/scenerio you planned to have occur
     isWaiting: false, //used to signal waiting on server response
     formDidSubmit: false, //used to display success message if status 200 - form accepted
@@ -161,6 +173,7 @@ const Appointment = () => {
   const formik = useFormik({
     initialValues: form,
     onSubmit: (values) => {
+      if (!values.captchaDidVerify) return;
       interface FetchPackage {
         fullName: string;
         email: string;
@@ -538,6 +551,12 @@ const Appointment = () => {
                       )
                     )}
                   </div>
+
+                  <ReCAPTCHA
+                    sitekey={RECAPTCHA_KEY}
+                    onChange={onRecaptchaVerify}
+                    onExpired={onRecaptchaExpired}
+                  />
 
                   <button type="submit" className={styles.form_button}>
                     {formik.values.isWaiting ? "Sending..." : "Submit Now"}

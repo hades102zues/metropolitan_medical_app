@@ -3,11 +3,13 @@ import styles from "./ContactForm.module.css";
 
 import * as Yup from "yup";
 import { useFormik, Form, Field } from "formik";
+import ReCAPTCHA from "react-google-recaptcha";
 
 //const BASE_URL = "https://c1ed827dd85c.ngrok.io";
 const BASE_URL = "http://localhost:3001";
 
 const CONTACT_FORM_TARGET_URL = BASE_URL + "/send-contact-form";
+const RECAPTCHA_KEY = "6LcNtcIZAAAAAGdb6P0gJmQ5ANM1UdoYRjUnyB9I";
 
 const ContactForm = () => {
   interface InitialValues {
@@ -53,6 +55,8 @@ const ContactForm = () => {
       errorDidOccur: false, //displays error message if status 400 - form rejected
     },
     onSubmit: (values) => {
+      if (!values.captchaDidVerify) return;
+
       interface FetchPackage {
         fullName: string;
         email: string;
@@ -89,6 +93,7 @@ const ContactForm = () => {
       fetch(CONTACT_FORM_TARGET_URL, fetchParameters)
         .then((response) => {
           formik.setFieldValue("isWaiting", false);
+
           if (response.status === 200)
             formik.setFieldValue("formDidSubmit", true);
           if (response.status === 400)
@@ -102,6 +107,14 @@ const ContactForm = () => {
     },
     validationSchema: contactFormSchema,
   });
+
+  const onRecaptchaVerify = () => {
+    formik.setFieldValue("captchaDidVerify", true);
+  };
+
+  const onRecaptchaExpired = () => {
+    formik.setFieldValue("captchaDidVerify", false);
+  };
 
   return (
     <div className={styles.contactUs}>
@@ -178,6 +191,12 @@ const ContactForm = () => {
                         : null,
                   }}
                 ></textarea>
+                <ReCAPTCHA
+                  sitekey={RECAPTCHA_KEY}
+                  onChange={onRecaptchaVerify}
+                  onExpired={onRecaptchaExpired}
+                />
+                ,
                 <button type="submit" className={styles.form_button}>
                   {formik.values.isWaiting ? "Sending..." : "Submit Now"}
                 </button>
