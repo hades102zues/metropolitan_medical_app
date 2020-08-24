@@ -15,6 +15,10 @@ const Footer = () => {
   };
   const StyFacebookIcon = withStyles(iconStyles)(FacebookIcon);
   const StyInstagramIcon = withStyles(iconStyles)(InstagramIcon);
+
+  const fb_url = "https://www.facebook.com/c.bowenmedical/";
+  const instagram_url = "https://www.instagram.com/metropolitanmedicalbb/";
+
   return (
     <footer className={styles.footer}>
       <p className={styles.footerInfo}>
@@ -23,8 +27,12 @@ const Footer = () => {
         Tel: (246) 823-9559. <br />
         Email : metropolitanmedicalbb@gmail.com{" "}
       </p>
-      <StyFacebookIcon />
-      <StyInstagramIcon />
+      <a target="_blank" rel="noopener noreferrer" href={fb_url}>
+        <StyFacebookIcon />
+      </a>
+      <a target="_blank" rel="noopener noreferrer" href={instagram_url}>
+        <StyInstagramIcon />
+      </a>
     </footer>
   );
 };

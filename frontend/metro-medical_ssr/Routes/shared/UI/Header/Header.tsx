@@ -23,6 +23,9 @@ const Header: React.FC<Props> = (props) => {
   //   },
   // })(FacebookIcon);
 
+  const fb_url = "https://www.facebook.com/c.bowenmedical/";
+  const instagram_url = "https://www.instagram.com/metropolitanmedicalbb/";
+
   const iconStyles = makeStyles({
     root: {
       marginRight: 20,
@@ -37,8 +40,13 @@ const Header: React.FC<Props> = (props) => {
         <div className="wrapper" style={{ overflow: "visible" }}>
           <div className={styles.socialAdj}>
             <p className={styles.socialText}>Follow us on: </p>
-            <FacebookIcon classes={{ root: iconClasses.root }} />
-            <InstagramIcon classes={{ root: iconClasses.root }} />
+            <a target="_blank" rel="noopener noreferrer" href={fb_url}>
+              <FacebookIcon classes={{ root: iconClasses.root }} />
+            </a>
+            <a target="_blank" rel="noopener noreferrer" href={instagram_url}>
+              <InstagramIcon classes={{ root: iconClasses.root }} />
+            </a>
+
             <div className={styles.companyLogo}>
               <div className={styles.colorBox}>
                 <Link href="/">
