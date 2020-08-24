@@ -237,66 +237,6 @@ exports.getAvailableTimes = (
       //}
     }
   );
-
-  // const event = {
-  //   summary: "The end if struggle.",
-  //   location: "130 Citrus Avenue, Lower Burney, St. Michael.",
-  //   description: "I will be successful.",
-  //   colorId: 6,
-  //   start: {
-  //     dateTime: "" + "T" + "" + "-04:00",
-  //     //timeZone: "Etc/GMT-4",
-  //   },
-  //   end: {
-  //     dateTime: "" + "T" + "" + "-04:00",
-  //     //timeZone: "Etc/GMT-4",
-  //   },
-  // };
-
-  // calendar.events.insert(
-  //   {
-  //     //setting this to primary would make the event on the service accounts calendar!!
-  //     //Go into the specific Google Calendar's setting and share the calendar you want with the service account.
-  //     //Set these permissions to "Make changes to event"
-  //     //You can find the calender Id for the calender in the settings as well
-  //     calendarId: "jwiggins.works@gmail.com",
-  //     resource: event,
-  //   },
-  //   function (err: any, event: any) {
-  //     if (err) {
-  //       console.log(
-  //         "There was an error contacting the Calendar service: " + err
-  //       );
-  //       return;
-  //     }
-  //     console.log("Event created: ", event);
-  //   }
-  // );
-
-  //Grab event Start Time slots from the calender, for the particular day
-  // calendar.events
-  //   .list({
-  //     calendarId: CALENDAR_ID,
-
-  //     timeMin: "2020-08-17" + DAY_START,
-  //     timeMax: "2020-08-17" + DAY_START,
-  //   })
-  //   .then((response: any) => {
-  //     return response.data;
-  //   })
-  //   .then((data: any) => {
-  //     const events: any = data.items;
-  //     const startSlots: string[] = events.map((event: any, i: number) =>
-  //       moment(event.start.dateTime).format("h:mmA")
-  //     );
-
-  //create a lookup object from appointTImeSlots, and default items to false
-  //if a startTime is in lookup, then set the look item to true
-  //return appointTImeSLots iff their lookup is still false.
-  // })
-  // .catch((err: Error) => {
-  //   next(err);
-  // });
 };
 exports.postContactForm = (
   req: Request,
@@ -394,7 +334,7 @@ exports.postAppForm = (
     dayPoint.toLowerCase().includes("pm")
   );
   if (dayPoint.toLowerCase().includes("pm")) {
-    if (!hour.includes("12")) hour = (Number(hour) + 12).toString(); //13 adjusted to 24hr time
+    if (Number(hour) !== 12) hour = (Number(hour) + 12).toString(); //13 adjusted to 24hr time
   } else if (dayPoint.toLowerCase().includes("am")) {
     if (Number(hour) >= 1 && Number(hour) <= 9 && hour.length === 1)
       hour = "0" + hour;
