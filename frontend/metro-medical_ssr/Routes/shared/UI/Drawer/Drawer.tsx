@@ -64,7 +64,14 @@ const SideDrawer: React.FC<Props> = (props) => {
         <div className={styles.sideMenu_topAccent}></div>
         <div className={styles.sideMenu_companyLogo}>
           <div className={styles.logo}>
-            <img src={logo} alt="The company logo of Metropolitan Medical" />
+            <Link href="/">
+              <a>
+                <img
+                  src={logo}
+                  alt="The company logo of Metropolitan Medical"
+                />{" "}
+              </a>
+            </Link>
           </div>
         </div>
 

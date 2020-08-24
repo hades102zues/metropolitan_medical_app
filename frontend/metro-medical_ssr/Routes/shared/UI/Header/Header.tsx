@@ -41,7 +41,15 @@ const Header: React.FC<Props> = (props) => {
             <InstagramIcon classes={{ root: iconClasses.root }} />
             <div className={styles.companyLogo}>
               <div className={styles.colorBox}>
-                <img src={companyLogo} alt="The metropolitan medical's logo" />
+                <Link href="/">
+                  <a>
+                    <img
+                      src={companyLogo}
+                      alt="The metropolitan medical's logo"
+                    />
+                  </a>
+                </Link>
+
                 {/* <h3 className={styles.company}>Metropolitan Medical</h3> */}
               </div>
             </div>
@@ -52,11 +60,16 @@ const Header: React.FC<Props> = (props) => {
       <div className={styles.navBgColor}>
         <div className={"wrapper"}>
           <div className={styles.header1}>
-            <div className={styles.divider1}>
+            {/* <div className={styles.divider1}>
               <div className={styles.logoArea_logo}>
-                <img src="" alt="The logo of Metropolitan Medical." />
+                <Link href="/">
+                  <a>
+                    {" "}
+                    <img src="" alt="The logo of Metropolitan Medical." />{" "}
+                  </a>
+                </Link>
               </div>
-            </div>
+            </div> */}
             <div className={styles.divider2}>
               <nav className={styles.navbarDesktop}>
                 {[
