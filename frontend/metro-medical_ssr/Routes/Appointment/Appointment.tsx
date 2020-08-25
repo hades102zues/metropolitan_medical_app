@@ -31,10 +31,10 @@ import { deserialize } from "v8";
 import { time } from "console";
 
 import * as Yup from "yup";
-import { useFormik, Form, Field } from "formik";
+import { useFormik, Form, Field, FormikProvider } from "formik";
 import ReCAPTCHA from "react-google-recaptcha";
 
-//const BASE_URL = "https://c1ed827dd85c.ngrok.io";
+//const BASE_URL = "https://eec7708ca3f7.ngrok.io";
 const BASE_URL = "http://localhost:3001";
 const RECAPTCHA_KEY = "6LcNtcIZAAAAAGdb6P0gJmQ5ANM1UdoYRjUnyB9I";
 
@@ -138,7 +138,7 @@ const Appointment = () => {
   // miminumAllowableDate.setDate(miminumAllowableDate.getDate() + 2);
 
   const miminumAllowableDate = moment()
-    .add(2, "days")
+    .add(1, "days")
     .tz("America/Barbados")
     .format("MM/DD/YYYY");
 
@@ -150,6 +150,7 @@ const Appointment = () => {
     date: string;
     service: string;
     time: string;
+    isDateValid: boolean;
     isWaiting: boolean;
     formDidSubmit: boolean;
     errorDidOccur: boolean;
@@ -169,6 +170,8 @@ const Appointment = () => {
     service: "",
     time: "",
 
+    isDateValid: true, //is used to determine wether a valid date has been supplied from the user's perspective
+
     captchaDidVerify: false, //flag for captcha verify
 
     //have a flag for each status/scenerio you planned to have occur
@@ -181,6 +184,8 @@ const Appointment = () => {
     initialValues: form,
     onSubmit: (values) => {
       if (!values.captchaDidVerify) return;
+      if (!values.isDateValid) return;
+
       interface FetchPackage {
         fullName: string;
         email: string;
@@ -383,11 +388,21 @@ const Appointment = () => {
     //   date.toLocaleDateString("en-US", { timeZone: "America/Barbados" })
     // ); //gives a shortDate format : MM/dd/YYYY
     // console.log();
-    formik.setFieldValue(
-      "date",
-      moment(date).tz("America/Barbados").format("MM/DD/YYYY")
-    );
-    setDateDidChange(true);
+
+    //if for some reason the picker receives a date that does not match the format that we specified on the picker,
+    //it will throw different invalid messages.
+    //we can use moment.isvalid to act as a flag in those invalid times.
+
+    if (moment(date).isValid()) {
+      formik.setFieldValue(
+        "date",
+        moment(date).tz("America/Barbados").format("MM/DD/YYYY")
+      );
+      formik.setFieldValue("isDateValid", true);
+      setDateDidChange(true);
+    } else {
+      formik.setFieldValue("isDateValid", false);
+    }
   };
 
   const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -496,9 +511,16 @@ const Appointment = () => {
                         value={formik.values.date}
                         minDate={miminumAllowableDate}
                         onChange={handleDateChange}
-                        disablePast
+                        disablePast //any before the minDate is disable
                         KeyboardButtonProps={{
                           "aria-label": "change date",
+                        }}
+                        InputProps={{
+                          onChange: (e) => {
+                            //disables typing into the text field
+                            e.preventDefault();
+                          },
+                          style: { caretColor: "transparent" }, //hides the caret to stop users from thinking they type in the field
                         }}
                       />
                     </ThemeProvider>

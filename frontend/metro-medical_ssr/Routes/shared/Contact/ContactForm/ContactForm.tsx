@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useFormik, Form, Field } from "formik";
 import ReCAPTCHA from "react-google-recaptcha";
 
-//const BASE_URL = "https://c1ed827dd85c.ngrok.io";
+//const BASE_URL = "https://eec7708ca3f7.ngrok.io";
 const BASE_URL = "http://localhost:3001";
 
 const CONTACT_FORM_TARGET_URL = BASE_URL + "/send-contact-form";
