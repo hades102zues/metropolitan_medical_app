@@ -79,8 +79,7 @@ exports.getAvailableTimes = (
 
   const date: string = req.body.date; //api call date
 
-  //**EDGE NEEDS TO BE SUPPLIED HERE */
-  //handle sunday here and date >= current barbados time+2
+  //handle sunday here
   if (moment(date).day() === 0 || !validationResult(req).isEmpty()) {
     const defaultResponse: slotsResponse = { availableTimeSlots: [] };
     return res.status(200).json(defaultResponse);
@@ -303,7 +302,11 @@ exports.postAppForm = (
     time: string;
   }
 
-  if (!validationResult(req).isEmpty()) {
+  const body: AppointmentBody = req.body;
+  const { fullName, service, date, time, phoneNumber, email, message } = body;
+
+  ///or less than minimum acceptable time
+  if (!validationResult(req).isEmpty() || moment(date).day() === 0) {
     const defaultResponse: DefaultResponse = {
       message: "Input field requirements were not met.",
     };
@@ -312,8 +315,6 @@ exports.postAppForm = (
 
   const account = ServiceAccount();
   const calendar = google.calendar({ version: "v3", auth: account });
-  const body: AppointmentBody = req.body;
-  const { fullName, service, date, time, phoneNumber, email, message } = body;
 
   //********
   //*****Transform time sent in body to iso splits
@@ -475,10 +476,10 @@ exports.postAppForm = (
       const mail = {
         from: `${EMAIL_NAME} <${FROM.trim()}>`,
         to: TO,
-        subject: "Appointment Booked: " + req.body.date,
+        subject: service + " Appointment Booked: " + req.body.date,
         html: `
     <html><body><div class="body_div">
-        <h1>Appointment Booked</h1>
+       
         <p>Client: ${fullName}</p> 
         <p>Service: ${service}</p>
         <p>Appointment Date: ${date}</p>
