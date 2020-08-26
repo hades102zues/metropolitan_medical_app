@@ -1,12 +1,12 @@
 import Head from "next/head";
 
 interface Props {
-  baseUrl: string;
-  logoPath: string; //used for fb
-  title: string;
-  contentDescription: string;
-  canonical: string;
-  allowIndex: boolean;
+  baseUrl: string; //host location
+  logoPath: string; //a path to the logo image to be utilized in meta crawlers like fb og
+  title: string; //meta title
+  contentDescription: string; //meta description
+  canonical: string; //canonical link
+  allowIndex: boolean; //flag for norobots
   googleOwnerShipID: string;
   bingOwnerShipID: string;
 
@@ -139,7 +139,10 @@ const HtmlHead: React.FC<Props> = (props) => {
       <meta property="og:type" content="website" />
       <meta property="og:image" content={props.baseUrl + props.logoPath} />
 
-      {/* <meta name="robots" content="noindex" /> */}
+      <meta name="twitter:title" content={props.title} />
+      <meta name="twitter:description" content={props.contentDescription} />
+      <meta name="twitter:image" content={props.baseUrl + props.logoPath} />
+      <meta name="twitter:card" content="summary_large_image" />
 
       {props.themeColor ? (
         <meta name="theme-color" content={props.themeColor} />

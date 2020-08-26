@@ -520,7 +520,7 @@ const Appointment = () => {
                             //disables typing into the text field
                             e.preventDefault();
                           },
-                          style: { caretColor: "transparent" }, //hides the caret to stop users from thinking they type in the field
+                          style: { caretColor: "transparent" }, //hides the caret to stop users from thinking they can type in the field
                         }}
                       />
                     </ThemeProvider>
