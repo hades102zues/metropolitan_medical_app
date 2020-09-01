@@ -1,0 +1,51 @@
+/*services*/
+.services {
+  padding: 80px 0px;
+  background-color: #ebebeb;
+  color: #333;
+}
+
+.servicesTitle {
+  font-size: 42px;
+}
+
+.cardList {
+  width: 832px;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: row wrap;
+  margin-top: 30px;
+  justify-content: space-between;
+}
+.serviceCard {
+  width: 264px;
+  min-height: 184px;
+  background-color: #fafafa;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.serviceTitle {
+  margin-top: 30px;
+  font-size: 18px;
+  color: #583b4c;
+}
+
+@media all and (max-width: 719px) {
+  .cardList {
+    flex-flow: row nowrap;
+    overflow-x: scroll;
+    width: 100%; /*you need to explicitly set 100% in the direction or scroll will cut off content*/
+  }
+
+  .serviceCard {
+    flex-shrink: 0;
+    margin-right: 20px;
+  }
+}
+@media all and (min-width: 720px) and (max-width: 1023px) {
+  .cardList {
+    width: 568px;
+  }
+}

@@ -1,0 +1,146 @@
+.hero_header {
+  /* padding: 10px 0 10px; */
+  z-index: 2;
+}
+.header0 {
+  background-color: #583b4c;
+  color: white;
+}
+.socialAdj {
+  height: 65px;
+  display: flex;
+  padding-top: 20px;
+  position: relative;
+}
+
+.socialText {
+  margin-right: 20px;
+}
+
+.socialAdj .MuiSvgIcon-root {
+  margin-right: 20px;
+}
+
+.companyLogo {
+  position: absolute;
+  background-color: white;
+
+  z-index: 12;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+
+  border-top: 4px solid #ef90a4;
+  background-color: #583b4c;
+  height: 125px;
+  width: 125px;
+  padding: 7px;
+}
+
+.colorBox {
+  height: 100%;
+  background-color: white;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.colorBox img {
+  height: 100%;
+  width: 100%;
+  object-fit: fill;
+}
+
+.navBgColor {
+  background-image: url("/bg_compressed.jpg");
+  color: #583b4c;
+  font-weight: 600;
+}
+
+.header1 {
+  display: flex;
+  padding-top: 65px;
+}
+.divider1 {
+  height: 65px;
+  width: 25%;
+  display: none;
+}
+.divider2 {
+  height: 65px;
+  /* width: 75%; */
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.logoArea_logo {
+  height: 6.5rem;
+  width: 6.5rem;
+}
+
+.logoArea_logo img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.navbarDesktop {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.navbarDesktop a {
+  width: 100px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.linkText {
+  color: #583b4c;
+  text-transform: uppercase;
+}
+
+a.active {
+  background-color: black;
+  opacity: 0.5;
+  color: pink;
+}
+
+.navbarMobile {
+  display: none;
+}
+@media all and (max-width: 1023px) {
+  .socialAdj {
+    height: 90px;
+  }
+  .companyLogo {
+    top: auto;
+    bottom: 0;
+    transform: translateY(62%) translateX(-50%);
+  }
+}
+
+@media all and (max-width: 800px) {
+  /*header*/
+  .divider2 {
+    justify-content: flex-end;
+  }
+  .navbarDesktop {
+    display: none;
+  }
+  .navbarMobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /*header end*/
+}
