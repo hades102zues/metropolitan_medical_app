@@ -14,7 +14,7 @@ server.use(bodyParser.json());
 
 //routes
 import formRouter from "./routes/forms";
-server.use(formRouter);
+server.use("/api", formRouter);
 
 //error handler
 server.use((error: Error, req: Request, res: Response, next: NextFunction) => {
