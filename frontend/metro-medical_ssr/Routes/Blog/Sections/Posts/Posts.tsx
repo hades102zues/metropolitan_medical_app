@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Posts.module.css";
 
 import Link from "next/link";
@@ -6,11 +6,23 @@ import Link from "next/link";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 
+const BASE_URL = "http://metropolitan-medical.local";
+
 const Posts = () => {
+  interface PShape {
+    id: string;
+    title: string;
+    author: string;
+    date: string;
+    excerpt: string;
+    featured_image_url: string;
+  }
+
   //****STATE
   const [totalNumPgState, settotalNumPg]: [number, any] = useState(10);
   const [currentPgNum, setcurrentPgNum]: [number, any] = useState(1);
-  const [posts, setPosts]: [String[], any] = useState(["", "", ""]);
+  const [posts, setPosts]: [PShape[], any] = useState([]);
+
   const [errorDidOccur, seterrorDidOccur]: [boolean, any] = useState(false);
   const [dataDidGet, setdataDidGet]: [boolean, any] = useState(false);
   const [isLoading, setisLoading]: [boolean, any] = useState(true);
@@ -30,6 +42,54 @@ const Posts = () => {
     });
   };
 
+  const fetchPosts = (): void => {
+    interface T {
+      posts: PShape[];
+      maxNumPages: number;
+    }
+
+    //reset the ui server flags
+    setisLoading(true);
+    seterrorDidOccur(false);
+    setdataDidGet(false);
+
+    //set local serverFlags
+    let successFulFetch: boolean = false;
+    const targetUrl =
+      BASE_URL + "/wp-json/wapi/wp-post-items-page/" + currentPgNum;
+    fetch(targetUrl)
+      .then(
+        (res: any): Promise<T> => {
+          if (res.status === 200) {
+            setisLoading(false);
+            setdataDidGet(true);
+            successFulFetch = true;
+          }
+          return res.json();
+        }
+      )
+      .then((data: T): void => {
+        // if (dataDidGet) {
+        setPosts(data.posts);
+        settotalNumPg(data.maxNumPages);
+        // }
+      })
+      .catch((err: any) => {
+        setisLoading(true);
+        seterrorDidOccur(true);
+        console.error("Error occured when fetching post", err);
+      });
+
+    //build the targetUrl
+    //send the fetch request
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  //**Context
+
   console.log("PG number", currentPgNum);
 
   //**STYLES
@@ -42,7 +102,7 @@ const Posts = () => {
   const classes = useStyles();
 
   //***RENDER
-  let render: any;
+  let render: JSX.Element | JSX.Element[];
 
   if (isLoading)
     render = <CircularProgress classes={{ root: classes.progessRoot }} />;
@@ -52,52 +112,46 @@ const Posts = () => {
       <p className={styles.posts_errorMessage}>Error retrieving posts.</p>
     );
 
+  console.log(posts);
   if (posts.length && !errorDidOccur && !isLoading)
-    render = posts.map((item, i) => (
-      <div key={i}>
-        <Link href="/blog/post/id" as="/blog/post/1">
-          <a>
-            <article className={styles.post}>
-              <div className={styles.post_image}>
-                <img src="/Red-Clouds-Nature-4K-Wallpapers-UHD.jpg" alt="" />
-              </div>
-              <div className={styles.post_info}>
-                <h3 className={styles.post_title}> I am a post title.</h3>
-                <p className={styles.post_date}>13 Jul, 2020</p>
-                <p className={styles.post_preview}>
-                  At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                  blanditiis praesentium voluptatum deleniti atque corrupti quos
-                  dolores et quas molestias excepturi sint occaecati cupiditate
-                  non provident, similique sunt in culpa qui officia deserunt
-                  mollitia animi, id est laborum et dolorum fuga. At vero eos et
-                  accusamus et iusto odio dignissimos ducimus qui blanditiis
-                  praesentium voluptatum deleniti atque corrupti quos dolores et
-                  quas molestias excepturi sint occaecati cupiditate non
-                  provident, similique sunt in culpa qui officia deserunt
-                  mollitia animi, id est laborum et dolorum fuga. At vero eos et
-                  accusamus et iusto odio dignissimos ducimus qui blanditiis
-                  praesentium voluptatum deleniti atque corrupti quos dolores et
-                  quas molestias excepturi sint occaecati cupiditate non
-                  provident, similique sunt in culpa qui officia deserunt
-                  mollitia animi, id est laborum et dolorum fuga. At vero eos et
-                  accusamus et iusto odio dignissimos ducimus qui blanditiis
-                  praesentium voluptatum deleniti atque corrupti quos dolores et
-                  quas molestias excepturi sint occaecati cupiditate non
-                  provident, similique sunt in culpa qui officia deserunt
-                  mollitia animi, id est laborum et dolorum fuga.{" "}
-                </p>
-                {/* <Link href="/blog/post/" as="/blog/post/1">
+    render = posts.map((item: PShape, i: number) => {
+      const lowered: string[] = item.title.toLowerCase().split(" ");
+      const urlTitle: string = lowered.join("-");
+
+      return (
+        <div key={i}>
+          <Link href="/blog/post/title" as={"/blog/post/" + urlTitle}>
+            <a>
+              <article className={styles.post}>
+                <div className={styles.post_image}>
+                  <img
+                    src={
+                      item.featured_image_url.length
+                        ? item.featured_image_url
+                        : "/metro_logo.png"
+                    }
+                    alt={"Image for a post with title " + item.title}
+                  />
+                </div>
+                <div className={styles.post_info}>
+                  <h3 className={styles.post_title}>{item.title}</h3>
+                  <p className={styles.post_date}>{item.date}</p>
+                  <p className={styles.post_preview}>{item.excerpt}</p>
+
+                  {/* <Link href="/blog/post/" as="/blog/post/1">
                   <a>
                     <button>{`Read More >>`}</button>
                   </a>
                 </Link> */}
-              </div>
-            </article>
-          </a>
-        </Link>
-      </div>
-    ));
+                </div>
+              </article>
+            </a>
+          </Link>
+        </div>
+      );
+    });
 
+  console.log(render);
   return (
     <section className={styles.blog}>
       <div className="wrapper">

@@ -49,8 +49,8 @@
 }
 .post_date {
   margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 14px;
+  margin-bottom: 5px;
+  font-size: 12px;
   color: #666666;
 }
 
@@ -65,20 +65,20 @@
     height: auto;
   }
   .post_image {
-    height: 202px;
+    height: 250px;
+    object-fit: cover;
   }
 }
 
 @media all and (max-width: 479px) {
   .posts {
     align-items: center;
+    padding: 0 50%;
   }
 
   .post {
     flex-direction: column;
-    width: 100%;
-  }
-  .post_info {
+    width: 305px;
   }
 
   .post_image {
@@ -93,7 +93,7 @@
 
   .post {
     flex-direction: column;
-    width: 320px;
+    width: 380px;
   }
 
   .post_image {
@@ -107,7 +107,7 @@
   }
 
   .post {
-    width: 100%;
+    width: 550px;
   }
 }
 
