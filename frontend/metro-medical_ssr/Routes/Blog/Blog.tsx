@@ -7,6 +7,7 @@ import PageFrame from "../shared/UI/PageFrame/PageFrame";
 
 const Blog = () => {
   return (
+    // requires a head component
     <div>
       <PageFrame pageTitle="Blog">
         <Event />

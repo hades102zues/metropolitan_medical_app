@@ -7,6 +7,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 
 const BASE_URL = "http://metropolitan-medical.local";
+const URI = "/wp-json/wapi/wp-post-items-page/";
 
 const Posts = () => {
   interface PShape {
@@ -16,6 +17,7 @@ const Posts = () => {
     date: string;
     excerpt: string;
     featured_image_url: string;
+    url_cleaned_title: string;
   }
 
   //****STATE
@@ -55,8 +57,7 @@ const Posts = () => {
 
     //set local serverFlags
     let successFulFetch: boolean = false;
-    const targetUrl =
-      BASE_URL + "/wp-json/wapi/wp-post-items-page/" + currentPgNum;
+    const targetUrl = BASE_URL + URI + currentPgNum;
     fetch(targetUrl)
       .then(
         (res: any): Promise<T> => {
@@ -69,10 +70,10 @@ const Posts = () => {
         }
       )
       .then((data: T): void => {
-        // if (dataDidGet) {
-        setPosts(data.posts);
-        settotalNumPg(data.maxNumPages);
-        // }
+        if (successFulFetch) {
+          setPosts(data.posts);
+          settotalNumPg(data.maxNumPages);
+        }
       })
       .catch((err: any) => {
         setisLoading(true);
@@ -87,6 +88,9 @@ const Posts = () => {
   useEffect(() => {
     fetchPosts();
   }, []);
+  useEffect(() => {
+    fetchPosts();
+  }, [currentPgNum]);
 
   //**Context
 
@@ -115,12 +119,12 @@ const Posts = () => {
   console.log(posts);
   if (posts.length && !errorDidOccur && !isLoading)
     render = posts.map((item: PShape, i: number) => {
-      const lowered: string[] = item.title.toLowerCase().split(" ");
-      const urlTitle: string = lowered.join("-");
-
       return (
         <div key={i}>
-          <Link href="/blog/post/title" as={"/blog/post/" + urlTitle}>
+          <Link
+            href="/blog/post/title"
+            as={"/blog/post/" + item.url_cleaned_title}
+          >
             <a>
               <article className={styles.post}>
                 <div className={styles.post_image}>

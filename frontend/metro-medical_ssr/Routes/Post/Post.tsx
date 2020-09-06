@@ -1,60 +1,54 @@
 import React from "react";
 import styles from "./Post.module.css";
-
 import PageFrame from "../shared/UI/PageFrame/PageFrame";
 
-const Post = () => {
+const { gutenbergToReact } = require("@threemammals/gutenberg-to-react");
+
+interface Post {
+  content: string;
+  date: string;
+  title: string;
+  excerpt: string;
+  postExist: boolean;
+}
+interface PostInput {
+  post: Post;
+}
+const Post: React.FC<PostInput> = (props) => {
+  const { post } = props;
+  let render: JSX.Element[] | JSX.Element;
+
+  let exp = null;
+  console.log(post);
+  if (!post.postExist) {
+    render = <h3 className={styles.post_heading}>Post not found.</h3>;
+  } else {
+    let items = gutenbergToReact(post.content);
+    items.forEach((item, i) => {
+      console.log(item.props.children[0]);
+    });
+
+    exp = items.map((item) => (
+      <React.Fragment>
+        {" "}
+        {item.props.children[0]}
+        <br />
+      </React.Fragment>
+    ));
+    render = (
+      <React.Fragment>
+        <h3 className={styles.post_heading}>{post.title}</h3>
+        <p className={styles.post_date}>{post.date}</p>
+        {exp}
+      </React.Fragment>
+    );
+  }
+
   return (
+    //require a head component
     <PageFrame pageTitle="Post">
       <section className={styles.blogPost}>
-        <div className="wrapper">
-          <article className={styles.post}>
-            <h3 className={styles.post_heading}>
-              The fight against the corona virus has left society feeling
-              exhausted.
-            </h3>
-            <p className={styles.post_date}>November 20, 2020</p>
-            <div className={styles.post_imageAdj}>
-              <div className={styles.post_image}>
-                <img
-                  alt=""
-                  src="https://images.unsplash.com/photo-1542281286-9e0a16bb7366?ixlib=rb-1.2.1&w=1000&q=80"
-                />
-              </div>
-            </div>
-
-            <div className={styles.content}>
-              <p className={styles.body}>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                blanditiis praesentium voluptatum deleniti atque corrupti quos
-                dolores et quas molestias excepturi sint occaecati cupiditate
-                non provident, similique sunt in culpa qui officia deserunt
-                mollitia animi, id est laborum et dolorum fuga.{" "}
-              </p>
-              <p className={styles.body}>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                blanditiis praesentium voluptatum deleniti atque corrupti quos
-                dolores et quas molestias excepturi sint occaecati cupiditate
-                non provident, similique sunt in culpa qui officia deserunt
-                mollitia animi, id est laborum et dolorum fuga.{" "}
-              </p>
-              <p className={styles.body}>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                blanditiis praesentium voluptatum deleniti atque corrupti quos
-                dolores et quas molestias excepturi sint occaecati cupiditate
-                non provident, similique sunt in culpa qui officia deserunt
-                mollitia animi, id est laborum et dolorum fuga.{" "}
-              </p>
-              <p className={styles.body}>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                blanditiis praesentium voluptatum deleniti atque corrupti quos
-                dolores et quas molestias excepturi sint occaecati cupiditate
-                non provident, similique sunt in culpa qui officia deserunt
-                mollitia animi, id est laborum et dolorum fuga.{" "}
-              </p>
-            </div>
-          </article>
-        </div>
+        <div className="wrapper">{render}</div>
       </section>
     </PageFrame>
   );
