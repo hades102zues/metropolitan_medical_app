@@ -34,4 +34,9 @@
   object-fit: fill;
 }
 
+.richTextEditor iframe {
+  display: block;
+  margin: 0 auto;
+}
+
 /*post end*/

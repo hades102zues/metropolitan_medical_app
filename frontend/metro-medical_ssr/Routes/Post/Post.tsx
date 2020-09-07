@@ -20,15 +20,22 @@ const Post: React.FC<PostInput> = (props) => {
   const { post } = props;
   let render: JSX.Element[] | JSX.Element;
 
-  let exp: JSX.Element | JSX.Element[] = null;
+  let exp: any = [];
 
-  // if (!post.postExist) {
-  //   render = <h3 className={styles.post_heading}>Post not found.</h3>;
-  // } else {
-  //   exp = parse(post.content);
-  //   console.log(exp);
-  //   render = exp;
-
+  if (!post.postExist) {
+    render = <h3 className={styles.post_heading}>Post not found.</h3>;
+  } else {
+    exp = parse(post.content);
+    const list = exp.map((item, i) => {
+      return (
+        <React.Fragment>
+          {item}
+          <br />
+        </React.Fragment>
+      );
+    });
+    render = <div className={styles.richTextEditor}>{list}</div>;
+  }
   // let items = gutenbergToReact(post.content);
 
   // exp = items.map((item, i) => {

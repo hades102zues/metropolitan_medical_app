@@ -116,7 +116,7 @@ const Posts = () => {
       <p className={styles.posts_errorMessage}>Error retrieving posts.</p>
     );
 
-  console.log(posts);
+  console.log("Bug", posts);
   if (posts.length && !errorDidOccur && !isLoading)
     render = posts.map((item: PShape, i: number) => {
       return (
