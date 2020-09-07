@@ -1,6 +1,8 @@
 import React from "react";
 import styles from "./Post.module.css";
 import PageFrame from "../shared/UI/PageFrame/PageFrame";
+import HtmlHead from "../../HtmlHead";
+
 //import "./wpstyles.css";
 
 const { gutenbergToReact } = require("@threemammals/gutenberg-to-react");
@@ -12,22 +14,34 @@ interface Post {
   date: string;
   title: string;
   excerpt: string;
-  postExist: boolean;
+  url_cleaned_title: string;
   featured_image_url: string;
 }
 interface PostInput {
   post: Post;
+  doesPostExist: boolean;
 }
 const Post: React.FC<PostInput> = (props) => {
-  const { post } = props;
+  const { post, doesPostExist } = props;
   let render: JSX.Element[] | JSX.Element;
 
   let exp: any = [];
 
-  if (!post.postExist) {
+  const defaultMessage: string = "Post not found.";
+  const allowIndexing = false;
+  const baseURL: string = "localhost";
+  const logo_path = "/metro_logo.png";
+
+  let title: string = "Blog | " + defaultMessage;
+  let description: string = defaultMessage;
+  let relativePath = "/blog/post/post-not-found";
+
+  if (!doesPostExist) {
     render = <h3 className={styles.post_heading}>Post not found.</h3>;
   } else {
-    console.log(post.featured_image_url);
+    title = "Blog | " + post.title;
+    description = post.excerpt;
+    relativePath = "/blog/post/" + post.url_cleaned_title;
     render = (
       <article className={styles.post}>
         <h1 className={styles.post_heading}>{post.title}</h1>
@@ -50,56 +64,21 @@ const Post: React.FC<PostInput> = (props) => {
         ></div>
       </article>
     );
-    // exp = parse(post.content);
-    // const list = exp.map((item, i) => {
-    //   return (
-    //     <React.Fragment>
-    //       {item}
-    //       <br />
-    //     </React.Fragment>
-    //   );
-    // });
-    // render = <div className={styles.richTextEditor}>{list}</div>;
   }
-  // let items = gutenbergToReact(post.content);
-
-  // exp = items.map((item, i) => {
-  //   console.log(item);
-  // });
-  // if (i === 0)
-  //   console.log(
-  //     item.props.children[0][0].type,
-  //     item.props.children[0][0].props.children[0].props.children[0].props
-  //   );
-  // if (
-  //   item.props.children[0][0].type === "p" ||
-  //   item.props.children[0][0].type === "img" ||
-  //   item.props.children[0][0].type === "div"
-  // ) {
-  //   return (
-  //     <React.Fragment>
-  //       {" "}
-  //       {item.props.children[0]}
-  //       <br />
-  //     </React.Fragment>
-  //   );
-  // } else {
-  //   return <React.Fragment></React.Fragment>;
-  // }
-  //});
-
-  // render = (
-  //   <React.Fragment>
-  //     <h3 className={styles.post_heading}>{post.title}</h3>
-  //     <p className={styles.post_date}>{post.date}</p>
-  //     {exp}
-  //   </React.Fragment>
-  // );
-  //}
 
   return (
     //require a head component
     <PageFrame pageTitle="Post">
+      <HtmlHead
+        allowIndex={allowIndexing}
+        baseUrl={baseURL}
+        logoPath={logo_path}
+        title={title}
+        contentDescription={description}
+        canonical={baseURL + relativePath}
+        googleOwnerShipID=""
+        bingOwnerShipID=""
+      />
       <section className={styles.blogPost}>
         <div className={styles.blogPost_wrapper}>{render}</div>
       </section>

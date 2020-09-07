@@ -1,4 +1,5 @@
 import React from "react";
+
 import styles from "./Blog.module.css";
 
 import Event from "./Sections/Event/Event";
@@ -7,7 +8,6 @@ import PageFrame from "../shared/UI/PageFrame/PageFrame";
 
 const Blog = () => {
   return (
-    // requires a head component
     <div>
       <PageFrame pageTitle="Blog">
         <Event />

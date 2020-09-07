@@ -1,5 +1,7 @@
 import React from "react";
 import BlogPost from "../../../Routes/Post/Post";
+import "react-app-polyfill/ie11";
+import "react-app-polyfill/stable";
 
 const BASE_URL = "http://metropolitan-medical.local";
 const URI = "/wp-json/wapi/wp-post/";
@@ -9,11 +11,14 @@ interface Post {
   date: string;
   title: string;
   excerpt: string;
-  postExist: boolean;
+  url_cleaned_title: string;
   featured_image_url: string;
 }
+
 const Post = ({ post }) => {
   let inspect: any = post.post;
+  let postExist: boolean;
+
   let apost: Post;
   if (inspect === undefined) {
     apost = {
@@ -21,13 +26,16 @@ const Post = ({ post }) => {
       date: "",
       title: "",
       excerpt: "",
-      postExist: false,
+      featured_image_url: "",
+      url_cleaned_title: "",
     };
+    postExist = false;
   } else {
     apost = inspect;
+    postExist = true;
   }
 
-  return <BlogPost post={apost} />;
+  return <BlogPost post={apost} doesPostExist={postExist} />;
 };
 
 // This gets called on every request
