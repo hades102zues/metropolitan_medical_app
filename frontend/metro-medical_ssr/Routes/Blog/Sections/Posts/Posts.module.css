@@ -46,6 +46,7 @@
 
 .post_title {
   font-size: 20px;
+  overflow: hidden;
 }
 .post_date {
   margin-top: 10px;

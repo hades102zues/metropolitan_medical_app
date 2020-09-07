@@ -4,6 +4,18 @@
   color: #333;
 }
 
+.blogPost_wrapper {
+  width: 65%;
+  margin: 0 auto;
+}
+
+@media all and (max-width: 1023px) {
+  .blogPost_wrapper {
+    width: 95%;
+    margin: 0 auto;
+  }
+}
+
 .post_heading {
   font-size: 42px;
   font-weight: 800;
@@ -34,6 +46,13 @@
   object-fit: fill;
 }
 
+@media all and (min-width: 720px) {
+  .post_image {
+    height: 400px;
+    width: 400px;
+  }
+}
+
 /**Wordpressss**/
 .wpAdjust h1 {
   font-size: 8.5rem;
@@ -50,6 +69,13 @@
 .wpAdjust h5 {
   font-size: 2.53rem;
 }
+.wpAdjust h6 {
+  font-size: 1.73rem;
+  text-transform: uppercase;
+}
+.wpAdjust ul {
+  list-style-type: disc;
+}
 
 .wpAdjust p,
 .wpAdjust img,
@@ -58,9 +84,11 @@
 .wpAdjust h3,
 .wpAdjust h4,
 .wpAdjust h5,
-.wpAdjust iframe {
+.wpAdjust h6,
+.wpAdjust iframe,
+.wpAdjust ul,
+.wpAdjust ol {
   margin-top: 20px;
-  font-size: auto;
 }
 .wpAdjust iframe {
   display: block;
@@ -75,12 +103,5 @@
   }
 }
 /**Wordpressss**/
-
-@media all and (min-width: 720px) {
-  .post_image {
-    height: 500px;
-    width: 500px;
-  }
-}
 
 /*post end*/

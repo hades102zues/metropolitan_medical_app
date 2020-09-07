@@ -34,7 +34,14 @@ const Post: React.FC<PostInput> = (props) => {
         <p className={styles.post_date}>{post.date}</p>
         <div className={styles.post_imageAdj}>
           <div className={styles.post_image}>
-            <img alt="" src={post.featured_image_url} />
+            <img
+              alt=""
+              src={
+                post.featured_image_url
+                  ? post.featured_image_url
+                  : "/metro_logo.png"
+              }
+            />
           </div>
         </div>
         <div
@@ -94,7 +101,7 @@ const Post: React.FC<PostInput> = (props) => {
     //require a head component
     <PageFrame pageTitle="Post">
       <section className={styles.blogPost}>
-        <div className="wrapper">{render}</div>
+        <div className={styles.blogPost_wrapper}>{render}</div>
       </section>
     </PageFrame>
   );
