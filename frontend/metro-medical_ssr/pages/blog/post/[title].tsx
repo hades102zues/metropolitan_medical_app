@@ -5,11 +5,12 @@ const BASE_URL = "http://metropolitan-medical.local";
 const URI = "/wp-json/wapi/wp-post/";
 
 interface Post {
-  content: string;
+  content: any;
   date: string;
   title: string;
   excerpt: string;
   postExist: boolean;
+  featured_image_url: string;
 }
 const Post = ({ post }) => {
   let inspect: any = post.post;

@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Post.module.css";
 import PageFrame from "../shared/UI/PageFrame/PageFrame";
+//import "./wpstyles.css";
 
 const { gutenbergToReact } = require("@threemammals/gutenberg-to-react");
 import WPGBlocks from "react-gutenberg";
@@ -12,6 +13,7 @@ interface Post {
   title: string;
   excerpt: string;
   postExist: boolean;
+  featured_image_url: string;
 }
 interface PostInput {
   post: Post;
@@ -25,16 +27,32 @@ const Post: React.FC<PostInput> = (props) => {
   if (!post.postExist) {
     render = <h3 className={styles.post_heading}>Post not found.</h3>;
   } else {
-    exp = parse(post.content);
-    const list = exp.map((item, i) => {
-      return (
-        <React.Fragment>
-          {item}
-          <br />
-        </React.Fragment>
-      );
-    });
-    render = <div className={styles.richTextEditor}>{list}</div>;
+    console.log(post.featured_image_url);
+    render = (
+      <article className={styles.post}>
+        <h1 className={styles.post_heading}>{post.title}</h1>
+        <p className={styles.post_date}>{post.date}</p>
+        <div className={styles.post_imageAdj}>
+          <div className={styles.post_image}>
+            <img alt="" src={post.featured_image_url} />
+          </div>
+        </div>
+        <div
+          className={styles.wpAdjust}
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        ></div>
+      </article>
+    );
+    // exp = parse(post.content);
+    // const list = exp.map((item, i) => {
+    //   return (
+    //     <React.Fragment>
+    //       {item}
+    //       <br />
+    //     </React.Fragment>
+    //   );
+    // });
+    // render = <div className={styles.richTextEditor}>{list}</div>;
   }
   // let items = gutenbergToReact(post.content);
 

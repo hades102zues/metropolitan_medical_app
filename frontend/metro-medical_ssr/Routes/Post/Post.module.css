@@ -34,9 +34,53 @@
   object-fit: fill;
 }
 
-.richTextEditor iframe {
+/**Wordpressss**/
+.wpAdjust h1 {
+  font-size: 8.5rem;
+}
+.wpAdjust h2 {
+  font-size: 5.5rem;
+}
+.wpAdjust h3 {
+  font-size: 4.5rem;
+}
+.wpAdjust h4 {
+  font-size: 3.5rem;
+}
+.wpAdjust h5 {
+  font-size: 2.53rem;
+}
+
+.wpAdjust p,
+.wpAdjust img,
+.wpAdjust h1,
+.wpAdjust h2,
+.wpAdjust h3,
+.wpAdjust h4,
+.wpAdjust h5,
+.wpAdjust iframe {
+  margin-top: 20px;
+  font-size: auto;
+}
+.wpAdjust iframe {
   display: block;
   margin: 0 auto;
+}
+.wpAdjust span strong {
+  font-size: auto;
+}
+@media all and (max-width: 720px) {
+  .wpAdjust iframe {
+    width: 305px;
+  }
+}
+/**Wordpressss**/
+
+@media all and (min-width: 720px) {
+  .post_image {
+    height: 500px;
+    width: 500px;
+  }
 }
 
 /*post end*/
