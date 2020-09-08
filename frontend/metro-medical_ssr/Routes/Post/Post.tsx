@@ -30,7 +30,9 @@ const Post: React.FC<PostInput> = (props) => {
   const defaultMessage: string = "Post not found.";
   const allowIndexing = false;
   const baseURL: string = "localhost";
-  const logo_path = "/metro_logo.png";
+  const logo_path = post.featured_image_url.length
+    ? post.featured_image_url
+    : "/metro_logo.png";
 
   let title: string = "Blog | " + defaultMessage;
   let description: string = defaultMessage;
@@ -51,7 +53,7 @@ const Post: React.FC<PostInput> = (props) => {
             <img
               alt=""
               src={
-                post.featured_image_url
+                post.featured_image_url.length
                   ? post.featured_image_url
                   : "/metro_logo.png"
               }
