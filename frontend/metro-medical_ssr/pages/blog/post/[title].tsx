@@ -15,24 +15,39 @@ interface Post {
   featured_image_url: string;
 }
 
-const Post = ({ post }) => {
-  let inspect: any = post.post;
-  let postExist: boolean;
+interface PostResponse {
+  post: Post;
+  goodObject: boolean;
+}
 
+const Post = ({ post }) => {
+  let inspect: PostResponse = post;
+
+  let postExist: boolean;
   let apost: Post;
-  if (inspect === undefined) {
-    apost = {
-      content: "",
-      date: "",
-      title: "",
-      excerpt: "",
-      featured_image_url: "",
-      url_cleaned_title: "",
-    };
+
+  const defaultObj: Post = {
+    content: "",
+    date: "",
+    title: "",
+    excerpt: "",
+    featured_image_url: "",
+    url_cleaned_title: "",
+  };
+
+  if (inspect.post === undefined) {
+    //we did not get a reponse
+
+    apost = defaultObj;
     postExist = false;
   } else {
-    apost = inspect;
-    postExist = true;
+    if (inspect.goodObject) {
+      apost = inspect.post;
+      postExist = true;
+    } else {
+      apost = defaultObj;
+      postExist = false;
+    }
   }
 
   return <BlogPost post={apost} doesPostExist={postExist} />;
@@ -49,7 +64,7 @@ export async function getServerSideProps(context) {
   // Fetch data from external API
   try {
     res = await fetch(targetUrl);
-    post = await res.json();
+    post = await res.json(); //will either be undefined or a response object
   } catch (e) {
     console.error("Request Failed.");
   }
