@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Post.module.css";
 import PageFrame from "../shared/UI/PageFrame/PageFrame";
 import HtmlHead from "../../HtmlHead";
-
+import WpRenderBox from "./WpRender/WpRender";
 //import "./wpstyles.css";
 
 // const { gutenbergToReact } = require("@threemammals/gutenberg-to-react");
@@ -63,10 +63,11 @@ const Post: React.FC<PostInput> = (props) => {
             />
           </div>
         </div>
-        <div
+        <WpRenderBox content={post.content} />
+        {/* {<div
           className={styles.wpAdjust}
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        ></div>
+          dangerouslySetInnerHTML={{ __html: }}
+        ></div>} */}
       </article>
     );
   }

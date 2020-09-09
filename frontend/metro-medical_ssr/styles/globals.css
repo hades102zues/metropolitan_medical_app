@@ -56,24 +56,3 @@ button {
     width: 95%;
   }
 }
-
-/**Worpress*/
-.aligncenter,
-has-text-align-center {
-  margin: 0 auto;
-  display: block;
-}
-
-img.has-text-align-center {
-  display: flex;
-  justify-content: center;
-}
-.alignleft {
-  margin: 0 100% 0 0;
-  display: block;
-}
-
-.alignright {
-  margin: 0 0 0 100px;
-  display: block;
-}
