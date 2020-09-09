@@ -1,23 +1,18 @@
 /**Wordpressss**/
 
 /**Worpress*/
-.aligncenter,
-.has-text-align-center {
+.wpAdjust :global(.aligncenter),
+.wpAdjust :global(.has-text-align-center) {
   margin: 0 auto;
   display: block;
 }
 
-img.has-text-align-center {
+.wpAdjust :global(img.has-text-align-center) {
   display: flex;
   justify-content: center;
 }
-.alignleft {
+.wpAdjust :global(.alignleft) {
   margin: 0 100% 0 0;
-  display: block;
-}
-
-.alignright {
-  margin: 0 0 0 100px;
   display: block;
 }
 
@@ -69,4 +64,5 @@ img.has-text-align-center {
     width: 305px;
   }
 }
+
 /**Wordpressss**/
