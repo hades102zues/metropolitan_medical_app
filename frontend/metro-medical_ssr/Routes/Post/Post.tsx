@@ -9,6 +9,9 @@ const { gutenbergToReact } = require("@threemammals/gutenberg-to-react");
 import WPGBlocks from "react-gutenberg";
 import parse from "html-react-parser";
 
+const BASE_URL = "http://metropolitan-medical.local";
+const IMG_URI = "/wp-content";
+
 interface Post {
   content: any;
   date: string;
@@ -54,7 +57,7 @@ const Post: React.FC<PostInput> = (props) => {
               alt=""
               src={
                 post.featured_image_url.length
-                  ? post.featured_image_url
+                  ? BASE_URL + IMG_URI + post.featured_image_url
                   : "/metro_logo.png"
               }
             />

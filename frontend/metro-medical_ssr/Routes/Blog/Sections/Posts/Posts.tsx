@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const BASE_URL = "http://metropolitan-medical.local";
 const URI = "/wp-json/wapi/wp-post-items-page/";
+const IMG_URI = "/wp-content";
 
 const Posts = () => {
   interface PShape {
@@ -131,7 +132,7 @@ const Posts = () => {
                   <img
                     src={
                       item.featured_image_url.length
-                        ? item.featured_image_url
+                        ? BASE_URL + IMG_URI + item.featured_image_url
                         : "/metro_logo.png"
                     }
                     alt={"Image for a post with title " + item.title}
