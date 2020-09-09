@@ -3,7 +3,7 @@ import styles from "./Event.module.css";
 
 const BASE_URL = "http://metropolitan-medical.local";
 const ANNOUNTMENT_URI = "/wp-json/wapi/wp-announcement";
-const IMG_URI = "/wp-content";
+// const IMG_URI = "/wp-content";
 
 const Event = () => {
   const [annoucement, setAnnouncement]: [string, any] = useState("");
@@ -45,7 +45,6 @@ const Event = () => {
   };
 
   useEffect(() => {
-    console.log("Usefewffect");
     fetchAnnoucement();
   }, []);
 
@@ -58,11 +57,7 @@ const Event = () => {
       <section className={styles.events}>
         <div className={styles.eventWrapper}>
           <div className={styles.event}>
-            <img
-              src={BASE_URL + IMG_URI + annoucement}
-              alt=""
-              className={styles.eventImg}
-            />
+            <img src={annoucement} alt="" className={styles.eventImg} />
           </div>
         </div>
         <p className={styles.eventA}>Announcement</p>

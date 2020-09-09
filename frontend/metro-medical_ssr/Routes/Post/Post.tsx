@@ -5,12 +5,12 @@ import HtmlHead from "../../HtmlHead";
 
 //import "./wpstyles.css";
 
-const { gutenbergToReact } = require("@threemammals/gutenberg-to-react");
-import WPGBlocks from "react-gutenberg";
-import parse from "html-react-parser";
+// const { gutenbergToReact } = require("@threemammals/gutenberg-to-react");
+// import WPGBlocks from "react-gutenberg";
+// import parse from "html-react-parser";
 
-const BASE_URL = "http://metropolitan-medical.local";
-const IMG_URI = "/wp-content";
+// const BASE_URL = "http://metropolitan-medical.local";
+// const IMG_URI = "/wp-content";
 
 interface Post {
   content: any;
@@ -57,7 +57,7 @@ const Post: React.FC<PostInput> = (props) => {
               alt=""
               src={
                 post.featured_image_url.length
-                  ? BASE_URL + IMG_URI + post.featured_image_url
+                  ? post.featured_image_url
                   : "/metro_logo.png"
               }
             />

@@ -3,7 +3,9 @@ import styles from "./Home.module.css";
 
 import Header from "../shared/UI/Header/Header";
 import Footer from "../shared/UI/Footer/Footer";
-import Event from "../shared/Blog/Event/Event";
+
+import Event from "../shared/Blog/Event/Event"; //will get removed until blog release
+
 import Drawer from "../shared/UI/Drawer/Drawer";
 import Hero from "./Sections/Hero/Hero";
 import About from "../shared/About/About";

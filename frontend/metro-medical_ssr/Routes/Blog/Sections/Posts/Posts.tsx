@@ -129,7 +129,7 @@ const Posts = () => {
                   <img
                     src={
                       item.featured_image_url.length
-                        ? BASE_URL + IMG_URI + item.featured_image_url
+                        ? item.featured_image_url
                         : "/metro_logo.png"
                     }
                     alt={"Image for a post with title " + item.title}
