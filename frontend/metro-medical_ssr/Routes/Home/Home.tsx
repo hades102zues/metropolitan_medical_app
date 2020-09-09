@@ -3,6 +3,7 @@ import styles from "./Home.module.css";
 
 import Header from "../shared/UI/Header/Header";
 import Footer from "../shared/UI/Footer/Footer";
+import Event from "../shared/Blog/Event/Event";
 import Drawer from "../shared/UI/Drawer/Drawer";
 import Hero from "./Sections/Hero/Hero";
 import About from "../shared/About/About";
@@ -20,7 +21,9 @@ const Home = () => {
       <Hero>
         <Header drawerHandler={drawerOpener} />
       </Hero>
+
       <About />
+      <Event />
       <Services />
       <Contact />
       <Footer />
