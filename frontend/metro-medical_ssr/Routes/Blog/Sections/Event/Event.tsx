@@ -24,7 +24,6 @@ const Event = () => {
 
     fetch(targetUrl)
       .then((res: any) => {
-        console.log("res", res);
         if (res.status === 200) goodResponse = true;
 
         return res.json();

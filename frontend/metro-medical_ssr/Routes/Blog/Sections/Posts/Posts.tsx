@@ -95,8 +95,6 @@ const Posts = () => {
 
   //**Context
 
-  console.log("PG number", currentPgNum);
-
   //**STYLES
   const useStyles = makeStyles({
     progessRoot: {
@@ -117,7 +115,6 @@ const Posts = () => {
       <p className={styles.posts_errorMessage}>Error retrieving posts.</p>
     );
 
-  console.log("Bug", posts);
   if (posts.length && !errorDidOccur && !isLoading)
     render = posts.map((item: PShape, i: number) => {
       return (
@@ -156,7 +153,6 @@ const Posts = () => {
       );
     });
 
-  console.log(render);
   return (
     <section className={styles.blog}>
       <div className="wrapper">
