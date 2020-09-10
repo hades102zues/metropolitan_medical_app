@@ -1,7 +1,8 @@
 import React from "react";
+
 import styles from "./Blog.module.css";
 
-import Event from "./Sections/Event/Event";
+import Event from "../shared/Blog/Event/Event";
 import Posts from "./Sections/Posts/Posts";
 import PageFrame from "../shared/UI/PageFrame/PageFrame";
 

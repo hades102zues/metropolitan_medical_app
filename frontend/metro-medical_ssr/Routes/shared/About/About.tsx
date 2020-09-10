@@ -5,6 +5,8 @@ import { withStyles } from "@material-ui/core";
 import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import PeopleIcon from "@material-ui/icons/People";
 
+const sectionImage = "/about.jpg";
+
 const About = () => {
   const StylMissionIcon = withStyles({
     root: {
@@ -25,7 +27,7 @@ const About = () => {
   return (
     <section className={styles.about}>
       <div className={styles.aboutImage}>
-        <img src="https://images.unsplash.com/photo-1579840900569-f266a155415f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80" />
+        <img src={sectionImage} />
       </div>
 
       <div className="wrapper">

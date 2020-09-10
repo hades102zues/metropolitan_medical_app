@@ -6,10 +6,9 @@ html {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-
-  font-family: Arial, sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   line-height: 1.6;
+  font-family: Arial, sans-serif;
 }
 
 html,
@@ -41,12 +40,9 @@ button {
   appearance: none;
 }
 
-ul {
+/* ul {
   list-style: none;
-}
-
-p {
-}
+} */
 
 .wrapper {
   width: 85%;
@@ -60,11 +56,3 @@ p {
     width: 95%;
   }
 }
-
-/* p {
-  border: 1px solid blue;
-}
-
-div {
-  border: 1px solid orange;
-} */

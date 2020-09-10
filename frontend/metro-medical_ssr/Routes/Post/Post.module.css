@@ -4,6 +4,18 @@
   color: #333;
 }
 
+.blogPost_wrapper {
+  width: 65%;
+  margin: 0 auto;
+}
+
+@media all and (max-width: 1023px) {
+  .blogPost_wrapper {
+    width: 95%;
+    margin: 0 auto;
+  }
+}
+
 .post_heading {
   font-size: 42px;
   font-weight: 800;
@@ -11,8 +23,9 @@
 }
 
 .post_date {
-  margin-top: 30px;
+  margin-top: 15px;
   color: #333;
+  margin-bottom: 30px;
 }
 
 .post_imageAdj {
@@ -31,6 +44,13 @@
   height: 100%;
   width: 100%;
   object-fit: fill;
+}
+
+@media all and (min-width: 720px) {
+  .post_image {
+    height: 400px;
+    width: 400px;
+  }
 }
 
 /*post end*/
