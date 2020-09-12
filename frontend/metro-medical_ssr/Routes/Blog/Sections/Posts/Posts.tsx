@@ -1,16 +1,29 @@
-import React, { useState, useEffect } from "react";
+//================================
+//**Local Imports
+//================================
 import styles from "./Posts.module.css";
+
+//================================
+//**Package imports
+//================================
+import React, { useState, useEffect } from "react";
 
 import Link from "next/link";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 
+//================================
+//**KEYS AND CONSTRAINTS
+//================================
 const BASE_URL = "http://metropolitan-medical.local";
 const URI = "/wp-json/wapi/wp-post-items-page/";
 const IMG_URI = "/wp-content";
 
 const Posts = () => {
+  //================================
+  //**INTERFACE
+  //================================
   interface PShape {
     id: string;
     title: string;
@@ -21,7 +34,9 @@ const Posts = () => {
     url_cleaned_title: string;
   }
 
-  //****STATE
+  //================================
+  //**STATE
+  //================================
   const [totalNumPgState, settotalNumPg]: [number, any] = useState(10);
   const [currentPgNum, setcurrentPgNum]: [number, any] = useState(1);
   const [posts, setPosts]: [PShape[], any] = useState([]);
@@ -30,7 +45,9 @@ const Posts = () => {
   const [dataDidGet, setdataDidGet]: [boolean, any] = useState(false);
   const [isLoading, setisLoading]: [boolean, any] = useState(true);
 
-  //**HANDLERS
+  //================================
+  //**EVENT HANDLERS
+  //================================
   const olderPostHandler = (): void => {
     setcurrentPgNum((currentPageNumber) => {
       if (currentPageNumber === totalNumPgState) return totalNumPgState;
@@ -86,6 +103,9 @@ const Posts = () => {
     //send the fetch request
   };
 
+  //================================
+  //**EFFECTS
+  //================================
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -93,9 +113,9 @@ const Posts = () => {
     fetchPosts();
   }, [currentPgNum]);
 
-  //**Context
-
+  //================================
   //**STYLES
+  //================================
   const useStyles = makeStyles({
     progessRoot: {
       color: "#dd6a8f",
@@ -104,7 +124,9 @@ const Posts = () => {
 
   const classes = useStyles();
 
-  //***RENDER
+  //================================
+  //**LISTS , RENDER LOGIC
+  //================================
   let render: JSX.Element | JSX.Element[];
 
   if (isLoading)

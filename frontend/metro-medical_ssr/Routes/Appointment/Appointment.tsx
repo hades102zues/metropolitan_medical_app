@@ -107,16 +107,11 @@ const Appointment = () => {
     phoneNumber: "",
     message: "",
     date: miminumAllowableDate,
-    // date: miminumAllowableDate.toLocaleDateString("en-US", {
-    //   timeZone: "America/Barbados",
-    // }), // gives a short date format : MM/dd/YYYY; and ensures the client is operating on barbados time
     service: "",
     time: "",
 
     isDateValid: true, //is used to determine wether a valid date has been supplied from the user's perspective
-
     captchaDidVerify: false, //flag for captcha verify
-
     //have a flag for each status/scenerio you planned to have occur
     isWaiting: false, //used to signal waiting on server response
     formDidSubmit: false, //used to display success message if status 200 - form accepted
@@ -192,7 +187,6 @@ const Appointment = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(fPackage),
       };
-      console.log("Appointment request package: ", fPackage);
 
       formik.setFieldValue("isWaiting", true);
       formik.setFieldValue("formDidSubmit", false);

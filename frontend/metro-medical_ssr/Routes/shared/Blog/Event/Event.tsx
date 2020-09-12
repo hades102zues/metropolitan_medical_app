@@ -1,6 +1,16 @@
-import React, { useState, useEffect } from "react";
+//================================
+//**Local Imports
+//================================
 import styles from "./Event.module.css";
 
+//================================
+//**Package imports
+//================================
+import React, { useState, useEffect } from "react";
+
+//================================
+//**KEYS AND CONSTRAINTS
+//================================
 const BASE_URL = "http://metropolitan-medical.local";
 const ANNOUNTMENT_URI = "/wp-json/wapi/wp-announcement";
 // const IMG_URI = "/wp-content";
