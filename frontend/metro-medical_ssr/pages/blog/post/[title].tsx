@@ -1,11 +1,24 @@
+//================================
+//**Local Imports
+//================================
+
+//================================
+//**Package imports
+//================================
 import React from "react";
 import BlogPost from "../../../Routes/Post/Post";
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
 
+//================================
+//**KEYS AND CONSTRAINTS
+//================================
 const BASE_URL = "http://metropolitan-medical.local";
 const URI = "/wp-json/wapi/wp-post/";
 
+//================================
+//**INTERFACES
+//================================
 interface Post {
   content: any;
   date: string;
@@ -21,6 +34,9 @@ interface PostResponse {
 }
 
 const Post = ({ post }) => {
+  //================================
+  //**STATE
+  //================================
   let inspect: PostResponse = post;
 
   let postExist: boolean;
@@ -37,7 +53,6 @@ const Post = ({ post }) => {
 
   if (inspect.post === undefined) {
     //we did not get a reponse
-
     apost = defaultObj;
     postExist = false;
   } else {
@@ -55,13 +70,15 @@ const Post = ({ post }) => {
 
 // This gets called on every request
 export async function getServerSideProps(context) {
+
+
   const postTitle = context.params.title;
   const targetUrl = BASE_URL + URI + postTitle;
 
   let res: any;
   let post: any;
 
-  // Fetch data from external API
+  // Fetch post data from backend
   try {
     res = await fetch(targetUrl);
     post = await res.json(); //will either be undefined or a response object
@@ -71,34 +88,6 @@ export async function getServerSideProps(context) {
 
   return { props: { post } };
 
-  // let responseGood = true;
-  // fetch(targetUrl)
-  //   .then((res) => {
-  //     if (res.status != 200) responseGood = false;
-
-  //     return res.json();
-  //   })
-  //   .then((data: any) => {
-  //     let post: Post;
-  //     if (responseGood) post = data;
-  //     else {
-
-  //     }
-  //     return { props: { post } };
-  //   })
-  //   .catch((err) => {
-  //     let post: Post = {
-  //       content: "",
-  //       date: "",
-  //       title: "",
-  //       excerpt: "",
-  //       postExist: false,
-  //     };
-  //     console.error("Error fetching post.");
-
-  //   });
-
-  // Pass data to the page via props
-}
+  
 
 export default Post;

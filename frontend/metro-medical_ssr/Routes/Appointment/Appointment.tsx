@@ -44,7 +44,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 //================================
 //**KEYS AND CONSTRAINTS
 //================================
-
 const BASE_URL = "http://104.131.37.158";
 //const BASE_URL = "http://localhost:3001";
 const RECAPTCHA_KEY = "6LcNtcIZAAAAAGdb6P0gJmQ5ANM1UdoYRjUnyB9I";
@@ -143,9 +142,6 @@ const Appointment = () => {
   const formik = useFormik({
     initialValues: form,
     onSubmit: (values) => {
-      if (!values.captchaDidVerify) return;
-      if (!values.isDateValid) return;
-
       interface FetchPackage {
         fullName: string;
         email: string;
@@ -156,7 +152,18 @@ const Appointment = () => {
         time: string;
       }
 
-      //RECAPTCHA VERIFY OR REJECT
+      interface Headers {
+        "Content-Type": string;
+      }
+
+      interface FetchParameters {
+        method: string;
+        headers: HeadersInit;
+        body: BodyInit;
+      }
+
+      if (!values.captchaDidVerify) return; //recaptcha is not verified
+      if (!values.isDateValid) return; //date is not valid
 
       //necessary for easy server manipulation
       const isoFormatedDateWithoutTime = new Date(values.date)
@@ -173,15 +180,6 @@ const Appointment = () => {
         time: values.time,
       };
 
-      interface Headers {
-        "Content-Type": string;
-      }
-
-      interface FetchParameters {
-        method: string;
-        headers: HeadersInit;
-        body: BodyInit;
-      }
       const fetchParameters: FetchParameters = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
