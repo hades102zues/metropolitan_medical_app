@@ -1,13 +1,15 @@
-import React from "react";
+//**Local Import
 import styles from "./ContactForm.module.css";
 
+//**Packages
+import React from "react";
 import * as Yup from "yup";
 import { useFormik, Form, Field } from "formik";
 import ReCAPTCHA from "react-google-recaptcha";
 
+//** Keys and Constants
 const BASE_URL = "http://104.131.37.158";
 //const BASE_URL = "http://localhost:3001";
-
 const CONTACT_FORM_TARGET_URL = BASE_URL + "/api/send-contact-form";
 const RECAPTCHA_KEY = "6LcNtcIZAAAAAGdb6P0gJmQ5ANM1UdoYRjUnyB9I";
 
@@ -41,19 +43,22 @@ const ContactForm = () => {
       .min(5, "Please supply a message.")
       .required("Please supply a message."),
   });
-  const formik = useFormik({
-    initialValues: {
-      fullName: "",
-      email: "",
-      subject: "",
-      message: "",
-      captchaDidVerify: false, //flag for captcha verify
 
-      //have a flag for each status/scenerio you planned to have occur
-      isWaiting: false, //used to signal waiting on server response
-      formDidSubmit: false, //used to display success message if status 200 - form accepted
-      errorDidOccur: false, //displays error message if status 400 - form rejected
-    },
+  const formInitialValues: InitialValues = {
+    fullName: "",
+    email: "",
+    subject: "",
+    message: "",
+
+    captchaDidVerify: false, //flag for captcha verify
+    //have a flag for each status/scenerio you planned to have occur
+    isWaiting: false, //used to signal waiting on server response
+    formDidSubmit: false, //used to display success message if status 200 - form accepted
+    errorDidOccur: false, //displays error message if status 400 - form rejected
+  };
+
+  const formik = useFormik({
+    initialValues: formInitialValues,
     onSubmit: (values) => {
       if (!values.captchaDidVerify) return;
 
