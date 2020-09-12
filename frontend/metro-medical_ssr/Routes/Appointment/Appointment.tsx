@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from "react";
+//================================
+//**Local Imports
+//================================
 import styles from "./Appointment.module.css";
 import PageFrame from "../shared/UI/PageFrame/PageFrame";
+
+//================================
+//**Package imports
+//================================
+import React, { useState, useEffect } from "react";
 
 import moment from "moment-timezone";
 //spinner
@@ -34,6 +41,10 @@ import * as Yup from "yup";
 import { useFormik, Form, Field, FormikProvider } from "formik";
 import ReCAPTCHA from "react-google-recaptcha";
 
+//================================
+//**KEYS AND CONSTRAINTS
+//================================
+
 const BASE_URL = "http://104.131.37.158";
 //const BASE_URL = "http://localhost:3001";
 const RECAPTCHA_KEY = "6LcNtcIZAAAAAGdb6P0gJmQ5ANM1UdoYRjUnyB9I";
@@ -43,105 +54,13 @@ const APPOINTMENT_FORM_TARGET_URL: string =
 const TIMESLOTS_TARGET_URL = BASE_URL + "/api/get-available-times";
 
 const Appointment = () => {
+  //================================
+  //** INTERFACES ==================
+  //================================
   interface TimePair {
     _time: string;
     _isotime: string;
   }
-
-  const [timeSlots, setTimeSlots]: [TimePair[], any] = useState([]);
-  const [captchaDidVerify, setCaptcha]: [boolean, any] = useState(false); //flag for captcha verify
-  const [dateDidChange, setDateDidChange]: [boolean, any] = useState(false); //used in service timeslot fetch
-  const [dateTimeSlotLoading, setDateTimeSlotLoading]: [
-    boolean,
-    any
-  ] = useState(false); //used as a flag to display spinner while fetching timeslots
-  const [timeSlotError, setTimeSlotError]: [boolean, any] = useState(false);
-  const [submittedForm, setSubmittedForm]: [any, any] = useState({}); //the successfully submitted form.
-
-  const onRecaptchaVerify = () => {
-    formik.setFieldValue("captchaDidVerify", true);
-  };
-
-  const onRecaptchaExpired = () => {
-    formik.setFieldValue("captchaDidVerify", false);
-  };
-  const dataTimeSlotsFetch = (): void => {
-    //server expects iso format
-    const isoDate = new Date(formik.values.date).toISOString().split("T")[0];
-
-    interface Request {
-      date: string;
-    }
-
-    const request: Request = { date: isoDate };
-    setDateTimeSlotLoading(true);
-
-    //console.log(request, isoDate);//debug
-
-    fetch(TIMESLOTS_TARGET_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(request),
-    })
-      .then((res: any) => {
-        if (res.status === 200) {
-          setTimeSlotError(false);
-        } else {
-          setTimeSlotError(true);
-          setDateTimeSlotLoading(true);
-          formik.setFieldValue("errorDidOccur", true);
-        }
-        return res.json(); //extract data from the promise
-      })
-      .then((data: { availableTimeSlots: string[] }) => {
-        if (data.availableTimeSlots) {
-          setDateTimeSlotLoading(false);
-          setTimeSlots(data.availableTimeSlots);
-        } else {
-          setTimeSlotError(true);
-          setDateTimeSlotLoading(true);
-          formik.setFieldValue("errorDidOccur", true);
-          console.error("Failed to fetch time slots: ");
-        }
-      })
-      .catch((err: any) => {
-        setTimeSlotError(true);
-        setDateTimeSlotLoading(true);
-        formik.setFieldValue("errorDidOccur", true);
-        console.error("Failed to fetch time slots: ", err);
-      });
-  };
-
-  //formik
-  const appFormSchema = Yup.object().shape({
-    fullName: Yup.string()
-      .min(3, "Please supply your full name.")
-      .required("Please supply your full name."),
-
-    phoneNumber: Yup.string()
-      .min(7, "Please enter a valid phone mumber")
-      .required("Please enter a valid phone mumber"),
-
-    date: Yup.string()
-      .min(8, "Please enter a valid date.")
-      .required("Please enter a valid date."),
-
-    service: Yup.string()
-      .min(3, "Please supply a service.")
-      .required("Please supply a service."),
-
-    time: Yup.string()
-      .min(4, "Please supply a time.")
-      .required("Please supply a time."),
-  });
-
-  // const miminumAllowableDate: Date = new Date();
-  // miminumAllowableDate.setDate(miminumAllowableDate.getDate() + 2);
-
-  const miminumAllowableDate = moment()
-    .add(1, "days")
-    .tz("America/Barbados")
-    .format("MM/DD/YYYY");
 
   interface FormShape {
     fullName: string;
@@ -158,6 +77,29 @@ const Appointment = () => {
     timeSlotTaken: boolean;
     captchaDidVerify: boolean;
   }
+
+  interface Service {
+    name: string;
+    description: string;
+  }
+
+  //================================
+  //** STATE ==================
+  //================================
+  const [timeSlots, setTimeSlots]: [TimePair[], any] = useState([]);
+  const [captchaDidVerify, setCaptcha]: [boolean, any] = useState(false); //flag for captcha verify
+  const [dateDidChange, setDateDidChange]: [boolean, any] = useState(false); //used in service timeslot fetch
+  const [dateTimeSlotLoading, setDateTimeSlotLoading]: [
+    boolean,
+    any
+  ] = useState(false); //used as a flag to display spinner while fetching timeslots
+  const [timeSlotError, setTimeSlotError]: [boolean, any] = useState(false);
+  const [submittedForm, setSubmittedForm]: [any, any] = useState({}); //the successfully submitted form.
+
+  const miminumAllowableDate = moment()
+    .add(1, "days")
+    .tz("America/Barbados")
+    .format("MM/DD/YYYY");
 
   const form: FormShape = {
     fullName: "",
@@ -181,6 +123,28 @@ const Appointment = () => {
     errorDidOccur: false, //displays error message if status 400 - form rejected
     timeSlotTaken: false, //display error message if status 409 - timeslot no longer available
   };
+
+  const appFormSchema = Yup.object().shape({
+    fullName: Yup.string()
+      .min(3, "Please supply your full name.")
+      .required("Please supply your full name."),
+
+    phoneNumber: Yup.string()
+      .min(7, "Please enter a valid phone mumber")
+      .required("Please enter a valid phone mumber"),
+
+    date: Yup.string()
+      .min(8, "Please enter a valid date.")
+      .required("Please enter a valid date."),
+
+    service: Yup.string()
+      .min(3, "Please supply a service.")
+      .required("Please supply a service."),
+
+    time: Yup.string()
+      .min(4, "Please supply a time.")
+      .required("Please supply a time."),
+  });
   const formik = useFormik({
     initialValues: form,
     onSubmit: (values) => {
@@ -278,6 +242,108 @@ const Appointment = () => {
     validationSchema: appFormSchema,
   });
 
+  //================================
+  //** EVENT HANDLERS ==================
+  //================================
+  const onRecaptchaVerify = () => {
+    formik.setFieldValue("captchaDidVerify", true);
+  };
+
+  const onRecaptchaExpired = () => {
+    formik.setFieldValue("captchaDidVerify", false);
+  };
+  const dataTimeSlotsFetch = (): void => {
+    //server expects iso format
+    const isoDate = new Date(formik.values.date).toISOString().split("T")[0];
+
+    interface Request {
+      date: string;
+    }
+
+    const request: Request = { date: isoDate };
+    setDateTimeSlotLoading(true);
+
+    //console.log(request, isoDate);//debug
+
+    fetch(TIMESLOTS_TARGET_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(request),
+    })
+      .then((res: any) => {
+        if (res.status === 200) {
+          setTimeSlotError(false);
+        } else {
+          setTimeSlotError(true);
+          setDateTimeSlotLoading(true);
+          formik.setFieldValue("errorDidOccur", true);
+        }
+        return res.json(); //extract data from the promise
+      })
+      .then((data: { availableTimeSlots: string[] }) => {
+        if (data.availableTimeSlots) {
+          setDateTimeSlotLoading(false);
+          setTimeSlots(data.availableTimeSlots);
+        } else {
+          setTimeSlotError(true);
+          setDateTimeSlotLoading(true);
+          formik.setFieldValue("errorDidOccur", true);
+          console.error("Failed to fetch time slots: ");
+        }
+      })
+      .catch((err: any) => {
+        setTimeSlotError(true);
+        setDateTimeSlotLoading(true);
+        formik.setFieldValue("errorDidOccur", true);
+        console.error("Failed to fetch time slots: ", err);
+      });
+  };
+
+  const onServiceChange = (time: string): void => {
+    formik.setFieldValue("time", time);
+  };
+
+  const handleDateChange = (date: Date | null) => {
+    // formik.setFieldValue(
+    //   "date",
+    //   date.toLocaleDateString("en-US", { timeZone: "America/Barbados" })
+    // ); //gives a shortDate format : MM/dd/YYYY
+    // console.log();
+
+    //if for some reason the picker receives a date that does not match the format that we specified on the picker,
+    //it will throw different invalid messages.
+    //we can use moment.isvalid to act as a flag in those invalid times.
+
+    if (moment(date).isValid()) {
+      formik.setFieldValue(
+        "date",
+        moment(date).tz("America/Barbados").format("MM/DD/YYYY")
+      );
+      formik.setFieldValue("isDateValid", true);
+      setDateDidChange(true);
+    } else {
+      formik.setFieldValue("isDateValid", false);
+    }
+  };
+
+  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    formik.setFieldValue("service", event.target.value as string);
+  };
+
+  //================================
+  //**EFFECTS  =======================
+  //================================
+  useEffect(() => {
+    dataTimeSlotsFetch();
+  }, []);
+
+  //on date picker change
+  useEffect(() => {
+    dataTimeSlotsFetch();
+    setDateDidChange(false);
+    formik.setFieldValue("time", "", false);
+  }, [dateDidChange]);
+
   const defaultMaterialTheme = createMuiTheme({
     typography: {
       fontSize: 20, //sweet spot. going to large will ruin the component's layout
@@ -303,7 +369,9 @@ const Appointment = () => {
     } as any,
   });
 
-  //picker end
+  //================================
+  //**STYLES========================
+  //=================================
 
   //selector
   const useStyles = makeStyles((theme: Theme) =>
@@ -329,10 +397,10 @@ const Appointment = () => {
   const classes = useStyles();
   const classes1 = useStyles1();
 
-  interface Service {
-    name: string;
-    description: string;
-  }
+  //================================
+  //==== LISTS , RENDER LOGIC
+  //================================
+
   const services: Service[] = [
     {
       name: "Pap Smear",
@@ -373,57 +441,6 @@ const Appointment = () => {
     )
   );
 
-  //selector end
-
-  //time
-  const onServiceChange = (time: string): void => {
-    formik.setFieldValue("time", time);
-  };
-
-  //time end
-
-  // date picker handler
-  const handleDateChange = (date: Date | null) => {
-    // formik.setFieldValue(
-    //   "date",
-    //   date.toLocaleDateString("en-US", { timeZone: "America/Barbados" })
-    // ); //gives a shortDate format : MM/dd/YYYY
-    // console.log();
-
-    //if for some reason the picker receives a date that does not match the format that we specified on the picker,
-    //it will throw different invalid messages.
-    //we can use moment.isvalid to act as a flag in those invalid times.
-
-    if (moment(date).isValid()) {
-      formik.setFieldValue(
-        "date",
-        moment(date).tz("America/Barbados").format("MM/DD/YYYY")
-      );
-      formik.setFieldValue("isDateValid", true);
-      setDateDidChange(true);
-    } else {
-      formik.setFieldValue("isDateValid", false);
-    }
-  };
-
-  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    formik.setFieldValue("service", event.target.value as string);
-  };
-
-  //onMount
-  useEffect(() => {
-    dataTimeSlotsFetch();
-  }, []);
-
-  //on date picker change
-  useEffect(() => {
-    dataTimeSlotsFetch();
-    setDateDidChange(false);
-    formik.setFieldValue("time", "", false);
-  }, [dateDidChange]);
-  //formik end
-
-  //console.log("Regular: ", formik.values);
   return (
     <PageFrame pageTitle="Book Now">
       <section className={styles.appointment}>
