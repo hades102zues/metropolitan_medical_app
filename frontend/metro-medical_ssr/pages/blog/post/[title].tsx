@@ -70,8 +70,6 @@ const Post = ({ post }) => {
 
 // This gets called on every request
 export async function getServerSideProps(context) {
-
-
   const postTitle = context.params.title;
   const targetUrl = BASE_URL + URI + postTitle;
 
@@ -87,7 +85,6 @@ export async function getServerSideProps(context) {
   }
 
   return { props: { post } };
-
-  
+}
 
 export default Post;
