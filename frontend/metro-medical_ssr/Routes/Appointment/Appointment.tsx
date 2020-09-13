@@ -44,13 +44,12 @@ import ReCAPTCHA from "react-google-recaptcha";
 //================================
 //**KEYS AND CONSTRAINTS
 //================================
-const BASE_URL = "http://104.131.37.158";
-//const BASE_URL = "http://localhost:3001";
+//const BASE_URL = "http://104.131.37.158";
+const BASE_URL = "http://localhost:3001";
 const RECAPTCHA_KEY = "6LcNtcIZAAAAAGdb6P0gJmQ5ANM1UdoYRjUnyB9I";
 
-const APPOINTMENT_FORM_TARGET_URL: string =
-  BASE_URL + "/api/send-appointment-form";
-const TIMESLOTS_TARGET_URL = BASE_URL + "/api/get-available-times";
+const APPOINTMENT_FORM_TARGET_URL: string = BASE_URL + "/send-appointment-form";
+const TIMESLOTS_TARGET_URL = BASE_URL + "/get-available-times";
 
 const Appointment = () => {
   //================================
@@ -209,19 +208,20 @@ const Appointment = () => {
           if (response.status === 200) {
             formik.setFieldValue("formDidSubmit", true);
             setSubmittedForm(values);
-          }
-
-          if (response.status === 400) {
+          } else if (response.status === 400) {
             formik.setFieldValue("errorDidOccur", true);
             console.error("Error: Invalid form was submitted.");
-          }
-
-          if (response.status === 409) {
+          } else if (response.status === 409) {
             formik.setFieldValue("timeSlotTaken", true);
+          } else {
+            formik.setFieldValue("errorDidOccur", true);
+            console.error("Server response unclear.");
           }
 
+          //refresh the time slots
           dataTimeSlotsFetch();
           formik.setFieldValue("time", "", false);
+
           return response.json();
         })
         .then((data) => {})
