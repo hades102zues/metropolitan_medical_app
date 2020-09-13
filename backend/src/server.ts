@@ -2,7 +2,6 @@ import express, { Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 import cors from "cors";
-import path from "path";
 require("dotenv").config();
 
 //basic setup
@@ -14,7 +13,7 @@ server.use(bodyParser.json());
 
 //routes
 import formRouter from "./routes/forms";
-server.use("/api", formRouter);
+server.use(formRouter); //the reason for the suffix was how proxy_pass works
 
 //error handler
 server.use((error: Error, req: Request, res: Response, next: NextFunction) => {

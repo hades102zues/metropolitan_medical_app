@@ -10,8 +10,10 @@ const googleAuthKeys = require(path.resolve(
   "service_account.json"
 )); //The structure of the private key does not parse well when imported from .env
 
+/**
+ * This function autorizes a jwt client and sets the token within the client
+ */
 const getNewTokensV1 = (jwtClient: any) => {
-  //authorize gets and then sets the token within the Client
   jwtClient.authorize((err: any, token: any) => {
     if (err) {
       console.log("Error authorizing JWT Client");
@@ -21,6 +23,11 @@ const getNewTokensV1 = (jwtClient: any) => {
   });
 };
 
+/**
+ * This function is used to create an authtorized jwt client to access the google apis per permissions specificied.
+ * A list of api permissions is first specified, a jwt client is created from the service account credentials,
+ * authorized and then returned.
+ */
 const getServiceAccountClient = () => {
   const apiScopes = ["https://www.googleapis.com/auth/calendar"]; //what apis we will be manipulating
 

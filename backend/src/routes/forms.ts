@@ -13,13 +13,18 @@ const formControllers: FormControll = require("../controllers/form-controll");
 
 router.post(
   "/get-available-times",
-  [body("date").isLength({ min: 10 })],
+  [
+    //input form validation is performed
+    body("date").isLength({ min: 10 }),
+  ],
   formControllers.getAvailableTimes
 );
 
 router.post(
   "/send-contact-form",
+
   [
+    //input form validation is performed
     body("fullName").isLength({ min: 3 }),
     body("email").isEmail(),
     body("subject").isLength({ min: 5 }),
@@ -30,7 +35,9 @@ router.post(
 
 router.post(
   "/send-appointment-form",
+
   [
+    //input form validation is performed
     body("fullName").isLength({ min: 3 }),
     body("phoneNumber").isLength({ min: 7 }),
     body("date").isLength({ min: 10 }),
