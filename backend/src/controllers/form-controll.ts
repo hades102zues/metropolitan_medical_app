@@ -11,8 +11,6 @@ const { google } = require("googleapis");
 import mailgun from "mailgun-js";
 
 //KEYS
-//mailgun api
-
 const DOMAIN: any = process.env.MAILGUN_DOMAIN;
 const APIKEY: any = process.env.MAILGUN_KEY;
 
@@ -47,6 +45,11 @@ interface DefaultResponse {
   message: string;
 }
 
+/**
+ * This function is responsible for generating  a list of AVAILABLE time slots and
+ * send those back to the frontend application. To do so it utilizes a number of
+ * helper functions found within ./utils
+ */
 exports.getAvailableTimes = (
   req: Request,
   res: Response,
@@ -97,7 +100,7 @@ exports.getAvailableTimes = (
       return result;
     }
   );
-  console.log(ISO_appointment24HRTimes); //debug
+  //console.log(ISO_appointment24HRTimes); //debug
 
   //constructs a lookup object which will be used to determine if an appointment time slot is available.
   let isConflicting: any = {};
@@ -135,7 +138,7 @@ exports.getAvailableTimes = (
 
       //Converts the busy time frame into moments so that confliction checks can be made through moment.isBetween
       const busy: Busy[] = response.data.calendars[CALENDAR_ID].busy;
-      console.log(busy); //debug
+      //console.log(busy); //debug
       const busyTimeMoments: BusyMoment[] = busy.map((item: Busy, index) => {
         //start time
         const S_splitter: string[] = item.start.split("T");
@@ -181,7 +184,8 @@ exports.getAvailableTimes = (
         });
       });
 
-      console.log("Point of conflits", isConflicting); //debug
+      //console.log("Point of conflits", isConflicting); //debug
+
       /********************
        ***********SEND BACK FREE TIME SLOTS******
        ********************/
@@ -223,7 +227,7 @@ exports.getAvailableTimes = (
         availableTimeSlots = availableTimeSlots.concat(timePair);
       }
 
-      console.log(availableTimeSlots);
+      //console.log(availableTimeSlots);
 
       const finalResponse: slotsResponse = { availableTimeSlots };
 
@@ -237,6 +241,10 @@ exports.getAvailableTimes = (
     }
   );
 };
+
+/**
+ * This function is responding for sending a email containing the client's inquiry to a designated inbox.
+ */
 exports.postContactForm = (
   req: Request,
   res: Response,
@@ -287,6 +295,11 @@ exports.postContactForm = (
   });
 };
 
+/**
+ * This function is responding for sending a email containing the client's appointment details,
+ * and creating the associated event in the gogogle calendar. To do so it utilizes a number of
+ * helper functions found within ./utils
+ */
 exports.postAppForm = (
   req: Request,
   res: Response,
@@ -305,16 +318,13 @@ exports.postAppForm = (
   const body: AppointmentBody = req.body;
   const { fullName, service, date, time, phoneNumber, email, message } = body;
 
-  ///or less than minimum acceptable time
+  //validation of appointment form and requested appointment date
   if (!validationResult(req).isEmpty() || moment(date).day() === 0) {
     const defaultResponse: DefaultResponse = {
       message: "Input field requirements were not met.",
     };
     return res.status(400).json(defaultResponse);
   }
-
-  const account = ServiceAccount();
-  const calendar = google.calendar({ version: "v3", auth: account });
 
   //********
   //*****Transform time sent in body to iso splits
@@ -328,12 +338,12 @@ exports.postAppForm = (
   if (hour.length < 1 || minutes.length < 2 || Number(minutes) >= 60)
     return res.status(400).json({ message: "Broken time payload." });
 
-  console.log(
-    hour,
-    !hour.includes("12"),
-    Number(hour) !== 12,
-    dayPoint.toLowerCase().includes("pm")
-  );
+  // console.log(
+  //   hour,
+  //   !hour.includes("12"),
+  //   Number(hour) !== 12,
+  //   dayPoint.toLowerCase().includes("pm")
+  // );
   if (dayPoint.toLowerCase().includes("pm")) {
     if (Number(hour) !== 12) hour = (Number(hour) + 12).toString(); //13 adjusted to 24hr time
   } else if (dayPoint.toLowerCase().includes("am")) {
@@ -345,7 +355,7 @@ exports.postAppForm = (
     return res.status(400).json({ message: "Broken time payload." });
   }
 
-  console.log(hour, minutes, dayPoint); //debu
+  // console.log(hour, minutes, dayPoint); //debug
 
   const firstHalf: string = date;
   const secondHalf: string = hour + ":" + minutes + LOCAL_ISO_ENDING;
@@ -356,6 +366,9 @@ exports.postAppForm = (
   //********
   //*****Determine if time slot is still available
   //*******
+
+  const account = ServiceAccount();
+  const calendar = google.calendar({ version: "v3", auth: account });
 
   const resourceItem: Resource = {
     timeMin: date + DAY_START,
@@ -430,12 +443,13 @@ exports.postAppForm = (
           noLongerAvailable: true,
         });
       }
+
       //ADD EVENT TO CALENDAR
       const startDateTime: string = firstHalf + "T" + secondHalf; //ISO format
-      console.log(startDateTime); //debug
+      //console.log(startDateTime); //debug
       const endDateTime: Moment = startDateTimeMoment.clone();
       endDateTime.add(interval, "m");
-      console.log(endDateTime.format()); //debug
+      //console.log(endDateTime.format()); //debug
 
       const event = {
         summary: service + " Appointment: " + fullName,

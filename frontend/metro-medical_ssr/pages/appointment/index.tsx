@@ -1,11 +1,15 @@
-//import "react-app-polyfill/ie9";
-import "react-app-polyfill/ie11";
-import "react-app-polyfill/stable";
-
-import React from "react";
-
+//================================
+//**LOCAL IMPORTS
+//================================
 import Appointment from "../../Routes/Appointment/Appointment";
 import HtmlHead from "../../HtmlHead";
+
+//================================
+//**Package imports
+//================================
+import "react-app-polyfill/ie11";
+import "react-app-polyfill/stable";
+import React from "react";
 
 const AppPage = () => {
   const title = "Appointment";

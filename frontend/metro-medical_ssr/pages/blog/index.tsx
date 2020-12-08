@@ -1,9 +1,15 @@
+//================================
+//**LOCAL IMPORTS
+//================================
+import HtmlHead from "../../HtmlHead";
+import Blog from "../../Routes/Blog/Blog";
+
+//================================
+//**Package imports
+//================================
 import React from "react";
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
-import HtmlHead from "../../HtmlHead";
-
-import Blog from "../../Routes/Blog/Blog";
 
 const BlogPage = () => {
   const title = "Blog";

@@ -1,11 +1,16 @@
 import React from "react";
 
-//import "react-app-polyfill/ie9";
-import "react-app-polyfill/ie11";
-import "react-app-polyfill/stable";
-
+//================================
+//**LOCAL IMPORTS
+//================================
 import About from "../../Routes/About/About";
 import HtmlHead from "../../HtmlHead";
+
+//================================
+//**Package imports
+//================================
+import "react-app-polyfill/ie11";
+import "react-app-polyfill/stable";
 
 const AboutPage = () => {
   const title = "About";

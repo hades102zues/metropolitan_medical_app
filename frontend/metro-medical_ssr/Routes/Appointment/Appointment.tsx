@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from "react";
+//================================
+//**Local Imports
+//================================
 import styles from "./Appointment.module.css";
 import PageFrame from "../shared/UI/PageFrame/PageFrame";
+
+//================================
+//**Package imports
+//================================
+import React, { useState, useEffect } from "react";
 
 import moment from "moment-timezone";
 //spinner
@@ -34,20 +41,49 @@ import * as Yup from "yup";
 import { useFormik, Form, Field, FormikProvider } from "formik";
 import ReCAPTCHA from "react-google-recaptcha";
 
-const BASE_URL = "http://104.131.37.158";
-//const BASE_URL = "http://localhost:3001";
+//================================
+//**KEYS AND CONSTRAINTS
+//================================
+//const BASE_URL = "http://104.131.37.158";
+const BASE_URL = "http://localhost:3001";
 const RECAPTCHA_KEY = "6LcNtcIZAAAAAGdb6P0gJmQ5ANM1UdoYRjUnyB9I";
 
-const APPOINTMENT_FORM_TARGET_URL: string =
-  BASE_URL + "/api/send-appointment-form";
-const TIMESLOTS_TARGET_URL = BASE_URL + "/api/get-available-times";
+const APPOINTMENT_FORM_TARGET_URL: string = BASE_URL + "/send-appointment-form";
+const TIMESLOTS_TARGET_URL = BASE_URL + "/get-available-times";
 
 const Appointment = () => {
+  //================================
+  //** INTERFACES ==================
+  //================================
   interface TimePair {
     _time: string;
     _isotime: string;
   }
 
+  interface FormShape {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+    message: string;
+    date: string;
+    service: string;
+    time: string;
+    isDateValid: boolean;
+    isWaiting: boolean;
+    formDidSubmit: boolean;
+    errorDidOccur: boolean;
+    timeSlotTaken: boolean;
+    captchaDidVerify: boolean;
+  }
+
+  interface Service {
+    name: string;
+    description: string;
+  }
+
+  //================================
+  //** STATE ==================
+  //================================
   const [timeSlots, setTimeSlots]: [TimePair[], any] = useState([]);
   const [captchaDidVerify, setCaptcha]: [boolean, any] = useState(false); //flag for captcha verify
   const [dateDidChange, setDateDidChange]: [boolean, any] = useState(false); //used in service timeslot fetch
@@ -58,6 +94,149 @@ const Appointment = () => {
   const [timeSlotError, setTimeSlotError]: [boolean, any] = useState(false);
   const [submittedForm, setSubmittedForm]: [any, any] = useState({}); //the successfully submitted form.
 
+  const miminumAllowableDate = moment()
+    .add(1, "days")
+    .tz("America/Barbados")
+    .format("MM/DD/YYYY");
+
+  const form: FormShape = {
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    message: "",
+    date: miminumAllowableDate,
+    service: "",
+    time: "",
+
+    isDateValid: true, //is used to determine wether a valid date has been supplied from the user's perspective
+    captchaDidVerify: false, //flag for captcha verify
+    //have a flag for each status/scenerio you planned to have occur
+    isWaiting: false, //used to signal waiting on server response
+    formDidSubmit: false, //used to display success message if status 200 - form accepted
+    errorDidOccur: false, //displays error message if status 400 - form rejected
+    timeSlotTaken: false, //display error message if status 409 - timeslot no longer available
+  };
+
+  const appFormSchema = Yup.object().shape({
+    fullName: Yup.string()
+      .min(3, "Please supply your full name.")
+      .required("Please supply your full name."),
+
+    phoneNumber: Yup.string()
+      .min(7, "Please enter a valid phone mumber")
+      .required("Please enter a valid phone mumber"),
+
+    date: Yup.string()
+      .min(8, "Please enter a valid date.")
+      .required("Please enter a valid date."),
+
+    service: Yup.string()
+      .min(3, "Please supply a service.")
+      .required("Please supply a service."),
+
+    time: Yup.string()
+      .min(4, "Please supply a time.")
+      .required("Please supply a time."),
+  });
+  const formik = useFormik({
+    initialValues: form,
+    onSubmit: (values) => {
+      interface FetchPackage {
+        fullName: string;
+        email: string;
+        phoneNumber: string;
+        message: string;
+        date: string;
+        service: string;
+        time: string;
+      }
+
+      interface Headers {
+        "Content-Type": string;
+      }
+
+      interface FetchParameters {
+        method: string;
+        headers: HeadersInit;
+        body: BodyInit;
+      }
+
+      if (!values.captchaDidVerify) return; //recaptcha is not verified
+      if (!values.isDateValid) return; //date is not valid
+
+      //necessary for easy server manipulation
+      const isoFormatedDateWithoutTime = new Date(values.date)
+        .toISOString()
+        .split("T")[0]; //time portion would be wrong
+
+      const fPackage: FetchPackage = {
+        fullName: values.fullName,
+        email: values.email,
+        phoneNumber: values.phoneNumber,
+        message: values.message,
+        date: isoFormatedDateWithoutTime,
+        service: values.service,
+        time: values.time,
+      };
+
+      const fetchParameters: FetchParameters = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fPackage),
+      };
+
+      formik.setFieldValue("isWaiting", true);
+      formik.setFieldValue("formDidSubmit", false);
+      formik.setFieldValue("errorDidOccur", false);
+      formik.setFieldValue("timeSlotTaken", false);
+      setSubmittedForm({});
+
+      //Lesson learnt:
+      //the setFieldValue() will not update the value until after onSubmit has concluded. (Note that it also triggers a rerender)
+      //Our html elements will update themselves in the intuitive manner we expect,
+      //However, the change in the value will not occur immediately and any attempt to use them as flags will lead to failure!!!!
+      //if you need flags, define new variables...
+
+      let status: number;
+
+      fetch(APPOINTMENT_FORM_TARGET_URL, fetchParameters)
+        .then((response: any) => {
+          //set flags based on status
+
+          formik.setFieldValue("isWaiting", false);
+
+          if (response.status === 200) {
+            formik.setFieldValue("formDidSubmit", true);
+            setSubmittedForm(values);
+          } else if (response.status === 400) {
+            formik.setFieldValue("errorDidOccur", true);
+            console.error("Error: Invalid form was submitted.");
+          } else if (response.status === 409) {
+            formik.setFieldValue("timeSlotTaken", true);
+          } else {
+            formik.setFieldValue("errorDidOccur", true);
+            console.error("Server response unclear.");
+          }
+
+          //refresh the time slots
+          dataTimeSlotsFetch();
+          formik.setFieldValue("time", "", false);
+
+          return response.json();
+        })
+        .then((data) => {})
+        .catch((err: any) => {
+          formik.setFieldValue("isWaiting", false);
+          formik.setFieldValue("errorDidOccur", true);
+          console.error("Error caught on form request.", err);
+        });
+    },
+    validationSchema: appFormSchema,
+  });
+
+  //================================
+  //** EVENT HANDLERS ==================
+  //================================
   const onRecaptchaVerify = () => {
     formik.setFieldValue("captchaDidVerify", true);
   };
@@ -112,171 +291,50 @@ const Appointment = () => {
       });
   };
 
-  //formik
-  const appFormSchema = Yup.object().shape({
-    fullName: Yup.string()
-      .min(3, "Please supply your full name.")
-      .required("Please supply your full name."),
-
-    phoneNumber: Yup.string()
-      .min(7, "Please enter a valid phone mumber")
-      .required("Please enter a valid phone mumber"),
-
-    date: Yup.string()
-      .min(8, "Please enter a valid date.")
-      .required("Please enter a valid date."),
-
-    service: Yup.string()
-      .min(3, "Please supply a service.")
-      .required("Please supply a service."),
-
-    time: Yup.string()
-      .min(4, "Please supply a time.")
-      .required("Please supply a time."),
-  });
-
-  // const miminumAllowableDate: Date = new Date();
-  // miminumAllowableDate.setDate(miminumAllowableDate.getDate() + 2);
-
-  const miminumAllowableDate = moment()
-    .add(1, "days")
-    .tz("America/Barbados")
-    .format("MM/DD/YYYY");
-
-  interface FormShape {
-    fullName: string;
-    email: string;
-    phoneNumber: string;
-    message: string;
-    date: string;
-    service: string;
-    time: string;
-    isDateValid: boolean;
-    isWaiting: boolean;
-    formDidSubmit: boolean;
-    errorDidOccur: boolean;
-    timeSlotTaken: boolean;
-    captchaDidVerify: boolean;
-  }
-
-  const form: FormShape = {
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-    message: "",
-    date: miminumAllowableDate,
-    // date: miminumAllowableDate.toLocaleDateString("en-US", {
-    //   timeZone: "America/Barbados",
-    // }), // gives a short date format : MM/dd/YYYY; and ensures the client is operating on barbados time
-    service: "",
-    time: "",
-
-    isDateValid: true, //is used to determine wether a valid date has been supplied from the user's perspective
-
-    captchaDidVerify: false, //flag for captcha verify
-
-    //have a flag for each status/scenerio you planned to have occur
-    isWaiting: false, //used to signal waiting on server response
-    formDidSubmit: false, //used to display success message if status 200 - form accepted
-    errorDidOccur: false, //displays error message if status 400 - form rejected
-    timeSlotTaken: false, //display error message if status 409 - timeslot no longer available
+  const onServiceChange = (time: string): void => {
+    formik.setFieldValue("time", time);
   };
-  const formik = useFormik({
-    initialValues: form,
-    onSubmit: (values) => {
-      if (!values.captchaDidVerify) return;
-      if (!values.isDateValid) return;
 
-      interface FetchPackage {
-        fullName: string;
-        email: string;
-        phoneNumber: string;
-        message: string;
-        date: string;
-        service: string;
-        time: string;
-      }
+  const handleDateChange = (date: Date | null) => {
+    // formik.setFieldValue(
+    //   "date",
+    //   date.toLocaleDateString("en-US", { timeZone: "America/Barbados" })
+    // ); //gives a shortDate format : MM/dd/YYYY
+    // console.log();
 
-      //RECAPTCHA VERIFY OR REJECT
+    //if for some reason the picker receives a date that does not match the format that we specified on the picker,
+    //it will throw different invalid messages.
+    //we can use moment.isvalid to act as a flag in those invalid times.
 
-      //necessary for easy server manipulation
-      const isoFormatedDateWithoutTime = new Date(values.date)
-        .toISOString()
-        .split("T")[0]; //time portion would be wrong
+    if (moment(date).isValid()) {
+      formik.setFieldValue(
+        "date",
+        moment(date).tz("America/Barbados").format("MM/DD/YYYY")
+      );
+      formik.setFieldValue("isDateValid", true);
+      setDateDidChange(true);
+    } else {
+      formik.setFieldValue("isDateValid", false);
+    }
+  };
 
-      const fPackage: FetchPackage = {
-        fullName: values.fullName,
-        email: values.email,
-        phoneNumber: values.phoneNumber,
-        message: values.message,
-        date: isoFormatedDateWithoutTime,
-        service: values.service,
-        time: values.time,
-      };
+  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    formik.setFieldValue("service", event.target.value as string);
+  };
 
-      interface Headers {
-        "Content-Type": string;
-      }
+  //================================
+  //**EFFECTS  =======================
+  //================================
+  useEffect(() => {
+    dataTimeSlotsFetch();
+  }, []);
 
-      interface FetchParameters {
-        method: string;
-        headers: HeadersInit;
-        body: BodyInit;
-      }
-      const fetchParameters: FetchParameters = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(fPackage),
-      };
-      console.log("Appointment request package: ", fPackage);
-
-      formik.setFieldValue("isWaiting", true);
-      formik.setFieldValue("formDidSubmit", false);
-      formik.setFieldValue("errorDidOccur", false);
-      formik.setFieldValue("timeSlotTaken", false);
-      setSubmittedForm({});
-
-      //Lesson learnt:
-      //the setFieldValue() will not update the value until after onSubmit has concluded. (Note that it also triggers a rerender)
-      //Our html elements will update themselves in the intuitive manner we expect,
-      //However, the change in the value will not occur immediately and any attempt to use them as flags will lead to failure!!!!
-      //if you need flags, define new variables...
-
-      let status: number;
-
-      fetch(APPOINTMENT_FORM_TARGET_URL, fetchParameters)
-        .then((response: any) => {
-          //set flags based on status
-
-          formik.setFieldValue("isWaiting", false);
-
-          if (response.status === 200) {
-            formik.setFieldValue("formDidSubmit", true);
-            setSubmittedForm(values);
-          }
-
-          if (response.status === 400) {
-            formik.setFieldValue("errorDidOccur", true);
-            console.error("Error: Invalid form was submitted.");
-          }
-
-          if (response.status === 409) {
-            formik.setFieldValue("timeSlotTaken", true);
-          }
-
-          dataTimeSlotsFetch();
-          formik.setFieldValue("time", "", false);
-          return response.json();
-        })
-        .then((data) => {})
-        .catch((err: any) => {
-          formik.setFieldValue("isWaiting", false);
-          formik.setFieldValue("errorDidOccur", true);
-          console.error("Error caught on form request.", err);
-        });
-    },
-    validationSchema: appFormSchema,
-  });
+  //on date picker change
+  useEffect(() => {
+    dataTimeSlotsFetch();
+    setDateDidChange(false);
+    formik.setFieldValue("time", "", false);
+  }, [dateDidChange]);
 
   const defaultMaterialTheme = createMuiTheme({
     typography: {
@@ -303,7 +361,9 @@ const Appointment = () => {
     } as any,
   });
 
-  //picker end
+  //================================
+  //**STYLES========================
+  //=================================
 
   //selector
   const useStyles = makeStyles((theme: Theme) =>
@@ -329,10 +389,10 @@ const Appointment = () => {
   const classes = useStyles();
   const classes1 = useStyles1();
 
-  interface Service {
-    name: string;
-    description: string;
-  }
+  //================================
+  //==== LISTS , RENDER LOGIC
+  //================================
+
   const services: Service[] = [
     {
       name: "Pap Smear",
@@ -373,57 +433,6 @@ const Appointment = () => {
     )
   );
 
-  //selector end
-
-  //time
-  const onServiceChange = (time: string): void => {
-    formik.setFieldValue("time", time);
-  };
-
-  //time end
-
-  // date picker handler
-  const handleDateChange = (date: Date | null) => {
-    // formik.setFieldValue(
-    //   "date",
-    //   date.toLocaleDateString("en-US", { timeZone: "America/Barbados" })
-    // ); //gives a shortDate format : MM/dd/YYYY
-    // console.log();
-
-    //if for some reason the picker receives a date that does not match the format that we specified on the picker,
-    //it will throw different invalid messages.
-    //we can use moment.isvalid to act as a flag in those invalid times.
-
-    if (moment(date).isValid()) {
-      formik.setFieldValue(
-        "date",
-        moment(date).tz("America/Barbados").format("MM/DD/YYYY")
-      );
-      formik.setFieldValue("isDateValid", true);
-      setDateDidChange(true);
-    } else {
-      formik.setFieldValue("isDateValid", false);
-    }
-  };
-
-  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    formik.setFieldValue("service", event.target.value as string);
-  };
-
-  //onMount
-  useEffect(() => {
-    dataTimeSlotsFetch();
-  }, []);
-
-  //on date picker change
-  useEffect(() => {
-    dataTimeSlotsFetch();
-    setDateDidChange(false);
-    formik.setFieldValue("time", "", false);
-  }, [dateDidChange]);
-  //formik end
-
-  //console.log("Regular: ", formik.values);
   return (
     <PageFrame pageTitle="Book Now">
       <section className={styles.appointment}>

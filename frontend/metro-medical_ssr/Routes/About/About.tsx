@@ -1,9 +1,14 @@
-import React from "react";
+//================================
+//** LOCAL IMPORTS ==================
+//================================
 import styles from "./About.module.css";
 import PageFrame from "../shared/UI/PageFrame/PageFrame";
 import AboutContent from "../shared/About/About";
 
-import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
+//================================
+//** PACKAGE IMPORTS ==================
+//================================
+import React from "react";
 
 const About = () => {
   return (

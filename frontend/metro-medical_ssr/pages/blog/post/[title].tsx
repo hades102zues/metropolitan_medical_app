@@ -1,11 +1,24 @@
+//================================
+//**Local Imports
+//================================
+
+//================================
+//**Package imports
+//================================
 import React from "react";
 import BlogPost from "../../../Routes/Post/Post";
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
 
+//================================
+//**KEYS AND CONSTRAINTS
+//================================
 const BASE_URL = "http://metropolitan-medical.local";
 const URI = "/wp-json/wapi/wp-post/";
 
+//================================
+//**INTERFACES
+//================================
 interface Post {
   content: any;
   date: string;
@@ -20,37 +33,8 @@ interface PostResponse {
   goodObject: boolean;
 }
 
-const Post = ({ post }) => {
-  let inspect: PostResponse = post;
-
-  let postExist: boolean;
-  let apost: Post;
-
-  const defaultObj: Post = {
-    content: "",
-    date: "",
-    title: "",
-    excerpt: "",
-    featured_image_url: "",
-    url_cleaned_title: "",
-  };
-
-  if (inspect.post === undefined) {
-    //we did not get a reponse
-
-    apost = defaultObj;
-    postExist = false;
-  } else {
-    if (inspect.goodObject) {
-      apost = inspect.post;
-      postExist = true;
-    } else {
-      apost = defaultObj;
-      postExist = false;
-    }
-  }
-
-  return <BlogPost post={apost} doesPostExist={postExist} />;
+const Post = ({ postRep }) => {
+  return <BlogPost post={postRep.post} doesPostExist={postRep.goodObject} />;
 };
 
 // This gets called on every request
@@ -59,46 +43,29 @@ export async function getServerSideProps(context) {
   const targetUrl = BASE_URL + URI + postTitle;
 
   let res: any;
-  let post: any;
+  let unserialized_postRep = {};
+  let postRep: PostResponse = {
+    post: {
+      content: "",
+      date: "",
+      title: "",
+      excerpt: "",
+      url_cleaned_title: "",
+      featured_image_url: "",
+    },
+    goodObject: false,
+  };
 
-  // Fetch data from external API
+  // Fetch post data from backend; If the fetch finds no target then it will throw an error.
   try {
     res = await fetch(targetUrl);
-    post = await res.json(); //will either be undefined or a response object
+    unserialized_postRep = await res.json();
+    postRep = JSON.parse(JSON.stringify(unserialized_postRep));
   } catch (e) {
-    console.error("Request Failed.");
+    console.log("Request Failed.");
   }
 
-  return { props: { post } };
-
-  // let responseGood = true;
-  // fetch(targetUrl)
-  //   .then((res) => {
-  //     if (res.status != 200) responseGood = false;
-
-  //     return res.json();
-  //   })
-  //   .then((data: any) => {
-  //     let post: Post;
-  //     if (responseGood) post = data;
-  //     else {
-
-  //     }
-  //     return { props: { post } };
-  //   })
-  //   .catch((err) => {
-  //     let post: Post = {
-  //       content: "",
-  //       date: "",
-  //       title: "",
-  //       excerpt: "",
-  //       postExist: false,
-  //     };
-  //     console.error("Error fetching post.");
-
-  //   });
-
-  // Pass data to the page via props
+  return { props: { postRep } }; //the props object is passed on
 }
 
 export default Post;

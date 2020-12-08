@@ -3,18 +3,23 @@ import moment, { Moment } from "moment";
 import splitTime from "./createTimeSlots";
 
 interface Frame {
+  //12am is 0, 12pm is 12
   momentDay: number;
   weekDay: string;
-  startHour: number;
+  startHour: number; //given in 24hr format
   startMin: number;
-  endHour: number;
+  endHour: number; //given in 24hr format
   endMin: number;
 }
 
+/**
+ *
+ * This function is tasked with returning the start and end time for appointments, given a particular day, as set by the client.
+ * Matching moment.js day() format, where 0 = sunday and 6=saturday
+ * The corresponding days are inserted at the matching array index.
+ */
 const getTimeFrames = (momentDay: number): any => {
   const timeFrames: Frame[] = [
-    //PM times must be expressed in 24hr format!!!
-    //12am is 0, 12pm is 12
     {
       momentDay: 0,
       weekDay: "Sunday",
@@ -76,19 +81,27 @@ const getTimeFrames = (momentDay: number): any => {
   return timeFrames[momentDay]; //an array of shape ["8:00 AM"..."3:00PM"]
 };
 
+/**
+ * It first gets the appointment start and end times for a specific day.
+ * Converts them to moments for it's utility.
+ * Supplies the time and interval to time slot block creator function.
+ * Returns all time slots blocks assignable for the particular day.
+ * Note no conflict handling is done at this stage, the time blocks are returned in their totality.
+ */
+
 const getTimeSlots = (
   date: string,
   raw: boolean = false,
   splits: number //the interval by which to cut the times
 ): string[] => {
-  const interval: number = splits;
   const { startHour, startMin, endHour, endMin }: Frame = getTimeFrames(
-    moment(date).day() //not locale specific
+    moment(date).day() //.day() is not locale specific which makes it deterministic
   );
 
   const startTime: Moment = moment({ hour: startHour, minute: startMin });
   const endTime: Moment = moment({ hour: endHour, minute: endMin });
 
+  const interval: number = splits;
   const timeSlices = splitTime(startTime, endTime, interval, raw);
   return timeSlices;
 };

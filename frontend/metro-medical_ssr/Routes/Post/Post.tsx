@@ -1,17 +1,19 @@
-import React from "react";
+//================================
+//**Local Imports
+//================================
 import styles from "./Post.module.css";
 import PageFrame from "../shared/UI/PageFrame/PageFrame";
 import HtmlHead from "../../HtmlHead";
 import WpRenderBox from "./WpRender/WpRender";
-//import "./wpstyles.css";
 
-// const { gutenbergToReact } = require("@threemammals/gutenberg-to-react");
-// import WPGBlocks from "react-gutenberg";
-// import parse from "html-react-parser";
+//================================
+//**Package imports
+//================================
+import React from "react";
 
-// const BASE_URL = "http://metropolitan-medical.local";
-// const IMG_URI = "/wp-content";
-
+//================================
+//** INTERFACES ==================
+//================================
 interface Post {
   content: any;
   date: string;
@@ -24,12 +26,20 @@ interface PostInput {
   post: Post;
   doesPostExist: boolean;
 }
+
 const Post: React.FC<PostInput> = (props) => {
+  //================================
+  //** STATE ==================
+  //================================
   const { post, doesPostExist } = props;
   let render: JSX.Element[] | JSX.Element;
-
   let exp: any = [];
 
+  //================================
+  //** LIST , RENDER LOGIC ==================
+  //================================
+
+  //HTMLHEAD
   const defaultMessage: string = "Post not found.";
   const allowIndexing = false;
   const baseURL: string = "localhost";
@@ -64,10 +74,6 @@ const Post: React.FC<PostInput> = (props) => {
           </div>
         </div>
         <WpRenderBox content={post.content} />
-        {/* {<div
-          className={styles.wpAdjust}
-          dangerouslySetInnerHTML={{ __html: }}
-        ></div>} */}
       </article>
     );
   }
