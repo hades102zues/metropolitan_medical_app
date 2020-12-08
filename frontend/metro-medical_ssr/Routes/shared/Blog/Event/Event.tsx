@@ -7,6 +7,7 @@ import styles from "./Event.module.css";
 //**Package imports
 //================================
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 
 //================================
 //**KEYS AND CONSTRAINTS
@@ -15,14 +16,24 @@ const BASE_URL = "http://metropolitan-medical.local";
 const ANNOUNTMENT_URI = "/wp-json/wapi/wp-announcement";
 // const IMG_URI = "/wp-content";
 
+//================================
+//**Globals
+//================================
+interface Announcement {
+  featured_image_url: string;
+  post_url: string;
+  post_uri: string;
+}
+
 const Event = () => {
-  const [annoucement, setAnnouncement]: [string, any] = useState("");
+  const [annoucement, setAnnouncement]: [Announcement, any] = useState({
+    featured_image_url: "",
+    post_url: "",
+    post_uri: "",
+  });
   const [gotAnnoucement, setGetAnnouncement]: [boolean, any] = useState(false);
 
   const fetchAnnoucement = () => {
-    interface Announcement {
-      featured_image_url: string;
-    }
     interface ResponseObject {
       announcement: Announcement;
       goodObject: boolean;
@@ -40,7 +51,7 @@ const Event = () => {
       })
       .then((data: ResponseObject) => {
         if (goodResponse) {
-          setAnnouncement(data.announcement.featured_image_url);
+          setAnnouncement(data.announcement);
           setGetAnnouncement(true);
         } else {
           setAnnouncement("");
@@ -67,7 +78,14 @@ const Event = () => {
       <section className={styles.events}>
         <div className={styles.eventWrapper}>
           <div className={styles.event}>
-            <img src={annoucement} alt="" className={styles.eventImg} />
+            <Link href="/blog/post/title" as={annoucement.post_uri}>
+              <img
+                src={annoucement.featured_image_url}
+                alt=""
+                className={styles.eventImg}
+                style={{ cursor: "pointer" }}
+              />
+            </Link>
           </div>
         </div>
         <p className={styles.eventA}>Announcement</p>
