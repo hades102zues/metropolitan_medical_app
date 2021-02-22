@@ -44,8 +44,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 //================================
 //**KEYS AND CONSTRAINTS
 //================================
-const BASE_URL = "http://104.131.37.158";
-//const BASE_URL = "http://localhost:3001";
+//const BASE_URL = "http://104.131.37.158/api";
+const BASE_URL = "http://localhost:3001";
 const RECAPTCHA_KEY = "6LcNtcIZAAAAAGdb6P0gJmQ5ANM1UdoYRjUnyB9I";
 
 const APPOINTMENT_FORM_TARGET_URL: string = BASE_URL + "/send-appointment-form";

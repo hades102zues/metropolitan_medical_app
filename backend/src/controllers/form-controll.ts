@@ -465,6 +465,9 @@ exports.postAppForm = (
         },
       };
 
+      let APPOINTMENT_EVENT_CREATION: boolean;
+      let APPOINTMENT_EMAIL_CREATION: boolean;
+
       calendar.events.insert(
         {
           //setting this to primary would make the event on the service accounts calendar!!
@@ -479,9 +482,13 @@ exports.postAppForm = (
             console.log(
               "There was an error contacting the Calendar service: " + err
             ); //debug
-            return;
+
+            return res
+              .status(503)
+              .json({ message: "Unsuccessfull. Please, try again later." });
           }
-          console.log("Event successfully created: ", event); //debug
+          console.log("Appointment event was successfully created.");
+          res.status(200).json({ message: "Event successfully created." }); //debug
         }
       );
 
@@ -507,14 +514,8 @@ exports.postAppForm = (
       };
 
       mg.messages().send(mail as any, (error, body) => {
-        if (!error)
-          return res
-            .status(200)
-            .json({ server: "Appointment email was successfully sent.", body });
-
-        return res
-          .status(500)
-          .json({ server: "Appointment email was not sent", error });
+        if (!error) console.log("Appointment email was successfully sent.");
+        else console.log("Appointment email was not successfully sent.");
       });
     }
   ); //end of busy query
