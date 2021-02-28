@@ -39,6 +39,10 @@
   list-style-type: disc;
 }
 
+.wpAdjust strong {
+  font-size: inherit;
+}
+
 .wpAdjust p,
 .wpAdjust img,
 .wpAdjust h1,
@@ -49,7 +53,8 @@
 .wpAdjust h6,
 .wpAdjust iframe,
 .wpAdjust ul,
-.wpAdjust ol {
+.wpAdjust ol,
+.wpAdjust table {
   margin-top: 20px;
 }
 .wpAdjust iframe {
