@@ -54,13 +54,13 @@ const Event = () => {
           setAnnouncement(data.announcement);
           setGetAnnouncement(true);
         } else {
-          setAnnouncement("");
+          // setAnnouncement("");
           setGetAnnouncement(false);
         }
       })
       .catch((err) => {
         console.log(err);
-        setAnnouncement("");
+        //setAnnouncement("");
         setGetAnnouncement(false);
       });
   };
@@ -71,6 +71,7 @@ const Event = () => {
 
   let render: JSX.Element;
 
+  //note that an empty field from wordpress is by default a NULL
   if (!gotAnnoucement) {
     render = null;
   } else {
@@ -78,14 +79,22 @@ const Event = () => {
       <section className={styles.events}>
         <div className={styles.eventWrapper}>
           <div className={styles.event}>
-            <Link href="/blog/post/title" as={annoucement.post_uri}>
+            {annoucement.post_uri === null || annoucement.post_uri === "" ? (
               <img
                 src={annoucement.featured_image_url}
                 alt=""
                 className={styles.eventImg}
-                style={{ cursor: "pointer" }}
               />
-            </Link>
+            ) : (
+              <Link href="/blog/post/title" as={annoucement.post_uri}>
+                <img
+                  src={annoucement.featured_image_url}
+                  alt=""
+                  className={styles.eventImg}
+                  style={{ cursor: "pointer" }}
+                />
+              </Link>
+            )}
           </div>
         </div>
         <p className={styles.eventA}>Announcement</p>
