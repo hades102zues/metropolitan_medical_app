@@ -1,5 +1,12 @@
 # Metropolitan Medical
 
-Metropolitan Medical web development project, commissioned by Dr. Camelie Bowen.
+Metropolitan Medical web app project, commissioned by Dr. Camelie Bowen.
 
-Abandoned. Covid era ruined everything :(
+This project was meant to provide Dr. Bowen with a web application where she could accept and schedule client appointments via email and Google calendar integration for her practice. 
+
+Additonally, it was to act as a blogging platform for her to discuss various medical topics affecting women's health. 
+
+
+ 
+**Covid Era came with some business adjustments and life changes. Ultimately, it was decided to halt the development process and launch. 
+The project is abandoned by this point lol**
