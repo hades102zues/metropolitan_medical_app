@@ -9,4 +9,5 @@ Additonally, it was to act as a blogging platform for her to discuss various med
 
  
 **Covid Era came with some business adjustments and life changes. Ultimately, it was decided to halt the development process and launch. 
+Which sucks cause the project was darn near completion too.
 The project is abandoned by this point lol**
