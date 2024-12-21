@@ -2,9 +2,7 @@
 
 Metropolitan Medical web app project, commissioned by Dr. Camelie Bowen.
 
-This project was meant to provide Dr. Bowen with a web application where she could accept and schedule client appointments via email and Google calendar integration for her practice. 
-
-Additonally, it was to act as a blogging platform for her to discuss various medical topics affecting women's health. This would have been facilitated by a word press backend with some endpoints exposed to the main application.
+This project involves developing a web application for clients to schedule appointments with Dr. Bowen’s practice. These scheduled appointments would automatically integrate with her email and Google Calendar. Additionally, the web app would feature a blogging platform where Dr. Bowen could share insights on various medical topics related to women’s health. This functionality would be supported by a WordPress backend, with specific endpoints exposed to the main application for seamless integration.
 
 
  
