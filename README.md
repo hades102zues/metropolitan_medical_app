@@ -2,4 +2,4 @@
 
 Metropolitan Medical web development project, commissioned by Dr. Camelie Bowen.
 
-Abandoned.
+Abandoned. Darn Covid :(
