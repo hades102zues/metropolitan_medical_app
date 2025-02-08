@@ -6,6 +6,5 @@ This project involves developing a web application for clients to schedule appoi
 
 
  
-**Covid Era came with some business adjustments and life changes. Ultimately, it was decided to halt the development process and launch. 
-Which sucks cause the project was pretty much ready too.
+**Unfortunately my client got too distracted and the poor project stalled, at the finish line no less :(
 The project is abandoned by this point lol**
